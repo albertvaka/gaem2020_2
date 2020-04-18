@@ -30,6 +30,7 @@ const float timeCrouchedToJumpDownOneWayTile = 0.2f;
 
 // limits
 const vec vel_max(220, 200);
+const vec vel_max_carrying(110, 80);
 
 // bfg
 const float bulletVel = 400.f;
@@ -234,10 +235,11 @@ grounded_exit:
 	vel = vel + acc * dt;
 
 	//Clamp vel
-	if (vel.x > vel_max.x) vel.x = vel_max.x;
-	if (vel.x < -vel_max.x) vel.x = -vel_max.x;
+	const auto& limit = (holding == Holdable::Plant ? vel_max_carrying : vel_max);
+	if (vel.x > limit.x) vel.x = limit.x;
+	if (vel.x < -limit.x) vel.x = -limit.x;
+	if (vel.y < -limit.y) vel.y = -limit.y;
 	if (vel.y > vel_max.y) vel.y = vel_max.y;
-	if (vel.y < -vel_max.y) vel.y = -vel_max.y;
 
 	vec appliedVel = vel;
 	Tile tileAtMyFeet = map->getTile(TileMap::toTiles(pos.x, pos.y - 0.1f));

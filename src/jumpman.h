@@ -57,5 +57,17 @@ struct JumpMan : Entity, SingleInstance<JumpMan>
     inline void DoPolvitoLand();
     inline void DoPolvitoRun(float dt, bool toTheLeft, bool doTheExtraPolvitoLikeYouKnowItsDone);
 
+    enum class Holdable {
+      None,
+      Plant,
+      Basket,
+      Water,
+    };
+    Holdable holding = Holdable::None;
+    bool CanCarry() const { return holding == Holdable::None; }
+    bool IsCarrying(Holdable holdable) const { return holding == holdable; } 
+    void Carry(Holdable holdable) { holding = holdable; }
+
+
 };
 

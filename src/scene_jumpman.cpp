@@ -78,18 +78,22 @@ void JumpScene::Update(float dt)
 	bulletPartSys.UpdateParticles(dt);
 
 	contextActionButton = GameKeys::NONE;
+	bool player_had_plant = player.IsCarrying(JumpMan::Holdable::Plant);
 	for (auto* plant : Plant::getAll()) {
 		if (Collide(plant->bounds(), player.bounds())) {
-			if (!plant->IsBeingCarried()) {
+			if (!plant->IsBeingCarried() && player.CanCarry()) {
 				contextActionButton = GameKeys::ACTIVATE;
 			}
 			if (Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
-				if (!plant->IsBeingCarried()) {
-					plant->PickUpBy(&player);
-				}
-				else if (player.grounded) {
-					// TODO: This assumes one player.
+				// Drop
+				if (player.grounded && plant->IsCarriedBy(&player)) {
 					plant->Drop();
+					player.Carry(JumpMan::Holdable::None);
+				}
+				// Pick up
+				else if (!plant->IsBeingCarried() && player.CanCarry() && !player_had_plant) {
+					plant->PickUpBy(&player);
+					player.Carry(JumpMan::Holdable::Plant);
 				}
 			}
 		}

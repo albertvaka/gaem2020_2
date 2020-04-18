@@ -12,6 +12,7 @@ struct Plant : public BoxEntity, EntS<Plant> {
 
   float getBottomY() const;
   bool IsBeingCarried() const;
+  bool IsCarriedBy(const JumpMan* carrier) const;
   void PickUpBy(const JumpMan* carrier);
   void Drop();
 

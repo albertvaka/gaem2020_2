@@ -56,6 +56,11 @@ bool Plant::IsBeingCarried() const
   return carrier != nullptr;
 }
 
+bool Plant::IsCarriedBy(const JumpMan* carrier) const
+{
+  return carrier == this->carrier;
+}
+
 void Plant::PickUpBy(const JumpMan* player)
 {
   carrier = player;
