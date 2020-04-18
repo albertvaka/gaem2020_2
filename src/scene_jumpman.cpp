@@ -77,6 +77,8 @@ void JumpScene::Update(float dt)
 
 	bulletPartSys.UpdateParticles(dt);
 
+	npc.Update(dt);
+
 	contextActionButton = GameKeys::NONE;
 	bool player_had_plant = player.IsCarrying(JumpMan::Holdable::Plant);
 	for (auto* plant : Plant::getAll()) {
@@ -130,6 +132,17 @@ void JumpScene::Draw(sf::RenderTarget& window)
 			e->drawBounds(window);
 		}
 	}
+
+	npc.Draw(window);
+
+	sf::Sprite& spr = Assets::spritesSprite;
+	spr.setPosition(764, 347);
+	spr.setTextureRect(sf::IntRect(140,107,64,21));
+	window.draw(spr);
+
+	spr.setPosition(790, 300);
+	spr.setTextureRect(Animation::AnimFrame(FOUNTAIN, mainClock.getElapsedTime().asMilliseconds()));
+	window.draw(spr);
 
 	player.Draw(window);
 

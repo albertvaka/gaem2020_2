@@ -67,7 +67,9 @@ enum AnimationType
 	BAT_FLYING,
 	BAT_FLIP,
 	BAT_SIESTA,
-	BAT_AWAKE,
+	FOUNTAIN,
+	NPC_IDLE,
+	NPC_WALK,
 };
 
 

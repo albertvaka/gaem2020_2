@@ -157,7 +157,7 @@ namespace Window
 	const int GAME_ZOOM = 2;
 #endif
 	const int WINDOW_HEIGHT = 420*GAME_ZOOM;
-	const int WINDOW_WIDTH = 830*GAME_ZOOM;
+	const int WINDOW_WIDTH = 828*GAME_ZOOM;
 
 	void SetWindowCaption(const std::string& s);
 	bool WindowHasFocus();

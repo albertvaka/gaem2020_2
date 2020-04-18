@@ -138,6 +138,9 @@
     <ClInclude Include="src\plant.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\npc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\rand.cpp">

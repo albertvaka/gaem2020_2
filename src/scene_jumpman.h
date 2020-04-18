@@ -6,6 +6,7 @@
 #include "scene_manager.h"
 #include "transition.h"
 #include "screen.h"
+#include "npc.h"
 #include "input.h"
 
 struct JumpScene : Scene {
@@ -13,6 +14,7 @@ struct JumpScene : Scene {
 	TileMap map;
 	JumpMan player;
 	PartSys bulletPartSys;
+	Npc npc;
 
 	GameKeys contextActionButton = GameKeys::NONE;
 
