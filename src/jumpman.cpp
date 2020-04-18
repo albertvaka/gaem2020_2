@@ -445,40 +445,6 @@ vert_exit:
 	}
 	polvito.UpdateParticles(dt);
 
-	if (crouched) {
-		bfgPos = vec(pos.x, pos.y - 10);
-	}
-	else {
-		bfgPos = vec(pos.x, pos.y - 16);
-	}
-	bfgAngle = bfgPos.Angle(Mouse::GetPositionInWorld());
-	bfgAngle = (int(bfgAngle + 360 + (45.f / 2)) / 45) * 45.f;
-	if (bfgCooldownTimer > 0.f) {
-		bfgCooldownTimer -= dt;
-		if (bfgCooldownTimer < 0.f) {
-			bfgCooldownTimer = 0.f;
-		}
-	} 
-	else if (Mouse::IsPressed() && !Debug::Draw) {
-		float angleInRads = Mates::DegsToRads(bfgAngle);
-		bfgCooldownTimer = bfgCooldown;
-		vec tipOfTheGun = bfgPos + vec(17, 0).RotatedAroundOrigin(angleInRads);
-		new Bullet(tipOfTheGun, vec(bulletVel, 0).RotatedAroundOrigin(angleInRads), 1.5f);
-		vel -= vec(bfgPushBack, 0).RotatedAroundOrigin(angleInRads);
-		jumpTimeLeft = 0; // Overrides jump impulse 
-		if (onWall) {
-			vel.x = 0; // Will let wall go if we shoot and we aren't explicitly moving towards the wall
-		}
-		if (grounded) {
-			if (abs(vel.x) < 0.1) {
-				DoPolvitoLand();
-			} else {
-				DoPolvitoRun(dt, vel.x < 0, true);
-				DoPolvitoRun(dt, vel.x < 0, true);
-			}
-		}
-	}
-
 	if (invencibleTimer > 0.f) {
 		invencibleTimer -= dt;
 	}
@@ -525,27 +491,6 @@ void JumpMan::Draw(sf::RenderTarget& window) const {
 	else {
 		spr.setScale(1.f, 1.f);
 	}
-	window.draw(spr, shader);
-
-	//BFG
-	if (bfgCooldownTimer > (bfgCooldown - bfgCooldown / 4.f)) {
-		bool blink = ((mainClock.getElapsedTime().asMilliseconds() / 10) % 2);
-		spr.setTextureRect(sf::IntRect(blink ? 32 * 3 : 32 * 2, 3 * 16, 2 * 16, 16));
-	}
-	else {
-		bool blink = ((mainClock.getElapsedTime().asMilliseconds() / 160) % 10) > 8;
-		spr.setTextureRect(sf::IntRect(blink ? 32 : 0, 3 * 16, 2 * 16, 16));
-	}
-	spr.setOrigin(10, 8);
-	float scale = (0.333f + (Mates::MaxOf(bfgCooldown / 1.5f, bfgCooldownTimer) / bfgCooldown));
-	spr.setPosition(bfgPos);
-	if (bfgAngle < 270 || bfgAngle  > 450) {
-		spr.setScale(scale, -scale);
-	}
-	else {
-		spr.setScale(scale, scale);
-	}
-	spr.setRotation(bfgAngle);
 	window.draw(spr, shader);
 
 	//Restore everything

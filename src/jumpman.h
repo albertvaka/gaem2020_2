@@ -17,7 +17,6 @@ struct JumpMan : Entity, SingleInstance<JumpMan>
         vel = vec(0, 0);
         polvito.Clear();
         invencibleTimer = -1.f;
-        bfgCooldownTimer = 0;
         jumpTimeLeft = 0.0f;
         crouchedTime = 0.0f;
         onWall = ONWALL_NO;
@@ -44,9 +43,6 @@ struct JumpMan : Entity, SingleInstance<JumpMan>
     float crouchedTime = 0.0f;
     bool dead = false;
 
-    float bfgAngle;
-    vec bfgPos;
-    float bfgCooldownTimer = 0.f;
     float invencibleTimer = -1.f;
 
     bool grounded = true;
