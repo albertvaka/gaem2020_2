@@ -51,6 +51,6 @@ struct TiledEntities
 struct TiledAreas
 {
 	{% for k, v in areas_by_type.items() -%}
-		static const std::array<sf::Rect<float>, {{v|length}}> {{k}};
+		static const sf::Rect<float> {{k}};
 	{% endfor %}
 };
