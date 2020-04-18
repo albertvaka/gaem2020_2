@@ -54,9 +54,9 @@ struct Npc : BoxEntity, SingleInstance<Npc>
 			spr.setPosition(pos.x, pos.y+4);
 			spr.setTextureRect(sf::IntRect(0,41,89,128-42));
 			window.draw(spr);
-			spr.setOrigin(0, 0);
 			spr.setScale(1, 1);
 		}
+		spr.setOrigin(0, 0);
 		if (Debug::Draw) {
 			bounds().Draw(window);
 		}
