@@ -23,7 +23,7 @@ struct Cistell : BoxEntity, SingleInstance<Cistell>
 
 	Contents contents = EMPTY;
 
-	Cistell() : BoxEntity(vec(), vec(32,16)) {
+	Cistell() : BoxEntity(vec(), vec(25,28)) {
 	}
 
 	void Update(float dt)
@@ -31,7 +31,7 @@ struct Cistell : BoxEntity, SingleInstance<Cistell>
     if (carrier != nullptr) {
       pos = carrier->pos;
       pos.x += (carrier->lookingLeft ? -1 : 1) * kCarryPositionOffset.x;
-      pos.y += kCarryPositionOffset.y - 8.0f;
+      pos.y += kCarryPositionOffset.y - size.y/2.0f;
     }
 		if (Keyboard::IsKeyJustPressed(GameKeys::DEBUG_KILLALL)) {
 			if (contents == EMPTY) {
@@ -48,16 +48,16 @@ struct Cistell : BoxEntity, SingleInstance<Cistell>
 	void Draw(sf::RenderTarget& window) const
 	{
 		sf::Sprite& spr = Assets::spritesSprite;
-		spr.setOrigin(0,16);
+		spr.setOrigin(size/2.0f);
 		spr.setPosition(pos.x, pos.y);
 		if (contents == TOMATOES) {
-			spr.setTextureRect(sf::Rect(14 * 16, 32, 32, 16));
+			spr.setTextureRect(sf::Rect(168, 97, 25, 28));
 		}
 		else if (contents == WATER) {
-			spr.setTextureRect(sf::Rect(14 * 16, 16, 32, 16));
+			spr.setTextureRect(sf::Rect(141, 97, 25, 28));
 		}
 		else {
-			spr.setTextureRect(sf::Rect(14 * 16, 0, 32, 16));
+			spr.setTextureRect(sf::Rect(114, 97, 25, 28));
 		}
 		pos.Debuggerino();
 		window.draw(spr);
@@ -69,7 +69,7 @@ struct Cistell : BoxEntity, SingleInstance<Cistell>
 
 	void Drop()
 	{
-		pos.y = carrier->pos.y - 8.0f;
+		pos.y = carrier->pos.y - size.y/2.0f;
 		carrier = nullptr;
 	}
 	bool IsBeingCarried() const { return !(carrier == nullptr); }
