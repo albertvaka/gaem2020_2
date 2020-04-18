@@ -44,5 +44,7 @@ struct TiledEntities
 
 struct TiledAreas
 {
+	static const std::array<sf::Rect<float>, 1> sun;
+	static const std::array<sf::Rect<float>, 1> water;
 	
 };
