@@ -6,7 +6,6 @@
 
 extern sf::Clock mainClock;
 
-
 void GunUp::Draw(sf::RenderTarget& window) const
 {
 	float y = 5 * sin(mainClock.getElapsedTime().asSeconds());
@@ -17,7 +16,6 @@ void GunUp::Draw(sf::RenderTarget& window) const
 	spr.setPosition(pos.x, pos.y - y);
 	window.draw(spr);
 }
-
 
 
 void HealthUp::Draw(sf::RenderTarget& window) const
