@@ -6,6 +6,8 @@ sf::Sprite Assets::hospitalSprite;
 sf::Texture Assets::marioTexture;
 sf::Sprite Assets::marioSprite;
 
+sf::Texture Assets::plantTexture;
+
 sf::Texture Assets::fogTexture;
 
 sf::Font Assets::font;
@@ -21,6 +23,8 @@ void Assets::LoadAll() {
 
     marioTexture.loadFromFile("data/mario.png");
     marioSprite.setTexture(marioTexture);
+
+    plantTexture.loadFromFile("data/plant.png");
 
     fogTexture.loadFromFile("data/fog.png");
 

@@ -28,6 +28,7 @@
     <ClInclude Include="imgui_sfml\imconfig-SFML.h" />
     <ClInclude Include="imgui_sfml\imgui-SFML.h" />
     <ClInclude Include="imgui_sfml\imgui-SFML_export.h" />
+    <ClInclude Include="src\plant.h" />
     <ClInclude Include="src\animation.h" />
     <ClInclude Include="src\anim_data.h" />
     <ClInclude Include="src\assets.h" />
@@ -65,6 +66,7 @@
     <ClCompile Include="imgui\imgui_draw.cpp" />
     <ClCompile Include="imgui\imgui_widgets.cpp" />
     <ClCompile Include="imgui_sfml\imgui-SFML.cpp" />
+    <ClCompile Include="src\plant.cpp" />
     <ClCompile Include="src\anim_data.cpp" />
     <ClCompile Include="src\assets.cpp" />
     <ClCompile Include="src\debug.cpp" />
