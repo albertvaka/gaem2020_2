@@ -10,17 +10,7 @@ extern sf::Clock mainClock;
 SaveStation::SaveStation(const vec& p) : BoxEntity(p, vec(32, 32)) { }
 
 void SaveStation::Update(float dt) {
-	bool prevInScene = inScene;
-	inScene = Camera::GetCameraBounds().intersects(bounds());
-	if (inScene && !prevInScene) {
-		enabled = true;
-	}
-}
 
-void SaveStation::Activate() {
-	if (enabled) {
-		enabled = false;
-	}
 }
 
 void SaveStation::Draw(sf::RenderTarget& window) const
