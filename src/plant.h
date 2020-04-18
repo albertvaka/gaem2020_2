@@ -2,6 +2,8 @@
 
 #include "entity.h"
 #include "selfregister.h"
+#include "jumpman.h"
+
 
 struct Plant : public BoxEntity, EntS<Plant> {
   Plant(vec pos);
@@ -9,12 +11,12 @@ struct Plant : public BoxEntity, EntS<Plant> {
 	void Draw(sf::RenderTarget& window) const;
 
   bool IsBeingCarried() const;
-  void PickUpBy(const Entity* carrier);
+  void PickUpBy(const JumpMan* carrier);
   void Drop();
 
 
 
-  const Entity* carrier = nullptr;
+  const JumpMan* carrier = nullptr;
   // number of tiles of height, including pot.
   int height = 1;
 
