@@ -39,20 +39,14 @@ void JumpScene::EnterScene()
 {
 	player.Reset();
 
-	Camera::SetZoom(GameData::GAME_ZOOM);
-	Camera::SetCameraCenter(vec(GameData::WINDOW_WIDTH / (2*GameData::GAME_ZOOM), GameData::WINDOW_HEIGHT/(2*GameData::GAME_ZOOM)));
-	
-	player.pos = vec(160,160);
-	InitMap();
-
 	player.pos = TiledEntities::spawn;
 	map.LoadFromTiled();
 
-	for (const sf::Vector2f& v : TiledEntities::save) {
-		new SaveStation(v);
-	}
-
-	Camera::SetCameraCenter(player.pos);
+	Camera::SetZoom(Window::GAME_ZOOM);
+	Camera::SetCameraCenter(vec(Window::WINDOW_WIDTH/4, Window::WINDOW_HEIGHT / 4));
+	Debug::out << Camera::GetCameraCenter();
+	//Camera::SetCameraCenter(vec(Window::WINDOW_WIDTH / 2, Window::WINDOW_HEIGHT / 2));
+	Debug::out << Camera::GetCameraCenter();
 }
 
 void JumpScene::ExitScene()
@@ -63,6 +57,7 @@ void JumpScene::ExitScene()
 
 void JumpScene::Update(float dt)
 {
+	//Camera::MoveCameraWithArrows(50, dt);
 	if (Keyboard::IsKeyJustPressed(GameKeys::RESTART)) {
 		ExitScene();
 		EnterScene();
@@ -70,8 +65,8 @@ void JumpScene::Update(float dt)
 	
 	player.Update(dt);
 
-	Camera::ChangeZoomWithPlusAndMinus(10.f, dt);
-
+	Camera::ChangeZoomWithPlusAndMinus(20.f, dt);
+	//Debug::out << Camera::GetCameraCenter();
 	for (Bullet* e  : Bullet::getAll()) {
 		e->Update(dt);
 		if (e->explode) continue;
@@ -98,9 +93,13 @@ void JumpScene::Update(float dt)
 
 void JumpScene::Draw(sf::RenderTarget& window)
 {
-	window.clear(sf::Color(31, 36, 50));
+	window.clear(sf::Color(34, 32, 52));
 
-	map.Draw(window);
+	window.draw(Assets::casaSprite);
+
+	if (Debug::Draw) {
+		map.Draw(window);
+	}
 
 	for (const SaveStation* ss : SaveStation::getAll()) {
 		ss->Draw(window);
@@ -135,47 +134,3 @@ void JumpScene::Draw(sf::RenderTarget& window)
 }
 
 
-
-void JumpScene::InitMap() {
-	player.pos = vec(160, 160);
-
-	randomSeed = Random::roll(0, 10000);
-	map.Randomize(randomSeed);
-
-	sf::Vector2i pos = map.toTiles(player.pos);
-	map.setTile(pos.x - 1, pos.y + 1, Tile::SOLID_1);
-	map.setTile(pos.x, pos.y + 1, Tile::SOLID_1);
-	map.setTile(pos.x - 2, pos.y + 1, Tile::SOLID_1);
-	map.setTile(pos.x - 3, pos.y + 1, Tile::SOLID_1);
-	map.setTile(pos.x - 4, pos.y + 1, Tile::SOLID_1);
-	map.setTile(pos.x - 5, pos.y + 1, Tile::SOLID_1);
-	map.setTile(pos.x - 6, pos.y + 1, Tile::SOLID_1);
-	map.setTile(pos.x - 3, pos.y + 1, Tile::SOLID_1);
-	map.setTile(pos.x + 1, pos.y + 1, Tile::SOLID_1);
-	map.setTile(pos.x + 2, pos.y + 1, Tile::SOLID_1);
-	map.setTile(pos.x + 3, pos.y + 1, Tile::SOLID_1);
-	map.setTile(pos.x - 1, pos.y, Tile::NONE);
-	map.setTile(pos.x, pos.y, Tile::NONE);
-	map.setTile(pos.x - 1, pos.y - 1, Tile::NONE);
-	map.setTile(pos.x, pos.y - 1, Tile::NONE);
-	map.setTile(pos.x - 1, pos.y - 2, Tile::NONE);
-	map.setTile(pos.x, pos.y - 2, Tile::NONE);
-	map.setTile(pos.x + 1, pos.y, Tile::RSLOPE_1);
-	map.setTile(pos.x + 2, pos.y, Tile::SOLID_1);
-	map.setTile(pos.x + 3, pos.y - 1, Tile::SOLID_1);
-	map.setTile(pos.x + 3, pos.y, Tile::SOLID_1);
-	map.setTile(pos.x + 2, pos.y - 1, Tile::RSLOPE_1);
-	map.setTile(pos.x + 3, pos.y - 2, Tile::RSLOPE_1);
-	map.setTile(pos.x + 4, pos.y - 2, Tile::SOLID_1);
-	map.setTile(pos.x + 5, pos.y - 2, Tile::SOLID_1);
-	map.setTile(pos.x - 4, pos.y, Tile::LSLOPE_1);
-	map.setTile(pos.x - 5, pos.y, Tile::SOLID_1);
-	map.setTile(pos.x - 5, pos.y - 1, Tile::LSLOPE_1);
-	map.setTile(pos.x - 6, pos.y - 1, Tile::SOLID_1);
-	map.setTile(pos.x - 6, pos.y, Tile::SOLID_1);
-	map.setTile(pos.x - 6, pos.y - 2, Tile::LSLOPE_1);
-	map.setTile(pos.x - 7, pos.y - 2, Tile::SOLID_1);
-	map.setTile(pos.x - 8, pos.y - 2, Tile::SOLID_1);
-	map.setTile(pos.x - 9, pos.y - 2, Tile::SOLID_1);
-	map.setTile(pos.x - 10, pos.y - 2, Tile::SOLID_1);
-}

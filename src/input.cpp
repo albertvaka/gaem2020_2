@@ -27,6 +27,8 @@ static void _ProcessWindowEvents();
 namespace Window
 {
 
+
+
     sf::RenderWindow* window;
     bool focus = true;
 
@@ -76,7 +78,6 @@ namespace Camera
     sf::View gameView;
     sf::View guiView;
     float zoom;
-
 
     void SetCameraCenter(const vec& center)
 	{
@@ -135,8 +136,8 @@ namespace Camera
     void ResetGuiCamera()
 	{
         guiView.setSize(sf::Vector2f(Window::window->getSize()));
-        guiView.setCenter(vec(Window::window->getSize()) / (2*GameData::GUI_ZOOM));
-        guiView.zoom(1.f / GameData::GUI_ZOOM);
+        guiView.setCenter(vec(Window::window->getSize()) / (2*Window::GUI_ZOOM));
+        guiView.zoom(1.f / Window::GUI_ZOOM);
         guiView.setViewport(sf::FloatRect(0, 0, 1, 1));
     }
 
@@ -383,11 +384,11 @@ static void _ProcessWindowEvents()
         }
         {
             // GuiView: scale from top-left corner
-            vec oldSize = Camera::guiView.getSize() * (GameData::GUI_ZOOM);
+            vec oldSize = Camera::guiView.getSize() * (Window::GUI_ZOOM);
             vec newSize = sf::Vector2f(Window::window->getSize());
             Camera::guiView.setSize(newSize);
-            Camera::guiView.zoom(1.f / GameData::GUI_ZOOM);
-            Camera::guiView.setCenter(vec(Camera::guiView.getCenter()) + (newSize-oldSize)/(2*GameData::GUI_ZOOM));
+            Camera::guiView.zoom(1.f / Window::GUI_ZOOM);
+            Camera::guiView.setCenter(vec(Camera::guiView.getCenter()) + (newSize-oldSize)/(2*Window::GUI_ZOOM));
         }
         break;
         default:
