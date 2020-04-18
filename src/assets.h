@@ -13,14 +13,9 @@ struct Assets
 	static sf::Texture marioTexture;
 	static sf::Sprite marioSprite;
 
-<<<<<<< HEAD
-	static sf::Texture plantTexture;
-
-	static sf::Texture fogTexture;
-=======
 	static sf::Texture casaTexture;
 	static sf::Sprite casaSprite;
->>>>>>> a02cb5501132c46e0461a29dcbf7de1e66600446
+	static sf::Texture plantTexture;
 
 	static sf::Font font;
 
