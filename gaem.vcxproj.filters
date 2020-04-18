@@ -19,15 +19,9 @@
     <Filter Include="Bundled Dependencies\Imgui">
       <UniqueIdentifier>{f04c1d6a-03a0-4b9a-9a0b-c44f562282ab}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Steering">
-      <UniqueIdentifier>{334872e3-915f-4e65-b016-64a8104431c7}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\player.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\popupText.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\rand.h">
@@ -40,9 +34,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\selfregister.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\spawner.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\taca.h">
@@ -66,19 +57,7 @@
     <ClInclude Include="src\bounds.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\cadaver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\cinta.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\cleaner.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\collider.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\door.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\entity.h">
@@ -93,22 +72,7 @@
     <ClInclude Include="src\input.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\intro_scene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\jumpman.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lever.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\main_scene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\main_scene_collider.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\main_scene_tile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\mates.h">
@@ -150,26 +114,8 @@
     <ClInclude Include="src\partsys.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\matrix2d.h">
-      <Filter>Steering</Filter>
-    </ClInclude>
-    <ClInclude Include="src\bat.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\bullet.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\hospital_entity.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\steering_entity.h">
-      <Filter>Steering</Filter>
-    </ClInclude>
-    <ClInclude Include="src\steering_behavior_applier.h">
-      <Filter>Steering</Filter>
-    </ClInclude>
-    <ClInclude Include="src\steering_behavior.h">
-      <Filter>Steering</Filter>
     </ClInclude>
     <ClInclude Include="src\assets.h">
       <Filter>Header Files</Filter>
@@ -177,16 +123,7 @@
     <ClInclude Include="src\simplexnoise.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\lava.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\singleinstance.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\destroyedtiles.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\spawningtile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\debug.h">
@@ -196,15 +133,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\screen.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\enemy_door.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\parallax.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\powerups.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\savestation.h">
@@ -254,12 +182,6 @@
     <ClCompile Include="src\partsys.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\bat.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\steering_behavior.cpp">
-      <Filter>Steering</Filter>
-    </ClCompile>
     <ClCompile Include="src\vector.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -269,31 +191,10 @@
     <ClCompile Include="src\simplexnoise.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\lava.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\destroyedtiles.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\spawningtile.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\debug.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\tiledexport.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\screen.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\enemy_door.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\parallax.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\powerups.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\savestation.cpp">
