@@ -82,24 +82,18 @@ void JumpScene::Update(float dt)
 	bulletPartSys.UpdateParticles(dt);
 
 	contextActionButton = GameKeys::NONE;
-	for (SaveStation* ss : SaveStation::getAll()) {
-		ss->Update(dt);
-		if (Collide(ss->bounds(), player.bounds())) {
-			contextActionButton = GameKeys::ACTIVATE;
-
-			if (Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
-				ss->enabled = !ss->enabled;
-			}
-		}
-	}
 	for (auto* plant : Plant::getAll()) {
 		plant->Update(dt);
-		if (Collide(plant->bounds(), player.bounds()) && Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
-			if (!plant->IsBeingCarried()) {
-				plant->PickUpBy(&player);
-			} else {
-				// TODO: This assumes one player.
-				plant->Drop();
+		if (Collide(plant->bounds(), player.bounds())) {
+			contextActionButton = GameKeys::ACTIVATE;
+			if (Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
+				if (!plant->IsBeingCarried()) {
+					plant->PickUpBy(&player);
+				}
+				else if (player.grounded) {
+					// TODO: This assumes one player.
+					plant->Drop();
+				}
 			}
 		}
 	}
