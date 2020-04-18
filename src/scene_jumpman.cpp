@@ -93,11 +93,13 @@ void JumpScene::Update(float dt)
 
 void JumpScene::Draw(sf::RenderTarget& window)
 {
-	window.clear(sf::Color(31, 36, 50));
-
-	map.Draw(window);
+	window.clear(sf::Color(34, 32, 52));
 
 	window.draw(Assets::casaSprite);
+
+	if (Debug::Draw) {
+		map.Draw(window);
+	}
 
 	for (const SaveStation* ss : SaveStation::getAll()) {
 		ss->Draw(window);
