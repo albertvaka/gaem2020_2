@@ -155,6 +155,11 @@ void JumpScene::Draw(sf::RenderTarget& window)
 	cistell.Draw(window);
 	player.Draw(window);
 
+	spr.setPosition(702, 297);
+	spr.setOrigin(0, 0);
+	spr.setTextureRect(sf::IntRect(0, 8 * 16, 11 * 16 + 4, 72));
+	window.draw(spr);
+
 	if (contextActionButton != GameKeys::NONE) {
 		sf::Sprite& spr = Assets::hospitalSprite;
 		spr.setPosition(player.bounds().TopRight() + vec(2, -6));

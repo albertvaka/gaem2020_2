@@ -15,6 +15,8 @@ struct TiledTiles
 		RSLOPE_1,
 		LSLOPE_1,
 		SOLID_1,
+		SOLID_2,
+		SOLID_3,
 		BREAKABLE_1,
 		SOLID_TRANSPARENT,
 	};
@@ -46,5 +48,7 @@ struct TiledAreas
 {
 	static const sf::Rect<float> sun;
 	static const sf::Rect<float> water;
+	static const sf::Rect<float> truck;
+	static const sf::Rect<float> npc;
 	
 };
