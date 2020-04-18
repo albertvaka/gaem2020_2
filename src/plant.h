@@ -10,7 +10,7 @@ struct Plant : public BoxEntity, EntS<Plant> {
   void Update(float dt);
 	void Draw(sf::RenderTarget& window) const;
 
-  float getBottomX() const;
+  float getBottomY() const;
   bool IsBeingCarried() const;
   void PickUpBy(const JumpMan* carrier);
   void Drop();

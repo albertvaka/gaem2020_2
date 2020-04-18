@@ -40,17 +40,17 @@ void Plant::Draw(sf::RenderTarget& window) const {
   const float width_multiplier = 1/100.0f * 20.0f;
   if (gets_light) {
     sf::RectangleShape background(vec(kMaxStats * width_multiplier + 2.0f*outline, bar_height + 2.0f*outline));
-    background.setPosition(vec(pos.x, getBottomX()) + vec(-0.5f * (kMaxStats * width_multiplier + 2.0f*outline), 10.0f));
+    background.setPosition(vec(pos.x, getBottomY()) + vec(-0.5f * (kMaxStats * width_multiplier + 2.0f*outline), 10.0f));
     background.setFillColor(sf::Color::Black);
     window.draw(background);
     sf::RectangleShape filled_bar(vec(light * width_multiplier, bar_height));
-    filled_bar.setPosition(vec(pos.x, getBottomX()) + vec(-0.5f*light * width_multiplier, 11.0f));
+    filled_bar.setPosition(vec(pos.x, getBottomY()) + vec(-0.5f*light * width_multiplier, 11.0f));
     filled_bar.setFillColor(sf::Color::Yellow);
     window.draw(filled_bar);
   }
 }
 
-float Plant::getBottomX() const
+float Plant::getBottomY() const
 {
   return pos.y + 8.0f * height;
 }
