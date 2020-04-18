@@ -59,6 +59,7 @@ struct Cistell : BoxEntity, SingleInstance<Cistell>
 		else {
 			spr.setTextureRect(sf::Rect(114, 97, 25, 28));
 		}
+		//spr.setScale(0.8f, 0.8f);
 		pos.Debuggerino();
 		window.draw(spr);
 

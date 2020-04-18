@@ -86,6 +86,20 @@ void JumpScene::Update(float dt)
   if (Collide(cistell.bounds(), player.bounds())) {
 		bool can_carry = !cistell.IsBeingCarried() && player_had_empty_hands;
 		bool can_drop = cistell.IsCarriedBy(&player) && player.grounded;
+
+		for (auto* plant : Plant::getAll()) {
+      if (Collide(plant->bounds(), cistell.bounds()) && cistell.IsBeingCarried() && (!cistell.contents) && plant->HasTomato()) {
+        // TODO: Treure això si la collita passa automaticament.
+        contextActionButton = GameKeys::ACTIVATE;
+        if (Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
+          plant->PickTomato();
+          cistell.contents = Cistell::TOMATOES;
+        }
+				// Agafar tomàquets té prioritat per sobre deixar anar la cistella.
+				can_drop = false;
+      }
+		}
+
 		if (can_carry) {
 			contextActionButton = GameKeys::ACTIVATE;
 		}
@@ -130,6 +144,7 @@ void JumpScene::Update(float dt)
       plant->light = 100;
       plant->water = 100;
 		}
+
 	}
 }
 
