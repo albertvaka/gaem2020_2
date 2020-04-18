@@ -85,7 +85,9 @@ void JumpScene::Update(float dt)
 	for (auto* plant : Plant::getAll()) {
 		plant->Update(dt);
 		if (Collide(plant->bounds(), player.bounds())) {
-			contextActionButton = GameKeys::ACTIVATE;
+			if (!plant->IsBeingCarried()) {
+				contextActionButton = GameKeys::ACTIVATE;
+			}
 			if (Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
 				if (!plant->IsBeingCarried()) {
 					plant->PickUpBy(&player);
