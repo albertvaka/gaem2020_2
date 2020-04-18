@@ -43,9 +43,8 @@ void JumpScene::EnterScene()
 
 	Camera::SetZoom(Window::GAME_ZOOM);
 	Camera::SetCameraCenter(vec(Window::WINDOW_WIDTH/4, Window::WINDOW_HEIGHT / 4));
-	Debug::out << Camera::GetCameraCenter();
-	//Camera::SetCameraCenter(vec(Window::WINDOW_WIDTH / 2, Window::WINDOW_HEIGHT / 2));
-	Debug::out << Camera::GetCameraCenter();
+
+	npc.timer = 0;
 }
 
 void JumpScene::ExitScene()
