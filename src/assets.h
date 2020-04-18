@@ -13,13 +13,11 @@ struct Assets
 	static sf::Texture marioTexture;
 	static sf::Sprite marioSprite;
 
-	static sf::Texture fogTexture;
+	static sf::Texture casaTexture;
+	static sf::Sprite casaSprite;
 
 	static sf::Font font;
 
 	static sf::Shader tintShader;
-
-	static std::array<sf::Texture, 4> forestParallaxTextures;
-
 };
 

@@ -4,7 +4,6 @@
 #include <SFML/System.hpp>
 #include "magic_enum.h"
 
-#include "game_data.h"
 #include "bounds.h"
 
 // Static stuff here:
@@ -150,6 +149,16 @@ public:
 
 namespace Window
 {
+#ifdef __APPLE__ //Retina display
+	const int GUI_ZOOM = 2;
+	const int GAME_ZOOM = 4;
+#else 
+	const int GUI_ZOOM = 1;
+	const int GAME_ZOOM = 2;
+#endif
+	const int WINDOW_HEIGHT = 420*GAME_ZOOM;
+	const int WINDOW_WIDTH = 830*GAME_ZOOM;
+
 	void SetWindowCaption(const std::string& s);
 	bool WindowHasFocus();
 	void CloseWindow();

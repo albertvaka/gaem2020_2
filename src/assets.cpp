@@ -6,13 +6,12 @@ sf::Sprite Assets::hospitalSprite;
 sf::Texture Assets::marioTexture;
 sf::Sprite Assets::marioSprite;
 
-sf::Texture Assets::fogTexture;
+sf::Texture Assets::casaTexture;
+sf::Sprite Assets::casaSprite;
 
 sf::Font Assets::font;
 
 sf::Shader Assets::tintShader;
-
-std::array<sf::Texture, 4> Assets::forestParallaxTextures;
 
 void Assets::LoadAll() {
 
@@ -22,14 +21,11 @@ void Assets::LoadAll() {
     marioTexture.loadFromFile("data/mario.png");
     marioSprite.setTexture(marioTexture);
 
-    fogTexture.loadFromFile("data/fog.png");
+    casaTexture.loadFromFile("data/bg.png");
+    casaSprite.setTexture(casaTexture);
 
     font.loadFromFile("data/PressStart2P.ttf");
 
     tintShader.loadFromFile("data/tint.frag", sf::Shader::Fragment);
 
-    for (size_t i = 0; i < forestParallaxTextures.size(); i++) {
-        forestParallaxTextures[i].loadFromFile("data/redforest_"+ std::to_string(i)+".png");
-        forestParallaxTextures[i].setRepeated(true);
-    }
 }

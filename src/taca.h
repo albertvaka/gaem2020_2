@@ -100,7 +100,7 @@ struct Taca : Cintable, EntS<Taca>
 
 		pos += vel * dt;
 		vel.Zero();
-		if (pos.y > GameData::WINDOW_HEIGHT/GameData::GAME_ZOOM) {
+		if (pos.y > Window::WINDOW_HEIGHT/GameData::GAME_ZOOM) {
 			alive = false;
 		}
 	}

@@ -37,7 +37,6 @@
     <ClInclude Include="src\debug.h" />
     <ClInclude Include="src\entity.h" />
     <ClInclude Include="src\extremity.h" />
-    <ClInclude Include="src\game_data.h" />
     <ClInclude Include="src\input.h" />
     <ClInclude Include="src\jumpman.h" />
     <ClInclude Include="src\magic_enum.h" />

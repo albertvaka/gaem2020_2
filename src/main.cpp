@@ -9,7 +9,6 @@
 #include <SFML/Window/Event.hpp>
 #include <string>
 
-#include "game_data.h"
 #include "scene_manager.h"
 #include "input.h"
 #include "mates.h"
@@ -26,7 +25,7 @@ sf::Clock mainClock;
 int main()
 {
 
-	sf::RenderWindow window(sf::VideoMode(GameData::WINDOW_WIDTH, GameData::WINDOW_HEIGHT), "GGJ 2020");
+	sf::RenderWindow window(sf::VideoMode(Window::WINDOW_WIDTH, Window::WINDOW_HEIGHT), "GGJ 2020");
 
 	window.setFramerateLimit(60);
 #ifdef _DEBUG

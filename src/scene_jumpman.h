@@ -1,6 +1,5 @@
 #pragma once
 
-#include "game_data.h"
 #include "mates.h"
 #include "tilemap.h"
 #include "jumpman.h"
@@ -23,6 +22,5 @@ struct JumpScene : Scene {
 	void ExitScene() override;
 	void Update(float dt) override;
 	void Draw(sf::RenderTarget& window) override;
-	void InitMap();
 
 };
