@@ -17,6 +17,7 @@ struct Plant : public BoxEntity, EntS<Plant> {
   void Drop();
   bool HasTomato() const;
   void PickTomato();
+  void Grow();  // Exposed for debug.
 
   void SetHitByWater(bool hit);
   void SetHitByLight(bool hit);
@@ -33,6 +34,7 @@ struct Plant : public BoxEntity, EntS<Plant> {
   float light = 0;
   bool has_tomato = false;
   sf::Time tomato_timer;
+  vec tomato_offset;
 
   sf::Clock grow_clock;
 

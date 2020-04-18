@@ -14,6 +14,14 @@ const sf::Time kMinTimeForTomato = sf::seconds(5.0f);
 
 Plant::Plant(vec pos) : BoxEntity(pos, vec(16.0f, 16.0f)) {}
 
+void Plant::Grow() {
+  if (height >= kMaxHeight) return;
+  ++height;
+  pos.y -= 8.0f;
+  size.y += 16.0f;
+  grow_clock.restart();
+}
+
 void Plant::Update(float dt) {
   if (carrier != nullptr) {
     pos = carrier->pos;
@@ -21,10 +29,7 @@ void Plant::Update(float dt) {
     pos.y += kCarryPositionOffset.y - 8.0f * height;
   }
   if (height < kMaxHeight && grow_clock.getElapsedTime().asSeconds() > kSecondsToGrow) {
-    ++height;
-    pos.y -= 8.0f;
-    size.y += 16.0f;
-    grow_clock.restart();
+    Grow();
   }
   if (gets_light) {
     light = std::min(kMaxStats, light + dt * kLightIncrease);
@@ -39,6 +44,8 @@ void Plant::Update(float dt) {
     tomato_timer += sf::seconds(dt);
     if (tomato_timer >= kMinTimeForTomato) {
       has_tomato = true;
+      // Random offset.
+      tomato_offset = vec(Random::rollf(-8.0f, 8.0f), Random::rollf(-8.0f, 8.0f));
     }
   }
 }
@@ -53,6 +60,17 @@ void Plant::PickTomato() {
 }
 
 void Plant::Draw(sf::RenderTarget& window) const {
+  // Draw tomato
+  if (has_tomato) {
+    sf::Sprite sprite;
+    sprite.setTexture(Assets::plantTexture);
+    sf::IntRect texture_rect(22, 54, 10, 10);
+    sprite.setTextureRect(texture_rect);
+    sprite.setOrigin(5, 5);
+    sprite.setPosition(pos + tomato_offset);
+    window.draw(sprite);
+  }
+
   sf::Sprite sprite;
   sprite.setTexture(Assets::plantTexture);
   sf::IntRect texture_rect(0, 64 - 16 * height, 16, 16 * height);

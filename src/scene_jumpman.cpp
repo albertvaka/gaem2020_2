@@ -105,6 +105,15 @@ void JumpScene::Update(float dt)
     plant->SetHitByWater(Collide(plant->bounds(), TiledAreas::water));
 
 		plant->Update(dt);
+		// For Debug
+		if (Keyboard::IsKeyJustPressed(GameKeys::DEBUG_SET_PLANTS_AT_MAX_STATS)) {
+			// Grow to the max.
+			for (int i = 0; i < 5; ++ i) {
+				plant->Grow();
+			}
+      plant->light = 100;
+      plant->water = 100;
+		}
 	}
 }
 
