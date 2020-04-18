@@ -78,24 +78,40 @@ void JumpScene::Update(float dt)
 
 	bulletPartSys.UpdateParticles(dt);
 
+	contextActionButton = GameKeys::NONE;
+
 	npc.Update(dt);
 	cistell.Update(dt);
+	bool player_had_empty_hands = player.CanCarry();
+  if (Collide(cistell.bounds(), player.bounds())) {
+		bool can_carry = !cistell.IsBeingCarried() && player_had_empty_hands;
+		bool can_drop = cistell.IsCarriedBy(&player) && player.grounded;
+		if (can_carry) {
+			contextActionButton = GameKeys::ACTIVATE;
+		}
+		if (Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
+			if (can_drop) {
+				cistell.Drop();
+				player.Carry(JumpMan::Holdable::None);
+			} else if (can_carry) {
+				cistell.PickUpBy(&player);
+				player.Carry(JumpMan::Holdable::Basket);
+			}
+		}
+  }
 
-	contextActionButton = GameKeys::NONE;
-	bool player_had_plant = player.IsCarrying(JumpMan::Holdable::Plant);
 	for (auto* plant : Plant::getAll()) {
 		if (Collide(plant->bounds(), player.bounds())) {
-			if (!plant->IsBeingCarried() && player.CanCarry()) {
+			bool can_carry = !plant->IsBeingCarried() && player_had_empty_hands;
+			bool can_drop = cistell.IsCarriedBy(&player) && player.grounded;
+			if (can_carry) {
 				contextActionButton = GameKeys::ACTIVATE;
 			}
 			if (Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
-				// Drop
-				if (player.grounded && plant->IsCarriedBy(&player)) {
+				if (can_drop) {
 					plant->Drop();
 					player.Carry(JumpMan::Holdable::None);
-				}
-				// Pick up
-				else if (!plant->IsBeingCarried() && player.CanCarry() && !player_had_plant) {
+				} else if (can_carry) {
 					plant->PickUpBy(&player);
 					player.Carry(JumpMan::Holdable::Plant);
 				}

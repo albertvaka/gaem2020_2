@@ -9,6 +9,9 @@
 #include "mates.h"
 #include "debug.h"
 #include "assets.h"
+#include "jumpman.h"
+
+const vec kCarryPositionOffset = {8.0f, -8.0f};
 
 struct Cistell : BoxEntity, SingleInstance<Cistell>
 {
@@ -25,6 +28,11 @@ struct Cistell : BoxEntity, SingleInstance<Cistell>
 
 	void Update(float dt)
 	{
+    if (carrier != nullptr) {
+      pos = carrier->pos;
+      pos.x += (carrier->lookingLeft ? -1 : 1) * kCarryPositionOffset.x;
+      pos.y += kCarryPositionOffset.y - 8.0f;
+    }
 		if (Keyboard::IsKeyJustPressed(GameKeys::DEBUG_KILLALL)) {
 			if (contents == EMPTY) {
 				contents = TOMATOES;
@@ -58,4 +66,16 @@ struct Cistell : BoxEntity, SingleInstance<Cistell>
 			bounds().Draw(window);
 		}
 	}
+
+	void Drop()
+	{
+		pos.y = carrier->pos.y - 8.0f;
+		carrier = nullptr;
+	}
+	bool IsBeingCarried() const { return !(carrier == nullptr); }
+	bool IsCarriedBy(const JumpMan* carrier) const { return carrier == this->carrier; }
+	void PickUpBy(const JumpMan* carrier) { this->carrier = carrier; }
+
+
+	const JumpMan* carrier = nullptr;
 };
