@@ -10,7 +10,6 @@
 
 struct JumpScene : Scene {
 
-	int randomSeed;
 	TileMap map;
 	JumpMan player;
 	PartSys bulletPartSys;
