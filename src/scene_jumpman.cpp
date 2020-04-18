@@ -158,6 +158,13 @@ void JumpScene::Draw(sf::RenderTarget& window)
 		map.Draw(window);
 	}
 
+	//Fountain
+	sf::Sprite& spr = Assets::spritesSprite;
+	spr.setPosition(420, 338);
+	spr.setOrigin(0, 0);
+	spr.setTextureRect(Animation::AnimFrame(FOUNTAIN, mainClock.getElapsedTime().asMilliseconds()));
+	window.draw(spr);
+
 	for (auto* plant : Plant::getAll()) {
 		plant->Draw(window);
 	}
@@ -177,15 +184,10 @@ void JumpScene::Draw(sf::RenderTarget& window)
 
 	npc.Draw(window);
 
-	sf::Sprite& spr = Assets::spritesSprite;
-	spr.setPosition(420, 338);
-	spr.setOrigin(0, 0);
-	spr.setTextureRect(Animation::AnimFrame(FOUNTAIN, mainClock.getElapsedTime().asMilliseconds()));
-	window.draw(spr);
-
 	cistell.Draw(window);
 	player.Draw(window);
 
+	//Truck
 	spr.setPosition(702, 297);
 	spr.setOrigin(0, 0);
 	spr.setTextureRect(sf::IntRect(0, 8 * 16, 11 * 16 + 4, 72));
