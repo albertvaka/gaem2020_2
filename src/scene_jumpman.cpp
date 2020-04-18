@@ -43,6 +43,8 @@ void JumpScene::EnterScene()
 
 	Camera::SetZoom(Window::GAME_ZOOM);
 	Camera::SetCameraCenter(vec(Window::WINDOW_WIDTH/4, Window::WINDOW_HEIGHT / 4));
+	
+	cistell.pos = TiledEntities::spawn;
 
 	npc.timer = 0;
 }
@@ -77,6 +79,7 @@ void JumpScene::Update(float dt)
 	bulletPartSys.UpdateParticles(dt);
 
 	npc.Update(dt);
+	cistell.Update(dt);
 
 	contextActionButton = GameKeys::NONE;
 	bool player_had_plant = player.IsCarrying(JumpMan::Holdable::Plant);
@@ -143,6 +146,7 @@ void JumpScene::Draw(sf::RenderTarget& window)
 	spr.setTextureRect(Animation::AnimFrame(FOUNTAIN, mainClock.getElapsedTime().asMilliseconds()));
 	window.draw(spr);
 
+	cistell.Draw(window);
 	player.Draw(window);
 
 	if (contextActionButton != GameKeys::NONE) {

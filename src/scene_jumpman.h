@@ -8,6 +8,7 @@
 #include "screen.h"
 #include "npc.h"
 #include "input.h"
+#include "cistell.h"
 
 struct JumpScene : Scene {
 
@@ -15,6 +16,7 @@ struct JumpScene : Scene {
 	JumpMan player;
 	PartSys bulletPartSys;
 	Npc npc;
+	Cistell cistell;
 
 	GameKeys contextActionButton = GameKeys::NONE;
 
