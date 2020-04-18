@@ -8,6 +8,13 @@ struct Plant : public BoxEntity, EntS<Plant> {
   void Update(float dt);
 	void Draw(sf::RenderTarget& window) const;
 
+  bool IsBeingCarried() const;
+  void PickUpBy(const Entity* carrier);
+  void Drop();
+
+
+
+  const Entity* carrier = nullptr;
   // number of tiles of height, including pot.
   int height = 1;
 

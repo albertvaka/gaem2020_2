@@ -94,6 +94,14 @@ void JumpScene::Update(float dt)
 	}
 	for (auto* plant : Plant::getAll()) {
 		plant->Update(dt);
+		if (Collide(plant->bounds(), player.bounds()) && Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
+			if (!plant->IsBeingCarried()) {
+				plant->PickUpBy(&player);
+			} else {
+				// TODO: This assumes one player.
+				plant->Drop();
+			}
+		}
 	}
 }
 
