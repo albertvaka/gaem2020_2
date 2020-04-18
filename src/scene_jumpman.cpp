@@ -83,7 +83,6 @@ void JumpScene::Update(float dt)
 
 	contextActionButton = GameKeys::NONE;
 	for (auto* plant : Plant::getAll()) {
-		plant->Update(dt);
 		if (Collide(plant->bounds(), player.bounds())) {
 			if (!plant->IsBeingCarried()) {
 				contextActionButton = GameKeys::ACTIVATE;
@@ -98,6 +97,10 @@ void JumpScene::Update(float dt)
 				}
 			}
 		}
+    plant->SetHitByLight(Collide(plant->bounds(), TiledAreas::sun));
+    plant->SetHitByWater(Collide(plant->bounds(), TiledAreas::water));
+
+		plant->Update(dt);
 	}
 }
 
