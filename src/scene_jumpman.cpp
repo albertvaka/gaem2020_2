@@ -102,8 +102,8 @@ void JumpScene::Update(float dt)
 
 	for (auto* plant : Plant::getAll()) {
 		if (Collide(plant->bounds(), player.bounds())) {
-			bool can_carry = !plant->IsBeingCarried() && player_had_empty_hands;
-			bool can_drop = cistell.IsCarriedBy(&player) && player.grounded;
+			bool can_carry = !plant->IsBeingCarried() && player.CanCarry() && player_had_empty_hands;
+			bool can_drop = plant->IsCarriedBy(&player) && player.grounded;
 			if (can_carry) {
 				contextActionButton = GameKeys::ACTIVATE;
 			}
