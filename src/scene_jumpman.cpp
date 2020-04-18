@@ -8,10 +8,6 @@
 #include "savestation.h"
 #include "debug.h"
 
-const float batClusterSize = 22.f;
-const float chanceAngryBat = 0.2f;
-const float camSpeed = 2000;
-
 extern sf::Clock mainClock;
 
 JumpScene::JumpScene()
