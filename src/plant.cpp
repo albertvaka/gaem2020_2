@@ -2,13 +2,15 @@
 #include "assets.h"
 
 const float kSecondsToGrow = 10.0f;
-const int kMaxHeight = 3;
+const int kMaxHeight = 4;
 
 Plant::Plant(vec pos) : BoxEntity(pos, vec(16.0f, 16.0f)) {}
 
 void Plant::Update(float dt) {
   if (height < kMaxHeight && grow_clock.getElapsedTime().asSeconds() > kSecondsToGrow) {
     ++height;
+    pos.y -= 16.0f;
+    size.y += 16.0f;
     grow_clock.restart();
   }
 }
@@ -21,3 +23,4 @@ void Plant::Draw(sf::RenderTarget& window) const {
   sprite.setPosition(pos);
   window.draw(sprite);
 }
+

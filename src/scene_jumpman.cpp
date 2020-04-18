@@ -43,7 +43,7 @@ void JumpScene::EnterScene()
 	player.pos = TiledEntities::spawn;
 	map.LoadFromTiled();
 
-	new Plant(vec(310.0f, 239.0f));
+	new Plant(vec(310.0f, 256.0f));
 
 	Camera::SetZoom(Window::GAME_ZOOM);
 	Camera::SetCameraCenter(vec(Window::WINDOW_WIDTH/4, Window::WINDOW_HEIGHT / 4));
