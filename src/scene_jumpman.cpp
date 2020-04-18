@@ -43,7 +43,7 @@ void JumpScene::EnterScene()
 	player.pos = TiledEntities::spawn;
 	map.LoadFromTiled();
 
-	new Plant(vec(310.0f, 256.0f));
+	new Plant(vec(8.0f, 8.0f) + TileMap::alignToTiles(310.0f, 260.0f));
 
 	Camera::SetZoom(Window::GAME_ZOOM);
 	Camera::SetCameraCenter(vec(Window::WINDOW_WIDTH/4, Window::WINDOW_HEIGHT / 4));
@@ -140,6 +140,9 @@ void JumpScene::Draw(sf::RenderTarget& window)
 
 	if (Debug::Draw) {
 		player.bounds().Draw(window);
+		for (const auto& plant : Plant::getAll()) {
+			plant->bounds().Draw(window);
+		}
 		//player.pos.Debuggerino(sf::Color::White);
 		//player.bounds().Center().Debuggerino(sf::Color::Magenta);
 	}
