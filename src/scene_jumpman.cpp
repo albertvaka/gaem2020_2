@@ -147,11 +147,8 @@ void JumpScene::Draw(sf::RenderTarget& window)
 	npc.Draw(window);
 
 	sf::Sprite& spr = Assets::spritesSprite;
-	spr.setPosition(764, 347);
-	spr.setTextureRect(sf::IntRect(140,107,64,21));
-	window.draw(spr);
-
-	spr.setPosition(790, 300);
+	spr.setPosition(420, 338);
+	spr.setOrigin(0, 0);
 	spr.setTextureRect(Animation::AnimFrame(FOUNTAIN, mainClock.getElapsedTime().asMilliseconds()));
 	window.draw(spr);
 
