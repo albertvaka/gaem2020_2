@@ -30,4 +30,7 @@ struct Plant : public BoxEntity, EntS<Plant> {
   float light = 0;
 
   sf::Clock grow_clock;
+
+private:
+  void DrawStatBar(float value, float y_offset, sf::Color color, sf::RenderTarget& window) const;
 };
