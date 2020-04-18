@@ -15,6 +15,8 @@ struct Plant : public BoxEntity, EntS<Plant> {
   bool IsCarriedBy(const JumpMan* carrier) const;
   void PickUpBy(const JumpMan* carrier);
   void Drop();
+  bool HasTomato() const;
+  void PickTomato();
 
   void SetHitByWater(bool hit);
   void SetHitByLight(bool hit);
@@ -29,6 +31,8 @@ struct Plant : public BoxEntity, EntS<Plant> {
   float water = 0;
   bool gets_light = false;
   float light = 0;
+  bool has_tomato = false;
+  sf::Time tomato_timer;
 
   sf::Clock grow_clock;
 

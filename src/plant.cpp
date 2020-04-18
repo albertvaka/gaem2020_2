@@ -7,6 +7,11 @@ const vec kCarryPositionOffset = { 8.0f, -8.0f };
 const float kMaxStats = 100.0f;
 const float kLightIncrease = 10.0f;
 
+const float kMinLightForTomato = 50.0f;
+const float kMinWaterForTomato = 50.0f;
+// TODO: Slow on purpose for testing.
+const sf::Time kMinTimeForTomato = sf::seconds(5.0f);
+
 Plant::Plant(vec pos) : BoxEntity(pos, vec(16.0f, 16.0f)) {}
 
 void Plant::Update(float dt) {
@@ -27,6 +32,24 @@ void Plant::Update(float dt) {
   if (gets_water) {
     water = std::min(kMaxStats, water + dt * kLightIncrease);
   }
+
+  if (light > kMinLightForTomato&&
+    water > kMinWaterForTomato &&
+    !has_tomato) {
+    tomato_timer += sf::seconds(dt);
+    if (tomato_timer >= kMinTimeForTomato) {
+      has_tomato = true;
+    }
+  }
+}
+
+bool Plant::HasTomato() const {
+  return has_tomato;
+}
+
+void Plant::PickTomato() {
+  has_tomato = false;
+  tomato_timer = sf::Time::Zero;
 }
 
 void Plant::Draw(sf::RenderTarget& window) const {
