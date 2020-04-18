@@ -1,4 +1,5 @@
 #include "scene_jumpman.h"
+#include "plant.h"
 #include "input.h"
 #include "imgui.h"
 #include "bullet.h"
@@ -41,6 +42,8 @@ void JumpScene::EnterScene()
 
 	player.pos = TiledEntities::spawn;
 	map.LoadFromTiled();
+
+	new Plant(vec(310.0f, 239.0f));
 
 	Camera::SetZoom(Window::GAME_ZOOM);
 	Camera::SetCameraCenter(vec(Window::WINDOW_WIDTH/4, Window::WINDOW_HEIGHT / 4));
@@ -89,6 +92,9 @@ void JumpScene::Update(float dt)
 			}
 		}
 	}
+	for (auto* plant : Plant::getAll()) {
+		plant->Update(dt);
+	}
 }
 
 void JumpScene::Draw(sf::RenderTarget& window)
@@ -99,6 +105,10 @@ void JumpScene::Draw(sf::RenderTarget& window)
 
 	if (Debug::Draw) {
 		map.Draw(window);
+	}
+
+	for (auto* plant : Plant::getAll()) {
+		plant->Draw(window);
 	}
 
 	for (const SaveStation* ss : SaveStation::getAll()) {
