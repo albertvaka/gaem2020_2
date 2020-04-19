@@ -4,4 +4,5 @@ Animation system by Mario Gonzalez
 RichText by Cristian Pallarés
 
 Art
-OpenPixelProject https://openpixelproject.itch.io/
+Tileset based on OpenPixelProject https://openpixelproject.itch.io/
+Pug Sprite by Dean Oglesby https://knifedrawer.itch.io/
