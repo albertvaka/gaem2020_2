@@ -2,6 +2,7 @@
 
 int StatsTracker::tomatoes_collected;
 int StatsTracker::tomatoes_delivered;
+int StatsTracker::doggos_in_game;
 int StatsTracker::doggos_fed;
 int StatsTracker::plants_died;
 int StatsTracker::plants_purchased;

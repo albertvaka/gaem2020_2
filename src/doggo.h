@@ -1,5 +1,6 @@
 #pragma once
 
+#include "stats_tracker.h"
 #include "entity.h"
 #include "animation.h"
 #include "rand.h"
@@ -48,6 +49,7 @@ struct Doggo : BoxEntity, EntS<Doggo>
 		return all_destinations;
 	}
 	Doggo() : BoxEntity(vec(), vec(28,28)) {
+		++StatsTracker::doggos_in_game;
 		anim.Ensure(DOGGO_RIGHT);
 
 		

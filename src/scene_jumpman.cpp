@@ -235,6 +235,7 @@ void JumpScene::Update(float dt)
 	}
 
 
+	// Buy plant
 	if (npc.isSelling() && Collide(player.bounds(), TiledAreas::npc) && player.IsCarrying(JumpMan::Holdable::None)) {
 		contextActionButton = GameKeys::ACTIVATE;
 		if (Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
@@ -244,7 +245,7 @@ void JumpScene::Update(float dt)
 				moneyText.clear();
 				moneyTextTimer = 0.5f;
 				moneyText << sfe::Outline(sf::Color::Black, 1) << sf::Color::Red << "-$" << std::to_string(kMoneyBuyPlant);
-				++StatsTracker::doggos_fed;
+				++StatsTracker::plants_purchased;
 				player.Carry(new Plant(vec()));
 				Assets::soundBuy.play();
 			}

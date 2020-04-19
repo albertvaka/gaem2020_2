@@ -11,6 +11,7 @@ struct StatsTracker {
   static void Restart() {
     tomatoes_collected = 0;
     tomatoes_delivered = 0;
+    doggos_in_game = 0;
     doggos_fed = 0;
     plants_died = 0;
     plants_purchased = 0;
@@ -31,11 +32,14 @@ struct StatsTracker {
     time_played = time_played_clock.getElapsedTime().asSeconds();
     time_played_clock.restart();
     sfe::RichText text(Assets::font);
-    text.setScale(0.5f, 0.5f);
+    int min= time_played / 60;
+    int sec = int(time_played)%60;
+    text.setScale(0.4f, 0.4f);
     text << sf::Color::Black << "Stats:" << "\n\n"
-      << "Time alive: " << std::to_string(time_played) << "\n"
+      << "Time alive: " << std::to_string(min) << "m " << std::to_string(sec) << "s\n"
       << "Tomatoes sold: " << std::to_string(tomatoes_delivered) << "\n"
       << "Tomatoes collected: " << std::to_string(tomatoes_collected) << "\n"
+      << "Doggos in game: " << std::to_string(doggos_in_game) << "\n"
       << "Tomatoes fed to Doggo: " << std::to_string(doggos_fed) << "\n"
       << "Plants purchased: " << std::to_string(plants_purchased) << "\n"
       << "Plants watered: " << std::to_string(plant_watered) << "\n"
@@ -58,6 +62,7 @@ struct StatsTracker {
   static float time_played;
   static int tomatoes_delivered;
   static int tomatoes_collected;
+  static int doggos_in_game;
   static int doggos_fed;
   static int plants_purchased;
   static int plant_watered;
