@@ -3,9 +3,6 @@
 sf::Texture Assets::hospitalTexture;
 sf::Sprite Assets::hospitalSprite;
 
-std::array<sf::Texture, 3> Assets::sunTextures;
-std::array<sf::Sprite, 3> Assets::sunSprites;
-
 sf::Texture Assets::marioTexture;
 sf::Sprite Assets::marioSprite;
 
@@ -26,13 +23,6 @@ void Assets::LoadAll() {
 
     hospitalTexture.loadFromFile("data/spritesheet.png");
     hospitalSprite.setTexture(hospitalTexture);
-
-    for (int i = 0; i < 3; ++i) {
-      std::string filename = "data/sun" + std::to_string(i) + ".png";
-      sunTextures[i].loadFromFile(filename);
-      sunSprites[i].setTexture(sunTextures[i]);
-      sunSprites[i].setPosition(217.0f, 0.0f);
-    }
 
     marioTexture.loadFromFile("data/mario.png");
     marioSprite.setTexture(marioTexture);
