@@ -2,6 +2,7 @@
 #include "assets.h"
 #include "imgui.h"
 #include "debug.h"
+#include "input.h"
 
 const float kSecondsToGrow = 10.0f;
 const int kMaxHeight = 4;
@@ -10,7 +11,7 @@ const vec kCarryPositionOffset = { 8.0f, -8.0f };
 const float kMaxStats = 50.0f;
 const float kInitialStats = 25.f;
 
-const float kLightIncreasePerSecond = 5.0f;
+const float kLightIncreasePerSecond = 3.0f;
 const float kWaterIncreasePerWatering = 30.0f;
 
 const float kAdditionalWaterLostWhenGetsLight = 0.5f;
@@ -24,15 +25,26 @@ const float kWaterAndLighThresholdToDie = 5.0f;
 // TODO: Slow on purpose for testing.
 const sf::Time kGrowInterval = sf::seconds(5.0f);
 
+static int ids = 0;
 Plant::Plant(vec pos) : BoxEntity(pos, vec(16.0f, 16.0f)) {
     water = kInitialStats;
     light = kInitialStats;
-}
-
-void Plant::Grow() {
+    id = ids++;
 }
 
 void Plant::Update(float dt) {
+
+    // For Debug
+    if (Keyboard::IsKeyJustPressed(GameKeys::DEBUG_SET_PLANTS_AT_MAX_STATS)) {
+        // Grow to the max.
+        while(height < kMaxHeight){
+            ++height;
+            pos.y -= 8.0f;
+            size.y += 16.0f;
+        }
+        light = 100;
+        water = 100;
+    }
 
     if (carrier != nullptr) {
         pos = carrier->pos;
@@ -125,7 +137,7 @@ void Plant::Draw(sf::RenderTarget& window) {
   }
 
 #ifdef _DEBUG
-  ImGui::Begin("plant");
+  ImGui::Begin((std::string("plant")+::std::to_string(id)).c_str());
   ImGui::SliderFloat("water", &water, 0.f, kMaxStats);
   ImGui::SliderFloat("light", &light, 0.f, kMaxStats);
   ImGui::Checkbox("alive", &alive);

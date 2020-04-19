@@ -11,6 +11,7 @@ struct Plant : public BoxEntity, EntS<Plant> {
 	void Update(float dt);
 	void Draw(sf::RenderTarget& window);
 
+	int id;
 	float getBottomY() const;
 	bool IsBeingCarried() const;
 	bool IsCarriedBy(const JumpMan* carrier) const;
@@ -18,7 +19,6 @@ struct Plant : public BoxEntity, EntS<Plant> {
 	void Drop();
 	bool HasTomato() const;
 	void PickTomato();
-	void Grow();  // Exposed for debug.
 
 	// Once hit by water, effect lasts for a bit.
 	void SetHitByWater();

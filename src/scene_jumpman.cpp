@@ -30,7 +30,7 @@ void JumpScene::EnterScene()
 	cistell.carrier = nullptr;
 	cistell.pos = vec(550,355);
 
-	npc.timer = 0;
+	npc.Reset();
 
 	player.Carry(JumpMan::Holdable::None);
 }
@@ -154,15 +154,7 @@ void JumpScene::Update(float dt)
 		plant->SetHitByLight(Collide(plant->bounds(), TiledAreas::sun));
 
 		plant->Update(dt);
-		// For Debug
-		if (Keyboard::IsKeyJustPressed(GameKeys::DEBUG_SET_PLANTS_AT_MAX_STATS)) {
-			// Grow to the max.
-			for (int i = 0; i < 5; ++ i) {
-				plant->Grow();
-			}
-			plant->light = 100;
-			plant->water = 100;
-		}
+
 	}
 
 

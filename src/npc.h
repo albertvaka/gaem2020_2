@@ -17,11 +17,17 @@ struct Npc : BoxEntity, SingleInstance<Npc>
 	bool selling = false;
 
 	Npc() : BoxEntity(vec(-35, 270), vec(30,50)) {
-		animation.Ensure(NPC_WALK);
+		Reset();
 	}
 
 	bool isSelling() {
 		return selling;
+	}
+
+	void Reset() {
+		animation.Ensure(NPC_WALK);
+		timer = 0;
+		selling = false;
 	}
 
 	void Update(float dt)
