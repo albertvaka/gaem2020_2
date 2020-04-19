@@ -168,6 +168,9 @@ void JumpScene::Update(float dt)
       plant->water = 100;
 		}
 
+
+	if (Keyboard::IsKeyJustPressed(GameKeys::DEBUG_GET_MONEY)) {
+		moneys += 100;
 	}
 }
 

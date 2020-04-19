@@ -26,6 +26,7 @@ enum GameKeys
 	DEBUG_MODE,
 	DEBUG_KILLALL,
 	DEBUG_SET_PLANTS_AT_MAX_STATS,
+	DEBUG_GET_MONEY,
 	RESTART,
 };
 extern sf::Keyboard::Key key_map[magic_enum::enum_count<GameKeys>()];
@@ -49,6 +50,7 @@ inline void RemapInput()
 	key_map[GameKeys::DEBUG_MODE] = sf::Keyboard::F2;
 	key_map[GameKeys::DEBUG_KILLALL] = sf::Keyboard::F3;
 	key_map[GameKeys::DEBUG_SET_PLANTS_AT_MAX_STATS] = sf::Keyboard::F8;
+	key_map[GameKeys::DEBUG_GET_MONEY] = sf::Keyboard::F6;
 }
 
 enum KeyStates { JUST_RELEASED, RELEASED, JUST_PRESSED, PRESSED };
