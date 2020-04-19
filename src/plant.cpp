@@ -158,6 +158,29 @@ void Plant::Draw(sf::RenderTarget& window) {
       window.draw(bubble_sprite);
     }
   }
+  // Draw faces on the plant underneath.
+  if (alive) {
+    // Background
+    sf::Sprite status_sprite;
+    status_sprite.setTexture(Assets::plantTexture);
+    status_sprite.setTextureRect({52,0,30,16});
+    status_sprite.setOrigin(32/2, 0);
+    status_sprite.setPosition(vec(pos.x, getBottomY()) + vec(0.0f, 5.0f));
+    window.draw(status_sprite);
+    // Sun face.
+    int sun_happiness = std::min(int(light/10), 4);
+    status_sprite.setTextureRect({94,52-12*sun_happiness,12,12});
+    status_sprite.setOrigin(6,0);
+    status_sprite.setPosition(vec(pos.x, getBottomY()) + vec(-8.0f, 8.0f));
+    window.draw(status_sprite);
+    // Water
+    // Sun face.
+    int water_happiness = std::min(int(water/10), 4);
+    status_sprite.setTextureRect({82,52-12*water_happiness,12,12});
+    status_sprite.setOrigin(6,0);
+    status_sprite.setPosition(vec(pos.x, getBottomY()) + vec(6.0f, 8.0f));
+    window.draw(status_sprite);
+  }
 
 #ifdef _DEBUG
   ImGui::Begin((std::string("plant")+::std::to_string(id)).c_str());
