@@ -11,7 +11,7 @@
 
 const float kVel = 50;
 const float kMenjarDecreasePerSecond = 1;
-const float kMaxMenjar = 60;
+const float kMaxMenjar = 90;
 const float kMenjarBubbleDuration = 3.0f;
 static int doggo_ids = 0;
 

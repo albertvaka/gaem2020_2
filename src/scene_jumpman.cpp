@@ -12,10 +12,10 @@
 extern sf::Clock mainClock;
 
 const int kInitialMoney = 120;
-const int kMoneySellTomatoes = 25;
+const int kMoneySellTomatoes = 30;
 const int kMoneyBuyPlant = 100; //Super const, actually
 const float kDoggoInterval = 90; //seconds
-const float kinitialDoggoInterval = 30; //seconds
+const float kinitialDoggoInterval = 40; //seconds
 
 JumpScene::JumpScene()
 	: map(TiledMap::map_size.x, TiledMap::map_size.y)
