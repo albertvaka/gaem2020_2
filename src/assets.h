@@ -33,17 +33,28 @@ struct Assets
 
 	static sf::Shader tintShader;
 
-	static sf::SoundBuffer soundBucketTomatoes;
-	static sf::SoundBuffer soundBuy;
-	static sf::SoundBuffer soundSell1;
-	static sf::SoundBuffer soundSell2;
-	static sf::SoundBuffer soundWater;
-	static sf::SoundBuffer soundBucketWater;
-	static sf::SoundBuffer soundJump1;
-	static sf::SoundBuffer soundJump2;
-	static sf::SoundBuffer soundLand;
-	static sf::SoundBuffer soundPikcupDrop;
-	static sf::SoundBuffer soundDeath;
+	static sf::SoundBuffer soundBufferBucketTomatoes;
+	static sf::Sound soundBucketTomatoes;
+	static sf::SoundBuffer soundBufferBuy;
+	static sf::Sound soundBuy;
+	static sf::SoundBuffer soundBufferSell1;
+	static sf::Sound soundSell1;
+	static sf::SoundBuffer soundBufferSell2;
+	static sf::Sound soundSell2;
+	static sf::SoundBuffer soundBufferWater;
+	static sf::Sound soundWater;
+	static sf::SoundBuffer soundBufferBucketWater;
+	static sf::Sound soundBucketWater;
+	static sf::SoundBuffer soundBufferJump1;
+	static sf::Sound soundJump1;
+	static sf::SoundBuffer soundBufferJump2;
+	static sf::Sound soundJump2;
+	static sf::SoundBuffer soundBufferLand;
+	static sf::Sound soundLand;
+	static sf::SoundBuffer soundBufferPickupDrop;
+	static sf::Sound soundPickupDrop;
+	static sf::SoundBuffer soundBufferDeath;
+	static sf::Sound soundDeath;
 	
 };
 

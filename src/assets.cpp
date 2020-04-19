@@ -22,17 +22,28 @@ sf::Font Assets::font;
 
 sf::Shader Assets::tintShader;
 
-sf::SoundBuffer Assets::soundBucketTomatoes;
-sf::SoundBuffer Assets::soundBuy;
-sf::SoundBuffer Assets::soundSell1;
-sf::SoundBuffer Assets::soundSell2;
-sf::SoundBuffer Assets::soundWater;
-sf::SoundBuffer Assets::soundBucketWater;
-sf::SoundBuffer Assets::soundJump1;
-sf::SoundBuffer Assets::soundJump2;
-sf::SoundBuffer Assets::soundLand;
-sf::SoundBuffer Assets::soundPikcupDrop;
-sf::SoundBuffer Assets::soundDeath;
+sf::SoundBuffer Assets::soundBufferBucketTomatoes;
+sf::Sound Assets::soundBucketTomatoes;
+sf::SoundBuffer Assets::soundBufferBuy;
+sf::Sound Assets::soundBuy;
+sf::SoundBuffer Assets::soundBufferSell1;
+sf::Sound Assets::soundSell1;
+sf::SoundBuffer Assets::soundBufferSell2;
+sf::Sound Assets::soundSell2;
+sf::SoundBuffer Assets::soundBufferWater;
+sf::Sound Assets::soundWater;
+sf::SoundBuffer Assets::soundBufferBucketWater;
+sf::Sound Assets::soundBucketWater;
+sf::SoundBuffer Assets::soundBufferJump1;
+sf::Sound Assets::soundJump1;
+sf::SoundBuffer Assets::soundBufferJump2;
+sf::Sound Assets::soundJump2;
+sf::SoundBuffer Assets::soundBufferLand;
+sf::Sound Assets::soundLand;
+sf::SoundBuffer Assets::soundBufferPickupDrop;
+sf::Sound Assets::soundPickupDrop;
+sf::SoundBuffer Assets::soundBufferDeath;
+sf::Sound Assets::soundDeath;
 
 void Assets::LoadAll() {
 
@@ -64,15 +75,36 @@ void Assets::LoadAll() {
 
     tintShader.loadFromFile("data/tint.frag", sf::Shader::Fragment);
 
-    soundBucketTomatoes.loadFromFile("data/bucket_tomatoes.ogg");
-    soundBuy.loadFromFile("data/buy.ogg");
-    soundSell1.loadFromFile("data/sell1.ogg");
-    soundSell2.loadFromFile("data/sell2.ogg");
-    soundWater.loadFromFile("data/water.ogg");
-    soundBucketWater.loadFromFile("data/bucket_water.ogg");
-    soundJump1.loadFromFile("data/jump1.ogg");
-    soundJump2.loadFromFile("data/jump2.ogg");
-    soundLand.loadFromFile("data/land.ogg");
-    soundPikcupDrop.loadFromFile("data/pickup_drop.ogg");
-    soundDeath.loadFromFile("data/death.ogg");
+    soundBufferBucketTomatoes.loadFromFile("data/bucket_tomatoes.ogg");
+    soundBucketTomatoes.setBuffer(soundBufferBucketTomatoes);
+
+    soundBufferBuy.loadFromFile("data/buy.ogg");
+    soundBuy.setBuffer(soundBufferBuy);
+
+    soundBufferSell1.loadFromFile("data/sell1.ogg");
+    soundSell1.setBuffer(soundBufferSell1);
+
+    soundBufferSell2.loadFromFile("data/sell2.ogg");
+    soundSell2.setBuffer(soundBufferSell2);
+
+    soundBufferWater.loadFromFile("data/water.ogg");
+    soundWater.setBuffer(soundBufferWater);
+
+    soundBufferBucketWater.loadFromFile("data/bucket_water.ogg");
+    soundBucketWater.setBuffer(soundBufferBucketWater);
+
+    soundBufferJump1.loadFromFile("data/jump1.ogg");
+    soundJump1.setBuffer(soundBufferJump1);
+
+    soundBufferJump2.loadFromFile("data/jump2.ogg");
+    soundJump2.setBuffer(soundBufferJump2);
+
+    soundBufferLand.loadFromFile("data/land.ogg");
+    soundLand.setBuffer(soundBufferLand);
+
+    soundBufferPickupDrop.loadFromFile("data/pickup_drop.ogg");
+    soundPickupDrop.setBuffer(soundBufferPickupDrop);
+
+    soundBufferDeath.loadFromFile("data/death.ogg");
+    soundDeath.setBuffer(soundBufferDeath);
 }
