@@ -30,6 +30,7 @@ Plant::Plant(vec pos) : BoxEntity(pos, vec(16.0f, 16.0f)) {
     water = kInitialStats;
     light = kInitialStats;
     id = ids++;
+    mirror = GoodRandom::roll_flipcoin();
 }
 
 void Plant::Update(float dt) {
@@ -130,7 +131,11 @@ void Plant::Draw(sf::RenderTarget& window) {
       sprite.setColor(sf::Color(255, 255, 255, 255));
   }
   sprite.setTextureRect(texture_rect);
-  sprite.setPosition(pos - size * 0.5f);
+  sprite.setOrigin(size/2.0f);
+  if (mirror) {
+    sprite.setScale(-1,1);
+  }
+  sprite.setPosition(pos);
   window.draw(sprite);
 
   // Draw stats if they are changing

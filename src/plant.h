@@ -29,6 +29,7 @@ struct Plant : public BoxEntity, EntS<Plant> {
 
 	// number of tiles of height, including pot.
 	int height = 1;
+	bool mirror = false;
 
 	// Stats.
 	bool gets_water = false;
