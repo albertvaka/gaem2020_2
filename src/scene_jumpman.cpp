@@ -13,6 +13,7 @@ extern sf::Clock mainClock;
 const int kInitialMoney = 120;
 const int kMoneySellTomatoes = 25;
 const int kMoneyBuyPlant = 100; //Super const, actually
+const float kDoggoInterval = 60; //seconds
 
 JumpScene::JumpScene()
 	: map(TiledMap::map_size.x, TiledMap::map_size.y)
@@ -23,8 +24,6 @@ JumpScene::JumpScene()
 
 	Camera::SetZoom(Window::GAME_ZOOM);
 	Camera::SetCameraCenter(vec(Window::WINDOW_WIDTH / 4, Window::WINDOW_HEIGHT / 4));
-
-	new Doggo();
 
 }
 
@@ -38,6 +37,8 @@ void JumpScene::EnterScene()
 #endif
 
 	moneys = kInitialMoney;
+
+	timerDoggo = 30;
 
 	cistell.carrier = nullptr;
 	cistell.pos = vec(550,355);
@@ -91,6 +92,11 @@ void JumpScene::Update(float dt)
 	npc.Update(dt);
 	cistell.Update(dt);
 
+	timerDoggo += dt;
+	if (timerDoggo >= kDoggoInterval) {
+		timerDoggo = 0;
+		new Doggo();
+	}
 
 	if (player.IsCarrying(JumpMan::Holdable::Basket) && cistell.contents == Cistell::TOMATOES && Collide(player.bounds(), TiledAreas::truck)) {
 		contextActionButton = GameKeys::ACTIVATE;
