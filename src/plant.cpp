@@ -158,14 +158,17 @@ void Plant::Draw(sf::RenderTarget& window) {
     }
   }
   // Draw faces on the plant underneath.
-  if (alive) {
     // Background
-    sf::Sprite status_sprite;
-    status_sprite.setTexture(Assets::plantTexture);
-    status_sprite.setTextureRect({52,0,30,16});
-    status_sprite.setOrigin(32/2, 0);
-    status_sprite.setPosition(vec(pos.x, getBottomY()) + vec(0.0f, 5.0f));
-    window.draw(status_sprite);
+  sf::Sprite status_sprite;
+  status_sprite.setTexture(Assets::plantTexture);
+  status_sprite.setTextureRect({52,0,30,16});
+  if (!alive) {
+    status_sprite.setTextureRect({52,16,30,16});
+  }
+  status_sprite.setOrigin(32/2, 0);
+  status_sprite.setPosition(vec(pos.x, getBottomY()) + vec(0.0f, 5.0f));
+  window.draw(status_sprite);
+  if (alive) {
     // Sun face.
     int sun_happiness = std::min(int(light/10), 4);
     status_sprite.setTextureRect({94,52-12*sun_happiness,12,12});
