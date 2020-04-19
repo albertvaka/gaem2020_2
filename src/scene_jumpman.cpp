@@ -75,6 +75,12 @@ void JumpScene::Update(float dt)
 		else Assets::sceneMusic[current_music].play();
 	}
 
+	//Camera::MoveCameraWithArrows(50, dt);
+	if (Keyboard::IsKeyJustPressed(GameKeys::RESTART)) {
+		ExitScene();
+		EnterScene();
+	}
+
 	if (lost) {
 		rototext.Update(dt);
 		return;
@@ -104,13 +110,6 @@ void JumpScene::Update(float dt)
 			rototext.ShowMessage("A DOGGO DIED");
 		}
 	}
-
-	//Camera::MoveCameraWithArrows(50, dt);
-	if (Keyboard::IsKeyJustPressed(GameKeys::RESTART)) {
-		ExitScene();
-		EnterScene();
-	}
-	
 
 	Camera::ChangeZoomWithPlusAndMinus(20.f, dt);
 	//Debug::out << Camera::GetCameraCenter();
