@@ -58,7 +58,17 @@ struct Assets
 	static sf::Sound soundPickupDrop;
 	static sf::SoundBuffer soundBufferDeath;
 	static sf::Sound soundDeath;
-	
+
+	static sf::SoundBuffer soundBufferDoggo1;
+	static sf::Sound soundDoggo1;
+
+	static sf::SoundBuffer soundBufferDoggo2;
+	static sf::Sound soundDoggo2;
+
+	static sf::SoundBuffer soundBufferDoggo3;
+	static sf::Sound soundDoggo3;
+
+
 	static sf::Music sceneMusic[2];
 };
 

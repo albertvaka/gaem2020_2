@@ -48,6 +48,15 @@ sf::Sound Assets::soundPickupDrop;
 sf::SoundBuffer Assets::soundBufferDeath;
 sf::Sound Assets::soundDeath;
 
+sf::SoundBuffer Assets::soundBufferDoggo1;
+sf::Sound Assets::soundDoggo1;
+
+sf::SoundBuffer Assets::soundBufferDoggo2;
+sf::Sound Assets::soundDoggo2;
+
+sf::SoundBuffer Assets::soundBufferDoggo3;
+sf::Sound Assets::soundDoggo3;
+
 sf::Music Assets::sceneMusic[2];
 
 void Assets::LoadAll() {
@@ -86,6 +95,15 @@ void Assets::LoadAll() {
 
     soundBufferBucketTomatoes.loadFromFile("data/bucket_tomatoes.ogg");
     soundBucketTomatoes.setBuffer(soundBufferBucketTomatoes);
+
+    soundBufferDoggo1.loadFromFile("data/doggo1.ogg");
+    soundDoggo1.setBuffer(soundBufferDoggo1);
+
+    soundBufferDoggo2.loadFromFile("data/doggo2.ogg");
+    soundDoggo2.setBuffer(soundBufferDoggo2);
+
+    soundBufferDoggo3.loadFromFile("data/doggo3.ogg");
+    soundDoggo3.setBuffer(soundBufferDoggo3);
 
     soundBufferBuy.loadFromFile("data/buy.ogg");
     soundBuy.setBuffer(soundBufferBuy);
