@@ -29,6 +29,7 @@
     <ClInclude Include="imgui_sfml\imgui-SFML.h" />
     <ClInclude Include="imgui_sfml\imgui-SFML_export.h" />
     <ClInclude Include="src\cistell.h" />
+    <ClInclude Include="src\doggo.h" />
     <ClInclude Include="src\npc.h" />
     <ClInclude Include="src\plant.h" />
     <ClInclude Include="src\animation.h" />
@@ -39,7 +40,6 @@
     <ClInclude Include="src\collider.h" />
     <ClInclude Include="src\debug.h" />
     <ClInclude Include="src\entity.h" />
-    <ClInclude Include="src\extremity.h" />
     <ClInclude Include="src\input.h" />
     <ClInclude Include="src\jumpman.h" />
     <ClInclude Include="src\magic_enum.h" />

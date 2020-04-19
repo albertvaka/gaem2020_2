@@ -29,6 +29,9 @@ struct Assets
 	static sf::Sprite casaSprite;
 	static sf::Texture plantTexture;
 
+	static sf::Texture doggoTexture;
+	static sf::Sprite doggoSprite;
+
 	static sf::Font font;
 
 	static sf::Shader tintShader;

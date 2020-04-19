@@ -70,6 +70,10 @@ enum AnimationType
 	FOUNTAIN,
 	NPC_IDLE,
 	NPC_WALK,
+	DOGGO_IDLE,
+	DOGGO_LEFT,
+	DOGGO_RIGHT,
+	DOGGO_EAT,
 };
 
 

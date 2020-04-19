@@ -6,6 +6,7 @@
 #include "simplexnoise.h"
 #include "savestation.h"
 #include "debug.h"
+#include "doggo.h"
 
 extern sf::Clock mainClock;
 
@@ -22,6 +23,9 @@ JumpScene::JumpScene()
 
 	Camera::SetZoom(Window::GAME_ZOOM);
 	Camera::SetCameraCenter(vec(Window::WINDOW_WIDTH / 4, Window::WINDOW_HEIGHT / 4));
+
+	new Doggo();
+
 }
 
 void JumpScene::EnterScene() 
@@ -39,6 +43,8 @@ void JumpScene::EnterScene()
 	cistell.pos = vec(550,355);
 
 	npc.Reset();
+	
+	player.Carry(JumpMan::Holdable::None);
 
 	Assets::sceneMusic[current_music].stop();
 	Assets::sceneMusic[current_music].play();
@@ -61,6 +67,14 @@ void JumpScene::Update(float dt)
 		muted = !muted;
 		if (muted) Assets::sceneMusic[current_music].pause();
 		else Assets::sceneMusic[current_music].play();
+	}
+
+	if (Keyboard::IsKeyJustPressed(GameKeys::DEBUG_DOGGO)) {
+		new Doggo();
+	}
+	
+	for (Doggo* doggo : Doggo::getAll()) {
+		doggo->Update(dt);
 	}
 
 	//Camera::MoveCameraWithArrows(50, dt);
@@ -274,6 +288,10 @@ void JumpScene::Draw(sf::RenderTarget& window)
 	spr.setScale(1.f, 1.f);
 
 	npc.Draw(window);
+
+	for (Doggo* doggo : Doggo::getAll()) {
+		doggo->Draw(window);
+	}
 
 	for (auto* plant : Plant::getAll()) {
 		plant->Draw(window);

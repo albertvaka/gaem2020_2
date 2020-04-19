@@ -39,6 +39,9 @@ struct TiledMap
 struct TiledEntities
 {
 	static const sf::Vector2f spawn;
+	static const std::array<sf::Vector2f, 8> waypoint;
+	static const sf::Vector2f doggo_begin;
+	static const sf::Vector2f doggo_end;
 	
 };
 

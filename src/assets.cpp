@@ -18,6 +18,9 @@ sf::Sprite Assets::spritesSprite;
 sf::Texture Assets::npcTexture;
 sf::Sprite Assets::npcSprite;
 
+sf::Texture Assets::doggoTexture;
+sf::Sprite Assets::doggoSprite;
+
 sf::Font Assets::font;
 
 sf::Shader Assets::tintShader;
@@ -70,6 +73,10 @@ void Assets::LoadAll() {
 
     casaTexture.loadFromFile("data/bg.png");
     casaSprite.setTexture(casaTexture);
+
+    doggoTexture.loadFromFile("data/doggo.png");
+    doggoSprite.setTexture(doggoTexture);
+
 
     plantTexture.loadFromFile("data/plant.png");
 

@@ -25,6 +25,7 @@ enum GameKeys
 	DEBUG_FRAME_BY_FRAME, DEBUG_FRAME_BY_FRAME_NEXT,
 	DEBUG_MODE,
 	DEBUG_KILLALL,
+	DEBUG_DOGGO,
 	DEBUG_SET_PLANTS_AT_MAX_STATS,
 	DEBUG_GET_MONEY,
 	MUTE,
@@ -51,6 +52,7 @@ inline void RemapInput()
 	key_map[GameKeys::DEBUG_FRAME_BY_FRAME_NEXT] = sf::Keyboard::E;
 	key_map[GameKeys::DEBUG_MODE] = sf::Keyboard::F2;
 	key_map[GameKeys::DEBUG_KILLALL] = sf::Keyboard::F3;
+	key_map[GameKeys::DEBUG_DOGGO] = sf::Keyboard::Equal;
 	key_map[GameKeys::DEBUG_SET_PLANTS_AT_MAX_STATS] = sf::Keyboard::F8;
 	key_map[GameKeys::DEBUG_GET_MONEY] = sf::Keyboard::F6;
 	key_map[GameKeys::MUTE] = sf::Keyboard::M;

@@ -53,6 +53,21 @@ const std::array<sf::Rect<float>, 0> TiledMap::screens = {
 
 const sf::Vector2f TiledEntities::spawn = sf::Vector2f(288.0f, 239.0f);
 
+const std::array<sf::Vector2f, 8> TiledEntities::waypoint = {
+	sf::Vector2f(160.5f, 256.5f),
+	sf::Vector2f(320.182f, 255.818f),
+	sf::Vector2f(480.0f, 256.364f),
+	sf::Vector2f(592.364f, 160.182f),
+	sf::Vector2f(480.364f, 256.182f),
+	sf::Vector2f(255.818f, 256.0f),
+	sf::Vector2f(368.182f, 352.182f),
+	sf::Vector2f(544.182f, 352.364f),
+};
+
+const sf::Vector2f TiledEntities::doggo_begin = sf::Vector2f(-16.0f, 256.333f);
+
+const sf::Vector2f TiledEntities::doggo_end = sf::Vector2f(864.333f, 353.0f);
+
 
 
 const sf::Rect<float> TiledAreas::sun =sf::Rect<float>(236.5f,84.0f,379.5f,86.6818f);

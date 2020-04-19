@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.3" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="1" backgroundcolor="#371f2432" nextlayerid="16" nextobjectid="144">
+<map version="1.2" tiledversion="1.3.3" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="1" backgroundcolor="#371f2432" nextlayerid="16" nextobjectid="156">
  <editorsettings>
   <export target="." format="tmx"/>
  </editorsettings>
@@ -364,6 +364,16 @@
  </objectgroup>
  <objectgroup id="13" name="Entities">
   <object id="138" type="spawn" gid="767" x="288" y="239" width="16" height="16"/>
+  <object id="144" type="waypoint" gid="767" x="160.5" y="256.5" width="16" height="16"/>
+  <object id="146" type="waypoint" gid="767" x="320.182" y="255.818" width="16" height="16"/>
+  <object id="147" type="waypoint" gid="767" x="480" y="256.364" width="16" height="16"/>
+  <object id="148" type="waypoint" gid="767" x="592.364" y="160.182" width="16" height="16"/>
+  <object id="149" type="waypoint" gid="767" x="480.364" y="256.182" width="16" height="16"/>
+  <object id="150" type="waypoint" gid="767" x="255.818" y="256" width="16" height="16"/>
+  <object id="151" type="waypoint" gid="767" x="368.182" y="352.182" width="16" height="16"/>
+  <object id="152" type="waypoint" gid="767" x="544.182" y="352.364" width="16" height="16"/>
+  <object id="154" type="doggo_begin" gid="767" x="-16" y="256.333" width="16" height="16"/>
+  <object id="155" type="doggo_end" gid="767" x="864.333" y="353" width="16" height="16"/>
  </objectgroup>
  <objectgroup id="15" name="Screens"/>
 </map>
