@@ -144,7 +144,7 @@ void Plant::Draw(sf::RenderTarget& window) {
       sf::Sprite bubble_sprite;
       bubble_sprite.setTexture(Assets::plantTexture);
       bubble_sprite.setTextureRect({34,0,18,23});
-      bubble_sprite.setPosition(vec(pos.x, getBottomY()) + vec(10.0f, -30.0f));
+      bubble_sprite.setPosition(vec(pos) + vec(10.0f, -23.f));
       window.draw(bubble_sprite);
     }
   }
@@ -154,7 +154,7 @@ void Plant::Draw(sf::RenderTarget& window) {
       sf::Sprite bubble_sprite;
       bubble_sprite.setTexture(Assets::plantTexture);
       bubble_sprite.setTextureRect({34,23,18,23});
-      bubble_sprite.setPosition(vec(pos.x, getBottomY()) + vec(10.0f, -30.0f));
+      bubble_sprite.setPosition(vec(pos) + vec(10.0f, -23.0f));
       window.draw(bubble_sprite);
     }
   }
