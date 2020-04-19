@@ -142,7 +142,7 @@ void Plant::Draw(sf::RenderTarget& window) {
   static sf::Clock bubble_timer;
   bool draw_light_bubble = (int(bubble_timer.getElapsedTime().asSeconds()) % 2 == 0);
   bool draw_water_bubble = !draw_light_bubble;
-  if (gets_light) {
+  if (alive && gets_light) {
     //DrawStatBar(light, 0.0f, sf::Color::Yellow, window);
     if (draw_light_bubble) {
       sf::Sprite bubble_sprite;
@@ -152,7 +152,7 @@ void Plant::Draw(sf::RenderTarget& window) {
       window.draw(bubble_sprite);
     }
   }
-  if (time_left_water_bubble > 0.0f) {
+  if (alive && time_left_water_bubble > 0.0f) {
     //DrawStatBar(water, 7.0f, sf::Color::Cyan, window);
     if (draw_water_bubble) {
       sf::Sprite bubble_sprite;
