@@ -111,4 +111,5 @@ void Assets::LoadAll() {
     soundDeath.setBuffer(soundBufferDeath);
 
     sceneMusic.openFromFile("data/plantetes_gameplay.ogg");
+    sceneMusic.setVolume(60);
 }
