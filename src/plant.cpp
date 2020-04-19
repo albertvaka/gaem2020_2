@@ -22,6 +22,7 @@ const float kWaterLostPerSecond = 0.4f;
 const float kWaterAndLighThresholdToGrow = 40.0f;
 const float kWaterAndLighThresholdToDie = 5.0f;
 
+const float kWaterBubbleDuration = 2.0f;
 // TODO: Slow on purpose for testing.
 const sf::Time kGrowInterval = sf::seconds(5.0f);
 
@@ -82,6 +83,9 @@ void Plant::Update(float dt) {
     if (gets_water) {
         water = std::min(kMaxStats, water + kWaterIncreasePerWatering);
         gets_water = false;
+        time_left_water_bubble = kWaterBubbleDuration;
+    } else {
+      time_left_water_bubble -= dt;
     }
 
       if (light < kWaterAndLighThresholdToDie || water < kWaterAndLighThresholdToDie) {
@@ -135,7 +139,7 @@ void Plant::Draw(sf::RenderTarget& window) {
   bool draw_light_bubble = (int(bubble_timer.getElapsedTime().asSeconds()) % 2 == 0);
   bool draw_water_bubble = !draw_light_bubble;
   if (gets_light) {
-    DrawStatBar(light, 0.0f, sf::Color::Yellow, window);
+    //DrawStatBar(light, 0.0f, sf::Color::Yellow, window);
     if (draw_light_bubble) {
       sf::Sprite bubble_sprite;
       bubble_sprite.setTexture(Assets::plantTexture);
@@ -144,8 +148,8 @@ void Plant::Draw(sf::RenderTarget& window) {
       window.draw(bubble_sprite);
     }
   }
-  if (gets_water) {
-    DrawStatBar(water, 7.0f, sf::Color::Cyan, window);
+  if (time_left_water_bubble > 0.0f) {
+    //DrawStatBar(water, 7.0f, sf::Color::Cyan, window);
     if (draw_water_bubble) {
       sf::Sprite bubble_sprite;
       bubble_sprite.setTexture(Assets::plantTexture);

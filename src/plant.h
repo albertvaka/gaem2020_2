@@ -38,6 +38,8 @@ struct Plant : public BoxEntity, EntS<Plant> {
 	bool has_tomato = false;
 	vec tomato_offset[kNumTomatoes];
 
+	float time_left_water_bubble = 0;
+
 	sf::Clock grow_clock;
 
 private:
