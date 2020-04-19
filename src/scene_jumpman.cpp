@@ -89,16 +89,30 @@ void JumpScene::Update(float dt)
 
 		// Agafar tomàquets.
 		for (auto* plant : Plant::getAll()) {
-      if (Collide(plant->bounds(), cistell.bounds()) && cistell.IsBeingCarried() && (!cistell.contents) && plant->HasTomato()) {
-        // TODO: Treure això si la collita passa automaticament.
-        contextActionButton = GameKeys::ACTIVATE;
-        if (Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
-          plant->PickTomato();
-          cistell.contents = Cistell::TOMATOES;
+      if (Collide(plant->bounds(), cistell.bounds()) && cistell.IsBeingCarried()) {
+				// Agafar Tomàeuts.
+        if ((!cistell.contents) && plant->HasTomato()) {
+          // TODO: Treure això si la collita passa automaticament.
+          contextActionButton = GameKeys::ACTIVATE;
+          if (Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
+            plant->PickTomato();
+            cistell.contents = Cistell::TOMATOES;
+            can_drop = false;
+            // Agafar tomàquets té prioritat per sobre deixar anar la cistella.
+          }
         }
-				// Agafar tomàquets té prioritat per sobre deixar anar la cistella.
-				can_drop = false;
-      }
+				// Regar plantes.
+				else if (cistell.contents == Cistell::WATER) {
+					// TODO: Agafar la planta que necessiti més aigua?
+          contextActionButton = GameKeys::ACTIVATE;
+          if (Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
+            plant->SetHitByWater();
+            cistell.contents = Cistell::EMPTY;
+            can_drop = false;
+          }
+				}
+
+			}
 		}
 		// Agafar aigua.
 		if (Collide(TiledAreas::water, cistell.bounds()) && cistell.IsBeingCarried() && (!cistell.contents)) {
@@ -141,7 +155,6 @@ void JumpScene::Update(float dt)
 			}
 		}
     plant->SetHitByLight(Collide(plant->bounds(), TiledAreas::sun));
-    plant->SetHitByWater(Collide(plant->bounds(), TiledAreas::water));
 
 		plant->Update(dt);
 		// For Debug

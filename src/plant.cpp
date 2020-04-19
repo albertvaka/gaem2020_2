@@ -12,6 +12,8 @@ const float kMinWaterForTomato = 50.0f;
 // TODO: Slow on purpose for testing.
 const sf::Time kMinTimeForTomato = sf::seconds(5.0f);
 
+const sf::Time kWaterEffectDuration = sf::seconds(2.0f);
+
 Plant::Plant(vec pos) : BoxEntity(pos, vec(16.0f, 16.0f)) {}
 
 void Plant::Grow() {
@@ -36,6 +38,9 @@ void Plant::Update(float dt) {
   }
   if (gets_water) {
     water = std::min(kMaxStats, water + dt * kLightIncrease);
+    if (water_clock.getElapsedTime() >= kWaterEffectDuration) {
+      gets_water = false;
+    }
   }
 
   if (light > kMinLightForTomato&&
@@ -113,9 +118,10 @@ void Plant::Drop()
   carrier = nullptr;
 }
 
-void Plant::SetHitByWater(bool hit)
+void Plant::SetHitByWater()
 {
-  gets_water = hit;
+  gets_water = true;
+  water_clock.restart();
 }
 
 void Plant::SetHitByLight(bool hit)

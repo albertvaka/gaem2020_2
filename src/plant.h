@@ -19,7 +19,9 @@ struct Plant : public BoxEntity, EntS<Plant> {
   void PickTomato();
   void Grow();  // Exposed for debug.
 
-  void SetHitByWater(bool hit);
+  // Once hit by water, effect lasts for a bit.
+  void SetHitByWater();
+  // Is hit by light, until this is set to off.
   void SetHitByLight(bool hit);
 
 
@@ -30,6 +32,7 @@ struct Plant : public BoxEntity, EntS<Plant> {
   // Stats.
   bool gets_water = false;
   float water = 0;
+  sf::Clock water_clock;
   bool gets_light = false;
   float light = 0;
   bool has_tomato = false;
