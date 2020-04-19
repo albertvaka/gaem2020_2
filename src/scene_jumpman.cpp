@@ -240,10 +240,12 @@ void JumpScene::Draw(sf::RenderTarget& window)
 
 	//Fountain
 	sf::Sprite& spr = Assets::spritesSprite;
-	spr.setPosition(420, 338);
+	spr.setPosition(413, 329);
 	spr.setOrigin(0, 0);
+	spr.setScale(1.8f, 1.45f);
 	spr.setTextureRect(Animation::AnimFrame(FOUNTAIN, globalMillis));
 	window.draw(spr);
+	spr.setScale(1.f, 1.f);
 
 	npc.Draw(window);
 
