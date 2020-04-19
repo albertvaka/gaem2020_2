@@ -11,13 +11,13 @@ const vec kCarryPositionOffset = { 8.0f, -8.0f };
 const float kMaxStats = 50.0f;
 const float kInitialStats = 35.f;
 
-const float kLightIncreasePerSecond = 3.0f;
+const float kLightIncreasePerSecond = 4.5f;
 const float kWaterIncreasePerWatering = 30.0f;
 
-const float kAdditionalWaterLostWhenGetsLight = 0.5f;
+const float kAdditionalWaterLostWhenGetsLight = 1.0f;
 
-const float kLightLostPerSecond = 0.3f;
-const float kWaterLostPerSecond = 0.4f;
+const float kLightLostPerSecond = 0.25f;
+const float kWaterLostPerSecond = 0.5f;
 
 const float kWaterAndLighThresholdToGrow = 40.0f;
 
