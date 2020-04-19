@@ -9,7 +9,7 @@ const int kMaxHeight = 4;
 const vec kCarryPositionOffset = { 8.0f, -8.0f };
 
 const float kMaxStats = 50.0f;
-const float kInitialStats = 25.f;
+const float kInitialStats = 35.f;
 
 const float kLightIncreasePerSecond = 3.0f;
 const float kWaterIncreasePerWatering = 30.0f;
@@ -20,7 +20,6 @@ const float kLightLostPerSecond = 0.3f;
 const float kWaterLostPerSecond = 0.4f;
 
 const float kWaterAndLighThresholdToGrow = 40.0f;
-const float kWaterAndLighThresholdToDie = 5.0f;
 
 const float kWaterBubbleDuration = 3.0f;
 // TODO: Slow on purpose for testing.
@@ -88,7 +87,7 @@ void Plant::Update(float dt) {
       time_left_water_bubble -= dt;
     }
 
-      if (light < kWaterAndLighThresholdToDie || water < kWaterAndLighThresholdToDie) {
+      if (light < 0 || water < 0) {
           alive = false;
           if (height >= kMaxHeight) {
               height = kMaxHeight - 1;
