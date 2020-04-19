@@ -169,6 +169,41 @@ void JumpScene::Update(float dt)
 
 }
 
+// El sol
+// <-0s---------------------------------------------------13s------>15s
+// |<-----------Sol0--------->                             |
+// |                   <--------Sol1----------->           |
+// |                                    <--------Sol2------+------->
+// +--Sol2--->                                             |
+static const float SunLimits[4][2] = 
+{
+  {0.0f, 7.0f},
+  {4.0f, 11.0f},
+  {8.0f, 15.0f},
+  {-4.0f, 3.0f}, // Repetir Sol2 per al principi
+};
+
+static void DrawSun(sf::RenderTarget& window)
+{
+	static sf::Clock sun_clock;
+	auto time = sun_clock.getElapsedTime().asSeconds();
+  if (time > 13.0f) {
+    sun_clock.restart();
+  }
+	const float max_alpha = 128.0f;
+	for (int i = 0; i < 4; ++i) {
+		if (time >= SunLimits[i][0] && time <= SunLimits[i][1]) {
+			const float mid = (SunLimits[i][0] + SunLimits[i][1]) / 2.0f;
+			const float half_size = (SunLimits[i][1] - SunLimits[i][0])/2.0f;
+      float ratio = (time < mid ? (time-SunLimits[i][0])/half_size : 1.0f-(time-mid)/half_size);
+			assert(ratio >= 0 && ratio <= 1.0f);
+      auto& spr = Assets::sunSprites[std::min(i, 2)];
+			spr.setColor(sf::Color(255, 255, 255, 50*ratio));
+			window.draw(spr);
+		}
+	}
+}
+
 void JumpScene::Draw(sf::RenderTarget& window)
 {
 	window.clear(sf::Color(34, 32, 52));
@@ -202,6 +237,9 @@ void JumpScene::Draw(sf::RenderTarget& window)
 	spr.setOrigin(0, 0);
 	spr.setTextureRect(sf::IntRect(0, 8 * 16, 11 * 16 + 4, 72));
 	window.draw(spr);
+
+	// Sunny sun.
+  DrawSun(window);
 
 	if (contextActionButton != GameKeys::NONE) {
 		sf::Sprite& spr = Assets::hospitalSprite;

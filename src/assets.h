@@ -10,6 +10,9 @@ struct Assets
 	static sf::Texture hospitalTexture;
 	static sf::Sprite hospitalSprite;
 
+	static std::array<sf::Texture, 3> sunTextures;
+	static std::array<sf::Sprite, 3> sunSprites;
+
 	static sf::Texture marioTexture;
 	static sf::Sprite marioSprite;
 
