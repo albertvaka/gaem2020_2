@@ -57,6 +57,7 @@
     <ClInclude Include="src\scene_jumpman.h" />
     <ClInclude Include="src\scene_manager.h" />
     <ClInclude Include="src\selfregister.h" />
+    <ClInclude Include="src\stats_tracker.h" />
     <ClInclude Include="src\taca.h" />
     <ClInclude Include="src\tiledexport.h" />
     <ClInclude Include="src\tilemap.h" />
@@ -82,6 +83,7 @@
     <ClCompile Include="src\savestation.cpp" />
     <ClCompile Include="src\scene_jumpman.cpp" />
     <ClCompile Include="src\simplexnoise.cpp" />
+    <ClCompile Include="src\stats_tracker.cpp" />
     <ClCompile Include="src\tiledexport.cpp" />
     <ClCompile Include="src\tilemap.cpp" />
     <ClCompile Include="src\transition.cpp" />

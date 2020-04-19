@@ -7,6 +7,7 @@
 #include "mates.h"
 #include "debug.h"
 #include "assets.h"
+#include "stats_tracker.h"
 
 const float kVel = 50;
 const float kMenjarDecreasePerSecond = 1;
@@ -135,6 +136,7 @@ struct Doggo : BoxEntity, EntS<Doggo>
 	void Feed() {
 		menjar = kMaxMenjar;
 		menjar_bubble_timer = kMenjarBubbleDuration;
+		++StatsTracker::doggos_fed;
 	}
 
 };

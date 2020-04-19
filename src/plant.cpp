@@ -3,6 +3,7 @@
 #include "imgui.h"
 #include "debug.h"
 #include "input.h"
+#include "stats_tracker.h"
 
 const float kSecondsToGrow = 10.0f;
 const int kMaxHeight = 4;
@@ -90,6 +91,7 @@ void Plant::Update(float dt) {
 
       if (light < 0 || water < 0) {
           alive = false;
+          ++StatsTracker::plants_died;
           Assets::soundDeath.play();
           if (height >= kMaxHeight) {
               height = kMaxHeight - 1;
@@ -114,6 +116,7 @@ bool Plant::HasTomato() const {
 void Plant::PickTomato() {
   has_tomato = false;
   grow_clock.restart();
+  ++StatsTracker::tomatoes_collected;
 }
 
 void Plant::Draw(sf::RenderTarget& window) const {
@@ -229,6 +232,7 @@ void Plant::Drop()
 void Plant::SetHitByWater()
 {
   gets_water = true;
+  ++StatsTracker::plant_watered;
 }
 
 void Plant::SetHitByLight(bool hit)

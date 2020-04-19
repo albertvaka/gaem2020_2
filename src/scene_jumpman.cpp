@@ -7,6 +7,7 @@
 #include "savestation.h"
 #include "debug.h"
 #include "doggo.h"
+#include "stats_tracker.h"
 
 extern sf::Clock mainClock;
 
@@ -34,6 +35,7 @@ void JumpScene::EnterScene()
 
 	player.Reset();
 	player.pos = TiledEntities::spawn;
+	StatsTracker::Restart();
 
 #ifdef _DEBUG
 	new Plant(vec(8.0f, 8.0f) + TileMap::alignToTiles(310.0f, 260.0f));
@@ -121,11 +123,13 @@ void JumpScene::Update(float dt)
 		new Doggo();
 	}
 
+	// Sell tomatoes.
 	if (player.IsCarrying(JumpMan::Holdable::Basket) && cistell.contents == Cistell::TOMATOES && Collide(player.bounds(), TiledAreas::truck)) {
 		contextActionButton = GameKeys::ACTIVATE;
 		if (Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
 			Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
 			moneys += kMoneySellTomatoes;
+			++StatsTracker::tomatoes_delivered;
 			if (GoodRandom::roll_flipcoin()) {
 				Assets::soundSell1.play();
 			}
@@ -238,6 +242,7 @@ void JumpScene::Update(float dt)
 				moneyText.clear();
 				moneyTextTimer = 0.5f;
 				moneyText << sfe::Outline(sf::Color::Black, 1) << sf::Color::Red << "-$" << std::to_string(kMoneyBuyPlant);
+				++StatsTracker::doggos_fed;
 				player.Carry(new Plant(vec()));
 				Assets::soundBuy.play();
 			}

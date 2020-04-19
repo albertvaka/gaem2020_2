@@ -7,6 +7,7 @@
 #include "debug.h"
 #include "cistell.h"
 #include "plant.h"
+#include "stats_tracker.h"
 
 extern sf::Clock mainClock;
 
@@ -618,6 +619,7 @@ void JumpMan::Carry(Plant* plant)
 	holding = Holdable::Plant;
 	this->plant = plant;
 	plant->PickUpBy(this);
+	++StatsTracker::plant_pickedup;
 }
 
 void JumpMan::Carry(Cistell* cistell)
@@ -625,6 +627,7 @@ void JumpMan::Carry(Cistell* cistell)
 	holding = Holdable::Basket;
 	this->cistell = cistell;
 	cistell->PickUpBy(this);
+	++StatsTracker::basked_pickedup;
 }
 
 void JumpMan::DropItem()
