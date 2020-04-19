@@ -359,7 +359,7 @@
  <objectgroup id="12" name="Areas">
   <object id="140" type="sun" x="236.5" y="84" width="379.5" height="86.6818"/>
   <object id="141" type="water" x="389.75" y="321.417" width="78.6667" height="47.1667"/>
-  <object id="142" type="truck" x="689" y="257.417" width="173" height="114.167"/>
+  <object id="142" type="truck" x="651" y="257.417" width="211" height="114.167"/>
   <object id="143" type="npc" x="18.6668" y="177.417" width="106.666" height="88.5"/>
  </objectgroup>
  <objectgroup id="13" name="Entities">

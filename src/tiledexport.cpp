@@ -59,6 +59,6 @@ const sf::Vector2f TiledEntities::spawn = sf::Vector2f(288.0f, 239.0f);
 
 const sf::Rect<float> TiledAreas::sun =sf::Rect<float>(236.5f,84.0f,379.5f,86.6818f);
 const sf::Rect<float> TiledAreas::water =sf::Rect<float>(389.75f,321.417f,78.6667f,47.1667f);
-const sf::Rect<float> TiledAreas::truck =sf::Rect<float>(712.667f,257.417f,149.333f,106.5f);
+const sf::Rect<float> TiledAreas::truck =sf::Rect<float>(651.0f,257.417f,211.0f,114.167f);
 const sf::Rect<float> TiledAreas::npc =sf::Rect<float>(18.6668f,177.417f,106.666f,88.5f);
 

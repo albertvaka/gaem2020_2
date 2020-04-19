@@ -9,6 +9,8 @@
 #include "npc.h"
 #include "input.h"
 #include "cistell.h"
+#include "richtext.h"
+
 
 struct JumpScene : Scene {
 
@@ -18,6 +20,9 @@ struct JumpScene : Scene {
 	Cistell cistell;
 	int moneys = 150;
 	int cantbuyTimer = 0;
+
+	sfe::RichText moneyText;
+	float moneyTextTimer = 0;
 
 	GameKeys contextActionButton = GameKeys::NONE;
 

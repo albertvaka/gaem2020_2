@@ -6,35 +6,38 @@
 #include "simplexnoise.h"
 #include "savestation.h"
 #include "debug.h"
-#include "richtext.h"
 
 extern sf::Clock mainClock;
 
 JumpScene::JumpScene()
 	: map(TiledMap::map_size.x, TiledMap::map_size.y)
+	, moneyText(Assets::font)
 {
+	moneyText.setScale(0.45f, 0.45f);
+	map.LoadFromTiled();
 
+	Camera::SetZoom(Window::GAME_ZOOM);
+	Camera::SetCameraCenter(vec(Window::WINDOW_WIDTH / 4, Window::WINDOW_HEIGHT / 4));
 }
 
 void JumpScene::EnterScene() 
 {
 	player.Reset();
-
 	player.pos = TiledEntities::spawn;
-	map.LoadFromTiled();
 
 	//new Plant(vec(8.0f, 8.0f) + TileMap::alignToTiles(310.0f, 260.0f));
-
-	Camera::SetZoom(Window::GAME_ZOOM);
-	Camera::SetCameraCenter(vec(Window::WINDOW_WIDTH/4, Window::WINDOW_HEIGHT / 4));
 	
-	cistell.pos = TiledEntities::spawn;
+	cistell.carrier = nullptr;
+	cistell.pos = vec(550,355);
 
 	npc.timer = 0;
+
+	player.Carry(JumpMan::Holdable::None);
 }
 
 void JumpScene::ExitScene()
 {
+	Plant::deleteAll();
 }
 
 void JumpScene::Update(float dt)
@@ -54,6 +57,21 @@ void JumpScene::Update(float dt)
 
 	npc.Update(dt);
 	cistell.Update(dt);
+
+
+	if (player.IsCarrying(JumpMan::Holdable::Basket) && cistell.contents == Cistell::TOMATOES && Collide(player.bounds(), TiledAreas::truck)) {
+		contextActionButton = GameKeys::ACTIVATE;
+		if (Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
+			Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
+			moneys += 30;
+			moneyText.clear();
+			moneyTextTimer = 0.5f;
+			moneyText << sfe::Outline(sf::Color::Black, 1) << sf::Color::Green << "$30";
+			cistell.contents = Cistell::EMPTY;
+		}
+	}
+
+
 	bool player_had_empty_hands = player.CanCarry();
   if (Collide(cistell.bounds(), player.bounds())) {
 		bool can_carry = !cistell.IsBeingCarried() && player_had_empty_hands;
@@ -154,6 +172,9 @@ void JumpScene::Update(float dt)
 			Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
 			if (moneys >= 100) {
 				moneys -= 100;
+				moneyText.clear();
+				moneyTextTimer = 0.5f;
+				moneyText << sfe::Outline(sf::Color::Black, 1) << sf::Color::Red << "-$100";
 				(new Plant(vec()))->PickUpBy(&player);
 				player.Carry(JumpMan::Holdable::Plant);
 			}
@@ -163,8 +184,13 @@ void JumpScene::Update(float dt)
 		}
 	}
 
+	moneyTextTimer -= dt;
+
 	if (Keyboard::IsKeyJustPressed(GameKeys::DEBUG_GET_MONEY)) {
 		moneys += 100;
+		moneyText.clear();
+		moneyTextTimer = 0.5f;
+		moneyText << sfe::Outline(sf::Color::Black, 1) << sf::Color::Green << "$100";
 	}
 
 }
@@ -262,7 +288,17 @@ void JumpScene::Draw(sf::RenderTarget& window)
 	text << sfe::Outline(sf::Color::Black, 2) << "$" << std::to_string(moneys);
 	window.draw(text);
 
+	if (moneyTextTimer > 0) {
+		moneyText.setPosition(player.bounds().Center() - vec(moneyText.getLocalBounds().width/4, player.bounds().height/2 + moneyText.getLocalBounds().height - 35*moneyTextTimer));
+		window.draw(moneyText);
+	}
+	
 	if (Debug::Draw) {
+		Bounds(TiledAreas::sun).Draw(window);
+		Bounds(TiledAreas::npc).Draw(window);
+		Bounds(TiledAreas::truck).Draw(window);
+		Bounds(TiledAreas::water).Draw(window);
+
 		player.bounds().Draw(window);
 		for (const auto& plant : Plant::getAll()) {
 			plant->bounds().Draw(window);
