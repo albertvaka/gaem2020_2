@@ -97,9 +97,11 @@ void Assets::LoadAll() {
 
     soundBufferJump1.loadFromFile("data/jump1.ogg");
     soundJump1.setBuffer(soundBufferJump1);
+    soundJump1.setVolume(50);
 
     soundBufferJump2.loadFromFile("data/jump2.ogg");
     soundJump2.setBuffer(soundBufferJump2);
+    soundJump2.setVolume(50);
 
     soundBufferLand.loadFromFile("data/land.ogg");
     soundLand.setBuffer(soundBufferLand);
