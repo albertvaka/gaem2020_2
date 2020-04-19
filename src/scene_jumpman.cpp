@@ -25,7 +25,9 @@ void JumpScene::EnterScene()
 	player.Reset();
 	player.pos = TiledEntities::spawn;
 
-	//new Plant(vec(8.0f, 8.0f) + TileMap::alignToTiles(310.0f, 260.0f));
+#ifdef _DEBUG
+	new Plant(vec(8.0f, 8.0f) + TileMap::alignToTiles(310.0f, 260.0f));
+#endif
 
 	moneys = 150;
 
