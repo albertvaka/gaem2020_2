@@ -375,7 +375,7 @@ static void _ProcessWindowEvents()
             Mouse::scrollWheel += sfmlevent.mouseWheelScroll.delta;
             break;
         case sf::Event::Resized: //To disable sfml's automatic scaling
-        {
+        /*{
             // GameView: scale from center
             vec currentCenter = Camera::gameView.getCenter();
             Camera::gameView.setSize(sf::Vector2f(Window::window->getSize()));
@@ -389,7 +389,7 @@ static void _ProcessWindowEvents()
             Camera::guiView.setSize(newSize);
             Camera::guiView.zoom(1.f / Window::GUI_ZOOM);
             Camera::guiView.setCenter(vec(Camera::guiView.getCenter()) + (newSize-oldSize)/(2*Window::GUI_ZOOM));
-        }
+        }*/
         break;
         default:
             break;
