@@ -129,11 +129,27 @@ void Plant::Draw(sf::RenderTarget& window) {
   window.draw(sprite);
 
   // Draw stats if they are changing
+  static sf::Clock bubble_timer;
+  bool draw_bubble = (int(bubble_timer.getElapsedTime().asSeconds()) % 2 == 0);
   if (gets_light) {
     DrawStatBar(light, 0.0f, sf::Color::Yellow, window);
+    if (draw_bubble) {
+      sf::Sprite bubble_sprite;
+      bubble_sprite.setTexture(Assets::plantTexture);
+      bubble_sprite.setTextureRect({34,0,18,23});
+      bubble_sprite.setPosition(vec(pos.x, getBottomY()) + vec(10.0f, -30.0f));
+      window.draw(bubble_sprite);
+    }
   }
   if (gets_water) {
     DrawStatBar(water, 7.0f, sf::Color::Cyan, window);
+    if (draw_bubble) {
+      sf::Sprite bubble_sprite;
+      bubble_sprite.setTexture(Assets::plantTexture);
+      bubble_sprite.setTextureRect({34,23,18,23});
+      bubble_sprite.setPosition(vec(pos.x, getBottomY()) + vec(10.0f, -30.0f));
+      window.draw(bubble_sprite);
+    }
   }
 
 #ifdef _DEBUG
