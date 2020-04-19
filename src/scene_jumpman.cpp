@@ -40,7 +40,6 @@ void JumpScene::EnterScene()
 
 	npc.Reset();
 
-	player.Carry(JumpMan::Holdable::None);
 	Assets::sceneMusic[current_music].stop();
 	Assets::sceneMusic[current_music].play();
 }
@@ -105,47 +104,47 @@ void JumpScene::Update(float dt)
 		bool can_carry = !cistell.IsBeingCarried() && player_had_empty_hands;
 		bool can_drop = cistell.IsCarriedBy(&player) && player.grounded;
 
-		// Agafar tomàquets.
-		for (auto* plant : Plant::getAll()) {
+    // Agafar tomàquets.
+    for (auto* plant : Plant::getAll()) {
       if (Collide(plant->bounds(), cistell.bounds()) && cistell.IsBeingCarried()) {
-				// Agafar Tomàeuts.
+        // Agafar Tomàeuts.
         if ((!cistell.contents) && plant->HasTomato()) {
           // TODO: Treure això si la collita passa automaticament.
           contextActionButton = GameKeys::ACTIVATE;
           if (Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
-			  Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
+            Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
             plant->PickTomato();
             cistell.contents = Cistell::TOMATOES;
-			Assets::soundBucketTomatoes.play();
+            Assets::soundBucketTomatoes.play();
             can_drop = false;
             // Agafar tomàquets té prioritat per sobre deixar anar la cistella.
           }
         }
-				// Regar plantes.
-				else if (cistell.contents == Cistell::WATER) {
-					// TODO: Agafar la planta que necessiti més aigua?
+        // Regar plantes.
+        else if (cistell.contents == Cistell::WATER) {
+          // TODO: Agafar la planta que necessiti més aigua?
           contextActionButton = GameKeys::ACTIVATE;
           if (Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
-			  Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
+            Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
             plant->SetHitByWater();
             cistell.contents = Cistell::EMPTY;
-			Assets::soundWater.play();
+            Assets::soundWater.play();
             can_drop = false;
           }
-				}
+        }
 
-			}
-		}
-		// Agafar aigua.
-		if (Collide(TiledAreas::water, cistell.bounds()) && cistell.IsBeingCarried() && (!cistell.contents)) {
-			contextActionButton = GameKeys::ACTIVATE;
-			if (Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
-				Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
-				cistell.contents = Cistell::WATER;
-				Assets::soundBucketWater.play();
-			}
-			can_drop = false;
-		}
+      }
+    }
+    // Agafar aigua.
+    if (Collide(TiledAreas::water, cistell.bounds()) && cistell.IsBeingCarried() && (!cistell.contents)) {
+      contextActionButton = GameKeys::ACTIVATE;
+      if (Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
+        Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
+        cistell.contents = Cistell::WATER;
+        Assets::soundBucketWater.play();
+      }
+      can_drop = false;
+    }
 
 		if (can_carry) {
 			contextActionButton = GameKeys::ACTIVATE;
@@ -153,13 +152,11 @@ void JumpScene::Update(float dt)
 		if (Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
 			if (can_drop) {
 				Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
-				cistell.Drop();
-				player.Carry(JumpMan::Holdable::None);
+				player.DropItem();
 				Assets::soundPickupDrop.play();
 			} else if (can_carry) {
 				Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
-				cistell.PickUpBy(&player);
-				player.Carry(JumpMan::Holdable::Basket);
+				player.Carry(&cistell);
 				Assets::soundPickupDrop.play();
 			}
 		}
@@ -175,13 +172,11 @@ void JumpScene::Update(float dt)
 			if (Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
 				if (can_drop) {
 					Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
-					plant->Drop();
-					player.Carry(JumpMan::Holdable::None);
+					player.DropItem();
 					Assets::soundPickupDrop.play();
 				} else if (can_carry) {
 					Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
-					plant->PickUpBy(&player);
-					player.Carry(JumpMan::Holdable::Plant);
+					player.Carry(plant);
 					Assets::soundPickupDrop.play();
 				}
 			}
@@ -202,8 +197,7 @@ void JumpScene::Update(float dt)
 				moneyText.clear();
 				moneyTextTimer = 0.5f;
 				moneyText << sfe::Outline(sf::Color::Black, 1) << sf::Color::Red << "-$" << std::to_string(kMoneyBuyPlant);
-				(new Plant(vec()))->PickUpBy(&player);
-				player.Carry(JumpMan::Holdable::Plant);
+				player.Carry(new Plant(vec()));
 				Assets::soundBuy.play();
 			}
 			else {

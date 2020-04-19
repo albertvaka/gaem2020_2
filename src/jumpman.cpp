@@ -5,6 +5,8 @@
 #include "bullet.h"
 #include "assets.h"
 #include "debug.h"
+#include "cistell.h"
+#include "plant.h"
 
 extern sf::Clock mainClock;
 
@@ -30,7 +32,9 @@ const float timeCrouchedToJumpDownOneWayTile = 0.2f;
 
 // limits
 const vec vel_max(220, 200);
-const vec vel_max_carrying(110, 80);
+const vec vel_max_plant(110, 80);
+const vec vel_max_water(150, 140);
+const vec vel_max_tomato(180, 170);
 
 // bfg
 const float bulletVel = 400.f;
@@ -247,7 +251,12 @@ grounded_exit:
 	vel = vel + acc * dt;
 
 	//Clamp vel
-	const auto& limit = (holding == Holdable::Plant ? vel_max_carrying : vel_max);
+	vec limit = vel_max;
+	if (holding == Holdable::Plant) limit = vel_max_plant;
+	if (holding == Holdable::Basket) {
+		if (cistell->contents == Cistell::WATER) limit = vel_max_water;
+		if (cistell->contents == Cistell::TOMATOES) limit = vel_max_water;
+	}
 	if (vel.x > limit.x) vel.x = limit.x;
 	if (vel.x < -limit.x) vel.x = -limit.x;
 	if (vel.y < -limit.y) vel.y = -limit.y;
@@ -602,4 +611,31 @@ inline void JumpMan::DoPolvitoRun(float dt, bool toTheLeft, bool doTheExtraPolvi
 		polvito.AddParticles(2);
 	}
 	polvito.Spawn(dt);
+}
+
+void JumpMan::Carry(Plant* plant)
+{
+	holding = Holdable::Plant;
+	this->plant = plant;
+	plant->PickUpBy(this);
+}
+
+void JumpMan::Carry(Cistell* cistell)
+{
+	holding = Holdable::Basket;
+	this->cistell = cistell;
+	cistell->PickUpBy(this);
+}
+
+void JumpMan::DropItem()
+{
+	assert(holding != Holdable::None);
+	if (holding == Holdable::Plant) {
+		plant->Drop();
+		plant = nullptr;
+	} else {
+		cistell->Drop();
+		cistell = nullptr;
+	}
+	holding = Holdable::None;
 }

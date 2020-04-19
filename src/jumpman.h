@@ -8,6 +8,9 @@
 #include "animation.h"
 #include "singleinstance.h"
 
+struct Cistell;
+struct Plant;
+
 struct JumpMan : Entity, SingleInstance<JumpMan>
 {
     JumpMan();
@@ -21,6 +24,9 @@ struct JumpMan : Entity, SingleInstance<JumpMan>
         crouchedTime = 0.0f;
         onWall = ONWALL_NO;
         dead = false;
+        if (holding != Holdable::None) {
+          DropItem();
+        }
     }
 
     Bounds bounds() const {
@@ -61,12 +67,15 @@ struct JumpMan : Entity, SingleInstance<JumpMan>
       None,
       Plant,
       Basket,
-      Water,
     };
+    Cistell* cistell = nullptr;
+    Plant* plant = nullptr;
     Holdable holding = Holdable::None;
     bool CanCarry() const { return holding == Holdable::None; }
     bool IsCarrying(Holdable holdable) const { return holding == holdable; } 
-    void Carry(Holdable holdable) { holding = holdable; }
+    void Carry(Plant* plant);
+    void Carry(Cistell* cistell);
+    void DropItem();
 
 
 };
