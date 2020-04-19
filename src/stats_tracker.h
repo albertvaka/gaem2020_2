@@ -16,6 +16,8 @@ struct StatsTracker {
     plant_watered = 0;
     plant_pickedup = 0;
     basked_pickedup = 0;
+    jumps_done = 0;
+    walljumps_done = 0;
     time_played = 0;
   }
 
@@ -49,5 +51,7 @@ struct StatsTracker {
   static int plants_died;
   static int plant_pickedup;
   static int basked_pickedup;
+  static int jumps_done;
+  static int walljumps_done;
   static sf::Clock time_played_clock;
 };

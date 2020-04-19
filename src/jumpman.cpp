@@ -140,6 +140,8 @@ grounded_exit:
 			else {
 				Assets::soundJump2.play();
 			}
+			StatsTracker::jumps_done += 1;
+			StatsTracker::walljumps_done += 1;
 			DoPolvitoWallJump();
 		}
 		else {
@@ -151,6 +153,7 @@ grounded_exit:
 				else {
 					Assets::soundJump2.play();
 				}
+				StatsTracker::jumps_done += 1;
 				DoPolvitoJump();
 				grounded = false;
 			}
