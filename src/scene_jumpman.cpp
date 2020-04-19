@@ -13,7 +13,8 @@ extern sf::Clock mainClock;
 const int kInitialMoney = 120;
 const int kMoneySellTomatoes = 25;
 const int kMoneyBuyPlant = 100; //Super const, actually
-const float kDoggoInterval = 60; //seconds
+const float kDoggoInterval = 90; //seconds
+const float kinitialDoggoInterval = 30; //seconds
 
 JumpScene::JumpScene()
 	: map(TiledMap::map_size.x, TiledMap::map_size.y)
@@ -38,7 +39,7 @@ void JumpScene::EnterScene()
 
 	moneys = kInitialMoney;
 
-	timerDoggo = 30;
+	timerDoggo = kDoggoInterval - kinitialDoggoInterval;
 
 	cistell.carrier = nullptr;
 	cistell.pos = vec(550,355);
