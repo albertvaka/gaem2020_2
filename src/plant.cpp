@@ -7,14 +7,25 @@ const vec kCarryPositionOffset = { 8.0f, -8.0f };
 const float kMaxStats = 100.0f;
 const float kLightIncrease = 10.0f;
 
+const float kLightLostPerSecond = 1.0f;
+const float kWaterLostPerSecond = 1.0f;
+
+const float kAdditionalWaterLostWhenGetsLight = 1.f;
+
 const float kMinLightForTomato = 50.0f;
 const float kMinWaterForTomato = 50.0f;
 // TODO: Slow on purpose for testing.
 const sf::Time kMinTimeForTomato = sf::seconds(5.0f);
 
+const float kWaterToDie = 5.0f;
+const float kSunToDie = 5.0f;
+
 const sf::Time kWaterEffectDuration = sf::seconds(2.0f);
 
-Plant::Plant(vec pos) : BoxEntity(pos, vec(16.0f, 16.0f)) {}
+Plant::Plant(vec pos) : BoxEntity(pos, vec(16.0f, 16.0f)) {
+    water = kMaxStats/2;
+    light = kMaxStats / 2;
+}
 
 void Plant::Grow() {
   if (height >= kMaxHeight) return;
@@ -25,22 +36,39 @@ void Plant::Grow() {
 }
 
 void Plant::Update(float dt) {
+    water -= kWaterLostPerSecond * dt;
+    light -= kLightLostPerSecond * dt;
+
   if (carrier != nullptr) {
     pos = carrier->pos;
     pos.x += (carrier->lookingLeft ? -1 : 1) * kCarryPositionOffset.x;
     pos.y += kCarryPositionOffset.y - 8.0f * height;
   }
+
+
+  if (!alive) return;
+
   if (height < kMaxHeight && grow_clock.getElapsedTime().asSeconds() > kSecondsToGrow) {
     Grow();
   }
   if (gets_light) {
     light = std::min(kMaxStats, light + dt * kLightIncrease);
+    water -= kAdditionalWaterLostWhenGetsLight * dt;
   }
   if (gets_water) {
     water = std::min(kMaxStats, water + dt * kLightIncrease);
     if (water_clock.getElapsedTime() >= kWaterEffectDuration) {
       gets_water = false;
     }
+  }
+
+
+  if (light < kSunToDie || water < kWaterToDie) {
+      alive = false;
+      
+      if (height >= kMaxHeight) {
+          height = kMaxHeight - 1;
+      }
   }
 
   if (light > kMinLightForTomato&&
@@ -68,7 +96,7 @@ void Plant::PickTomato() {
 
 void Plant::Draw(sf::RenderTarget& window) const {
   // Draw tomato
-  if (has_tomato) {
+  if (alive && has_tomato) {
     sf::Sprite sprite;
     sprite.setTexture(Assets::plantTexture);
     sf::IntRect texture_rect(22, 54, 10, 10);
@@ -83,6 +111,12 @@ void Plant::Draw(sf::RenderTarget& window) const {
   sf::Sprite sprite;
   sprite.setTexture(Assets::plantTexture);
   sf::IntRect texture_rect(0, 64 - 16 * height, 16, 16 * height);
+  if (!alive) {
+      sprite.setColor(sf::Color(128,128,128,255));
+  }
+  else {
+      sprite.setColor(sf::Color(255, 255, 255, 255));
+  }
   sprite.setTextureRect(texture_rect);
   sprite.setPosition(pos - size * 0.5f);
   window.draw(sprite);
