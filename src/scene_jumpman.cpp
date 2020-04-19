@@ -37,8 +37,8 @@ void JumpScene::EnterScene()
 	npc.Reset();
 
 	player.Carry(JumpMan::Holdable::None);
-	Assets::sceneMusic.stop();
-	Assets::sceneMusic.play();
+	Assets::sceneMusic[current_music].stop();
+	Assets::sceneMusic[current_music].play();
 }
 
 void JumpScene::ExitScene()
@@ -48,11 +48,16 @@ void JumpScene::ExitScene()
 
 void JumpScene::Update(float dt)
 {
+	if (Keyboard::IsKeyJustPressed(GameKeys::NEXT_TRACK)) {
+		Assets::sceneMusic[current_music].stop();
+		current_music = 1-current_music;
+		Assets::sceneMusic[current_music].play();
+	}
 	if (Keyboard::IsKeyJustPressed(GameKeys::MUTE)) {
 		bool static muted = false;
 		muted = !muted;
-		if (muted) Assets::sceneMusic.pause();
-		else Assets::sceneMusic.play();
+		if (muted) Assets::sceneMusic[current_music].pause();
+		else Assets::sceneMusic[current_music].play();
 	}
 
 	//Camera::MoveCameraWithArrows(50, dt);

@@ -56,6 +56,6 @@ struct Assets
 	static sf::SoundBuffer soundBufferDeath;
 	static sf::Sound soundDeath;
 	
-	static sf::Music sceneMusic;
+	static sf::Music sceneMusic[2];
 };
 

@@ -45,7 +45,7 @@ sf::Sound Assets::soundPickupDrop;
 sf::SoundBuffer Assets::soundBufferDeath;
 sf::Sound Assets::soundDeath;
 
-sf::Music Assets::sceneMusic;
+sf::Music Assets::sceneMusic[2];
 
 void Assets::LoadAll() {
 
@@ -112,7 +112,10 @@ void Assets::LoadAll() {
     soundBufferDeath.loadFromFile("data/death.ogg");
     soundDeath.setBuffer(soundBufferDeath);
 
-    sceneMusic.openFromFile("data/plantetes_gameplay.ogg");
-    sceneMusic.setVolume(60);
-    sceneMusic.setLoop(true);
+    sceneMusic[0].openFromFile("data/plantetes_gameplay.ogg");
+    sceneMusic[0].setVolume(60);
+    sceneMusic[0].setLoop(true);
+    sceneMusic[1].openFromFile("data/plantetes_menu.ogg");
+    sceneMusic[1].setVolume(60);
+    sceneMusic[1].setLoop(true);
 }
