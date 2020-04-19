@@ -16,8 +16,8 @@ const float kWaterIncreasePerWatering = 30.0f;
 
 const float kAdditionalWaterLostWhenGetsLight = 0.5f;
 
-const float kLightLostPerSecond = 0.5f;
-const float kWaterLostPerSecond = 0.5f;
+const float kLightLostPerSecond = 0.3f;
+const float kWaterLostPerSecond = 0.4f;
 
 const float kWaterAndLighThresholdToGrow = 40.0f;
 const float kWaterAndLighThresholdToDie = 5.0f;
