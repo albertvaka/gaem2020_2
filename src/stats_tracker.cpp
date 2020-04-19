@@ -12,3 +12,5 @@ int StatsTracker::jumps_done;
 int StatsTracker::walljumps_done;
 float StatsTracker::time_played;
 sf::Clock StatsTracker::time_played_clock;
+sfe::RichText StatsTracker::statsText;
+sf::RectangleShape StatsTracker::statsRect;

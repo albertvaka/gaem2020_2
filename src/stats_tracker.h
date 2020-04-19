@@ -5,6 +5,7 @@
 #include "input.h"
 #include "richtext.h"
 #include "assets.h"
+#include "richtext.h"
 
 struct StatsTracker {
   static void Restart() {
@@ -21,10 +22,17 @@ struct StatsTracker {
     time_played = 0;
   }
 
-  static sfe::RichText DumpStats() {
+  static void DrawStats(sf::RenderTarget& window) {
+    window.draw(statsRect);
+    window.draw(statsText);
+  }
+
+  static void Stop() {
+    time_played = time_played_clock.getElapsedTime().asSeconds();
+    time_played_clock.restart();
     sfe::RichText text(Assets::font);
     text.setScale(0.5f, 0.5f);
-    text << sf::Color::Black << "Stats:" << "\n"
+    text << sf::Color::Black << "Stats:" << "\n\n"
       << "Time alive: " << std::to_string(time_played) << "\n"
       << "Tomatoes sold: " << std::to_string(tomatoes_delivered) << "\n"
       << "Tomatoes collected: " << std::to_string(tomatoes_collected) << "\n"
@@ -34,14 +42,17 @@ struct StatsTracker {
       << "Plants picked up: " << std::to_string(plant_pickedup) << "\n"
       << "Baskets picked up: " << std::to_string(basked_pickedup) << "\n"
       << "Jumps done: " << std::to_string(jumps_done) << "\n"
-      << "Walljumps done: " << std::to_string(walljumps_done) << "\n";
+      << "Walljumps done: " << std::to_string(walljumps_done) << "\n"
+      << "\nPress ESC to play again!\n";
     text.setPosition(vec(0.33f* Window::WINDOW_WIDTH, 0.5f* Window::WINDOW_HEIGHT)/(Window::GAME_ZOOM));
-    return text;
-  }
-
-  static void Stop() {
-    time_played = time_played_clock.getElapsedTime().asSeconds();
-    time_played_clock.restart();
+    sf::FloatRect rect = text.getGlobalBounds();
+    statsText = text;
+    const float margin = 10.0f;
+    statsRect = sf::RectangleShape({rect.width+2*margin, rect.height+2*margin});
+    statsRect.setPosition({rect.left-margin, rect.top-margin});
+		statsRect.setFillColor(sf::Color(255, 255, 200, 128));
+		statsRect.setOutlineColor(sf::Color::Black);
+		statsRect.setOutlineThickness(4.0f);
   }
 
   static float time_played;
@@ -56,4 +67,6 @@ struct StatsTracker {
   static int jumps_done;
   static int walljumps_done;
   static sf::Clock time_played_clock;
+  static sfe::RichText statsText;
+  static sf::RectangleShape statsRect;
 };
