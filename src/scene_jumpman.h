@@ -17,6 +17,7 @@ struct JumpScene : Scene {
 	PartSys bulletPartSys;
 	Npc npc;
 	Cistell cistell;
+	int moneys = 0;
 
 	GameKeys contextActionButton = GameKeys::NONE;
 

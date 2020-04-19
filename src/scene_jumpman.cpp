@@ -7,6 +7,7 @@
 #include "simplexnoise.h"
 #include "savestation.h"
 #include "debug.h"
+#include "richtext.h"
 
 extern sf::Clock mainClock;
 
@@ -222,6 +223,12 @@ void JumpScene::Draw(sf::RenderTarget& window)
 		spr.setTextureRect(Animation::AnimFrame(anim, mainClock.getElapsedTime().asMilliseconds()));
 		window.draw(spr);
 	}
+
+	sfe::RichText text(Assets::font);
+	text.setPosition(10, 10);
+	text.setScale(0.8f, 0.8f);
+	text << sfe::Outline(sf::Color::Black, 2) << sf::Color::Cyan << "$" << std::to_string(moneys);
+	window.draw(text);
 
 	if (Debug::Draw) {
 		player.bounds().Draw(window);

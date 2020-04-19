@@ -40,7 +40,7 @@ int main()
 #ifdef _FPS_COUNTER
 	sf::Text txt_fps;
 	txt_fps.setFont(Assets::font);
-	txt_fps.setPosition(10, 10);
+	txt_fps.setPosition(Window::WINDOW_WIDTH - 100, 10);
 	sf::Clock fpsClock;
 	int fps_counter = 0;
 	bool slowDown = false;
