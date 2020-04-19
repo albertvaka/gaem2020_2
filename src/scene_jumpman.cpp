@@ -256,6 +256,18 @@ void JumpScene::Draw(sf::RenderTarget& window)
 	cistell.Draw(window);
 	player.Draw(window);
 
+
+	if (cistell.IsBeingCarried()) {
+		cistell.Draw(window);
+	}
+	for (auto* plant : Plant::getAll()) {
+		if (plant->IsBeingCarried()) {
+			plant->Draw(window);
+			break;
+		}
+	}
+
+
 	//Truck
 	spr.setPosition(702, 297);
 	spr.setOrigin(0, 0);
