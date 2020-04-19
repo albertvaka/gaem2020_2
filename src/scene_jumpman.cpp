@@ -9,6 +9,10 @@
 
 extern sf::Clock mainClock;
 
+const int kInitialMoney = 120;
+const int kMoneySellTomatoes = 25;
+const int kMoneyBuyPlant = 100; //Super const, actually
+
 JumpScene::JumpScene()
 	: map(TiledMap::map_size.x, TiledMap::map_size.y)
 	, moneyText(Assets::font)
@@ -29,7 +33,7 @@ void JumpScene::EnterScene()
 	new Plant(vec(8.0f, 8.0f) + TileMap::alignToTiles(310.0f, 260.0f));
 #endif
 
-	moneys = 150;
+	moneys = kInitialMoney;
 
 	cistell.carrier = nullptr;
 	cistell.pos = vec(550,355);
@@ -81,7 +85,7 @@ void JumpScene::Update(float dt)
 		contextActionButton = GameKeys::ACTIVATE;
 		if (Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
 			Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
-			moneys += 30;
+			moneys += kMoneySellTomatoes;
 			if (GoodRandom::roll_flipcoin()) {
 				Assets::soundSell1.play();
 			}
@@ -90,7 +94,7 @@ void JumpScene::Update(float dt)
 			}
 			moneyText.clear();
 			moneyTextTimer = 0.5f;
-			moneyText << sfe::Outline(sf::Color::Black, 1) << sf::Color::Green << "$30";
+			moneyText << sfe::Outline(sf::Color::Black, 1) << sf::Color::Green << "$" << std::to_string(kMoneySellTomatoes);
 			cistell.contents = Cistell::EMPTY;
 		}
 	}
@@ -193,11 +197,11 @@ void JumpScene::Update(float dt)
 		contextActionButton = GameKeys::ACTIVATE;
 		if (Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
 			Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
-			if (moneys >= 100) {
-				moneys -= 100;
+			if (moneys >= kMoneyBuyPlant) {
+				moneys -= kMoneyBuyPlant;
 				moneyText.clear();
 				moneyTextTimer = 0.5f;
-				moneyText << sfe::Outline(sf::Color::Black, 1) << sf::Color::Red << "-$100";
+				moneyText << sfe::Outline(sf::Color::Black, 1) << sf::Color::Red << "-$" << std::to_string(kMoneyBuyPlant);
 				(new Plant(vec()))->PickUpBy(&player);
 				player.Carry(JumpMan::Holdable::Plant);
 				Assets::soundBuy.play();
