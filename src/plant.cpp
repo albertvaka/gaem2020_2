@@ -80,7 +80,7 @@ void Plant::Update(float dt) {
         water -= kAdditionalWaterLostWhenGetsLight * dt;
     }
     if (gets_water) {
-        water = std::min(kMaxStats, water + dt * kWaterIncreasePerWatering);
+        water = std::min(kMaxStats, water + kWaterIncreasePerWatering);
         gets_water = false;
     }
 
