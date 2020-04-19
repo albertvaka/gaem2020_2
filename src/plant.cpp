@@ -50,7 +50,9 @@ void Plant::Update(float dt) {
     if (tomato_timer >= kMinTimeForTomato) {
       has_tomato = true;
       // Random offset.
-      tomato_offset = vec(Random::rollf(-8.0f, 8.0f), Random::rollf(-8.0f, 8.0f));
+      for (int i = 0; i < kNumTomatoes; ++i) {
+        tomato_offset[i] = vec(Random::rollf(-8.0f, 8.0f), Random::rollf(-16.0f, 16.0f));
+      }
     }
   }
 }
@@ -72,8 +74,10 @@ void Plant::Draw(sf::RenderTarget& window) const {
     sf::IntRect texture_rect(22, 54, 10, 10);
     sprite.setTextureRect(texture_rect);
     sprite.setOrigin(5, 5);
-    sprite.setPosition(pos + tomato_offset);
-    window.draw(sprite);
+    for (int i = 0; i < kNumTomatoes; ++i) {
+      sprite.setPosition(pos + tomato_offset[i]);
+      window.draw(sprite);
+    }
   }
 
   sf::Sprite sprite;

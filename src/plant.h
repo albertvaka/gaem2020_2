@@ -4,6 +4,7 @@
 #include "selfregister.h"
 #include "jumpman.h"
 
+const int kNumTomatoes = 3;
 
 struct Plant : public BoxEntity, EntS<Plant> {
   Plant(vec pos);
@@ -37,7 +38,7 @@ struct Plant : public BoxEntity, EntS<Plant> {
   float light = 0;
   bool has_tomato = false;
   sf::Time tomato_timer;
-  vec tomato_offset;
+  vec tomato_offset[kNumTomatoes];
 
   sf::Clock grow_clock;
 
