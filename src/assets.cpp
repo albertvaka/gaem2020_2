@@ -45,6 +45,8 @@ sf::Sound Assets::soundPickupDrop;
 sf::SoundBuffer Assets::soundBufferDeath;
 sf::Sound Assets::soundDeath;
 
+sf::Music Assets::sceneMusic;
+
 void Assets::LoadAll() {
 
     hospitalTexture.loadFromFile("data/spritesheet.png");
@@ -107,4 +109,6 @@ void Assets::LoadAll() {
 
     soundBufferDeath.loadFromFile("data/death.ogg");
     soundDeath.setBuffer(soundBufferDeath);
+
+    sceneMusic.openFromFile("data/plantetes_gameplay.ogg");
 }
