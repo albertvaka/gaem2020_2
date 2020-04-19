@@ -493,6 +493,7 @@ void JumpMan::Draw(sf::RenderTarget& window) const {
 	else {
 		spr.setScale(1.f, 1.f);
 	}
+	// spr.scale(1.5f, 1.5f);
 	window.draw(spr, shader);
 
 	//Restore everything
