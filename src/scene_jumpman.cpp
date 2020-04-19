@@ -324,7 +324,9 @@ void JumpScene::Draw(sf::RenderTarget& window)
 	npc.Draw(window);
 
 	for (Doggo* doggo : Doggo::getAll()) {
-		doggo->Draw(window);
+		if (doggo->wantFood) {
+			doggo->Draw(window);
+		}
 	}
 
 	for (auto* plant : Plant::getAll()) {
@@ -351,6 +353,12 @@ void JumpScene::Draw(sf::RenderTarget& window)
 	spr.setOrigin(0, 0);
 	spr.setTextureRect(sf::IntRect(0, 8 * 16, 11 * 16 + 4, 72));
 	window.draw(spr);
+
+	for (Doggo* doggo : Doggo::getAll()) {
+		if (!doggo->wantFood) {
+			doggo->Draw(window);
+		}
+	}
 
 	// Sunny sun.
   DrawSun(window);
