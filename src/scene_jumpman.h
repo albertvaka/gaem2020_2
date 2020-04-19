@@ -14,10 +14,10 @@ struct JumpScene : Scene {
 
 	TileMap map;
 	JumpMan player;
-	PartSys bulletPartSys;
 	Npc npc;
 	Cistell cistell;
-	int moneys = 0;
+	int moneys = 150;
+	int cantbuyTimer = 0;
 
 	GameKeys contextActionButton = GameKeys::NONE;
 

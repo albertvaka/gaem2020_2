@@ -14,9 +14,14 @@ struct Npc : BoxEntity, SingleInstance<Npc>
 {
 	float timer = 0;
 	Animation animation;
+	bool selling = false;
 
 	Npc() : BoxEntity(vec(-35, 270), vec(30,50)) {
 		animation.Ensure(NPC_WALK);
+	}
+
+	bool isSelling() {
+		return selling;
 	}
 
 	void Update(float dt)
@@ -32,6 +37,7 @@ struct Npc : BoxEntity, SingleInstance<Npc>
 		else {
 			timer += dt;
 			pos = vec(-20 + 4 * 20, 245);
+			selling = true;
 		}
 		animation.Update(dt * 1000);
 	}

@@ -2,7 +2,6 @@
 #include "plant.h"
 #include "input.h"
 #include "imgui.h"
-#include "bullet.h"
 #include "assets.h"
 #include "simplexnoise.h"
 #include "savestation.h"
@@ -14,22 +13,6 @@ extern sf::Clock mainClock;
 JumpScene::JumpScene()
 	: map(TiledMap::map_size.x, TiledMap::map_size.y)
 {
-	bulletPartSys.AddSprite(Assets::marioTexture, sf::IntRect(5, 37, 6, 6));
-
-	float vel = 15;
-	bulletPartSys.max_vel = vec(vel, vel);
-	bulletPartSys.min_vel = vec(-vel, -vel);
-	bulletPartSys.min_ttl = 0.5f;
-	bulletPartSys.max_ttl = 1.f;
-	bulletPartSys.min_interval = 0.03f;
-	bulletPartSys.max_interval = 0.06f;
-	bulletPartSys.min_scale = 0.5f;
-	bulletPartSys.max_scale = 0.9f;
-	bulletPartSys.scale_vel = -2.5f;
-	bulletPartSys.min_rotation = 0.f;
-	bulletPartSys.max_rotation = 360.f;
-	bulletPartSys.rotation_vel = 180.f;
-	bulletPartSys.alpha = 0.75f;
 
 }
 
@@ -40,7 +23,7 @@ void JumpScene::EnterScene()
 	player.pos = TiledEntities::spawn;
 	map.LoadFromTiled();
 
-	new Plant(vec(8.0f, 8.0f) + TileMap::alignToTiles(310.0f, 260.0f));
+	//new Plant(vec(8.0f, 8.0f) + TileMap::alignToTiles(310.0f, 260.0f));
 
 	Camera::SetZoom(Window::GAME_ZOOM);
 	Camera::SetCameraCenter(vec(Window::WINDOW_WIDTH/4, Window::WINDOW_HEIGHT / 4));
@@ -52,8 +35,6 @@ void JumpScene::EnterScene()
 
 void JumpScene::ExitScene()
 {
-	bulletPartSys.Clear();
-	Bullet::deleteAll();
 }
 
 void JumpScene::Update(float dt)
@@ -68,16 +49,6 @@ void JumpScene::Update(float dt)
 
 	Camera::ChangeZoomWithPlusAndMinus(20.f, dt);
 	//Debug::out << Camera::GetCameraCenter();
-	for (Bullet* e  : Bullet::getAll()) {
-		e->Update(dt);
-		if (e->explode) continue;
-
-		bulletPartSys.pos = e->pos + vec::Rand(-4, -4, 4, 4);
-		bulletPartSys.Spawn(dt);
-	}
-	Bullet::deleteNotAlive();
-
-	bulletPartSys.UpdateParticles(dt);
 
 	contextActionButton = GameKeys::NONE;
 
@@ -96,6 +67,7 @@ void JumpScene::Update(float dt)
           // TODO: Treure això si la collita passa automaticament.
           contextActionButton = GameKeys::ACTIVATE;
           if (Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
+			  Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
             plant->PickTomato();
             cistell.contents = Cistell::TOMATOES;
             can_drop = false;
@@ -107,6 +79,7 @@ void JumpScene::Update(float dt)
 					// TODO: Agafar la planta que necessiti més aigua?
           contextActionButton = GameKeys::ACTIVATE;
           if (Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
+			  Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
             plant->SetHitByWater();
             cistell.contents = Cistell::EMPTY;
             can_drop = false;
@@ -119,6 +92,7 @@ void JumpScene::Update(float dt)
 		if (Collide(TiledAreas::water, cistell.bounds()) && cistell.IsBeingCarried() && (!cistell.contents)) {
 			contextActionButton = GameKeys::ACTIVATE;
 			if (Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
+				Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
 				cistell.contents = Cistell::WATER;
 			}
 			can_drop = false;
@@ -129,9 +103,11 @@ void JumpScene::Update(float dt)
 		}
 		if (Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
 			if (can_drop) {
+				Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
 				cistell.Drop();
 				player.Carry(JumpMan::Holdable::None);
 			} else if (can_carry) {
+				Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
 				cistell.PickUpBy(&player);
 				player.Carry(JumpMan::Holdable::Basket);
 			}
@@ -147,15 +123,17 @@ void JumpScene::Update(float dt)
 			}
 			if (Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
 				if (can_drop) {
+					Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
 					plant->Drop();
 					player.Carry(JumpMan::Holdable::None);
 				} else if (can_carry) {
+					Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
 					plant->PickUpBy(&player);
 					player.Carry(JumpMan::Holdable::Plant);
 				}
 			}
 		}
-    plant->SetHitByLight(Collide(plant->bounds(), TiledAreas::sun));
+		plant->SetHitByLight(Collide(plant->bounds(), TiledAreas::sun));
 
 		plant->Update(dt);
 		// For Debug
@@ -164,14 +142,31 @@ void JumpScene::Update(float dt)
 			for (int i = 0; i < 5; ++ i) {
 				plant->Grow();
 			}
-      plant->light = 100;
-      plant->water = 100;
+			plant->light = 100;
+			plant->water = 100;
 		}
+	}
 
+
+	if (npc.isSelling() && Collide(player.bounds(), TiledAreas::npc) && player.IsCarrying(JumpMan::Holdable::None)) {
+		contextActionButton = GameKeys::ACTIVATE;
+		if (Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
+			Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
+			if (moneys >= 100) {
+				moneys -= 100;
+				(new Plant(vec()))->PickUpBy(&player);
+				player.Carry(JumpMan::Holdable::Plant);
+			}
+			else {
+				cantbuyTimer = mainClock.getElapsedTime().asMilliseconds() + 1000;
+			}
+		}
+	}
 
 	if (Keyboard::IsKeyJustPressed(GameKeys::DEBUG_GET_MONEY)) {
 		moneys += 100;
 	}
+
 }
 
 void JumpScene::Draw(sf::RenderTarget& window)
@@ -184,32 +179,21 @@ void JumpScene::Draw(sf::RenderTarget& window)
 		map.Draw(window);
 	}
 
+	int globalMillis = mainClock.getElapsedTime().asMilliseconds();
+
 	//Fountain
 	sf::Sprite& spr = Assets::spritesSprite;
 	spr.setPosition(420, 338);
 	spr.setOrigin(0, 0);
-	spr.setTextureRect(Animation::AnimFrame(FOUNTAIN, mainClock.getElapsedTime().asMilliseconds()));
+	spr.setTextureRect(Animation::AnimFrame(FOUNTAIN, globalMillis));
 	window.draw(spr);
+
+	npc.Draw(window);
 
 	for (auto* plant : Plant::getAll()) {
 		plant->Draw(window);
 	}
-
-	for (const SaveStation* ss : SaveStation::getAll()) {
-		ss->Draw(window);
-	}
-
-	bulletPartSys.Draw(window);
-
-	for (const Bullet* e : Bullet::getAll()) {
-		e->Draw(window);
-		if (Debug::Draw) {
-			e->drawBounds(window);
-		}
-	}
-
-	npc.Draw(window);
-
+	
 	cistell.Draw(window);
 	player.Draw(window);
 
@@ -223,14 +207,21 @@ void JumpScene::Draw(sf::RenderTarget& window)
 		sf::Sprite& spr = Assets::hospitalSprite;
 		spr.setPosition(player.bounds().TopRight() + vec(2, -6));
 		AnimationType anim = BUTTON_A_PRESS; // TODO: switch depending on the key
-		spr.setTextureRect(Animation::AnimFrame(anim, mainClock.getElapsedTime().asMilliseconds()));
+		spr.setTextureRect(Animation::AnimFrame(anim, globalMillis));
 		window.draw(spr);
 	}
 
 	sfe::RichText text(Assets::font);
 	text.setPosition(10, 10);
 	text.setScale(0.8f, 0.8f);
-	text << sfe::Outline(sf::Color::Black, 2) << sf::Color::Cyan << "$" << std::to_string(moneys);
+
+	if (cantbuyTimer > globalMillis && (globalMillis/100)%2) {
+		text << sf::Color::Red;
+	}
+	else {
+		text << sf::Color::Cyan;
+	}
+	text << sfe::Outline(sf::Color::Black, 2) << "$" << std::to_string(moneys);
 	window.draw(text);
 
 	if (Debug::Draw) {
