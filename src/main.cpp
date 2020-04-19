@@ -25,7 +25,7 @@ sf::Clock mainClock;
 int main()
 {
 
-	sf::RenderWindow window(sf::VideoMode(Window::WINDOW_WIDTH, Window::WINDOW_HEIGHT), "LD 45");
+	sf::RenderWindow window(sf::VideoMode(Window::WINDOW_WIDTH, Window::WINDOW_HEIGHT), "LD46");
 
 	window.setFramerateLimit(60);
 #ifdef _DEBUG

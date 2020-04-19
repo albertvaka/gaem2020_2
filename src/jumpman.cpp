@@ -2,7 +2,6 @@
 //Based on the work of: Jordi Santiago
 
 #include "input.h"
-#include "bullet.h"
 #include "assets.h"
 #include "debug.h"
 #include "cistell.h"
