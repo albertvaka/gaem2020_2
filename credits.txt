@@ -6,3 +6,5 @@ RichText by Cristian Pallarés
 Art
 Tileset based on OpenPixelProject https://openpixelproject.itch.io/
 Pug Sprite by Dean Oglesby https://knifedrawer.itch.io/
+Dog soudns by Felix Blume https://freesound.org/people/felix.blume/
+Jump sounds by Ace Brian and Felix Yadomi https://freesound.org/people/felixyadomi/ https://freesound.org/people/acebrian/
