@@ -26,7 +26,9 @@ void JumpScene::EnterScene()
 	player.pos = TiledEntities::spawn;
 
 	//new Plant(vec(8.0f, 8.0f) + TileMap::alignToTiles(310.0f, 260.0f));
-	
+
+	moneys = 150;
+
 	cistell.carrier = nullptr;
 	cistell.pos = vec(550,355);
 
