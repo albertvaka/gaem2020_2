@@ -98,6 +98,8 @@ void JumpScene::Update(float dt)
 		if (doggo->menjar <= 0) {
 			doggo->menjar = 1;
 			lost = true;
+			StatsTracker::Stop();
+			statsText = StatsTracker::DumpStats();
 			rototext.ShowMessage("A DOGGO DIED");
 		}
 	}
@@ -396,6 +398,7 @@ void JumpScene::Draw(sf::RenderTarget& window)
 
 	if (lost) {
 		rototext.Draw(window);
+		window.draw(statsText);
 	}
 	//player.polvito.DrawImGUI("Polvito");
 }

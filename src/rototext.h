@@ -66,7 +66,7 @@ public:
 
 	void Draw(sf::RenderTarget& rt) {
 		if (messageTime >= 0) {
-			setPosition(vec(Window::WINDOW_WIDTH, Window::WINDOW_HEIGHT)/ (2*Window::GAME_ZOOM));
+			setPosition(vec(0.5f*Window::WINDOW_WIDTH, 0.33f*Window::WINDOW_HEIGHT)/ (Window::GAME_ZOOM));
 			rt.draw(*this);
 		}
 	}

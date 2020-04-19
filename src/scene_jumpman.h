@@ -20,6 +20,8 @@ struct JumpScene : Scene {
 	Npc npc;
 	Cistell cistell;
 	RotoText rototext;
+	sfe::RichText statsText;
+	
 
 	bool lost = false;
 	int moneys = 150;
