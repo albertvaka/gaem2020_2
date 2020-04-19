@@ -1,88 +1,83 @@
 #include "plant.h"
 #include "assets.h"
+#include "imgui.h"
+#include "debug.h"
 
 const float kSecondsToGrow = 10.0f;
 const int kMaxHeight = 4;
 const vec kCarryPositionOffset = { 8.0f, -8.0f };
-const float kMaxStats = 100.0f;
-const float kLightIncrease = 10.0f;
 
-const float kLightLostPerSecond = 1.0f;
-const float kWaterLostPerSecond = 1.0f;
+const float kMaxStats = 50.0f;
+const float kInitialStats = 25.f;
 
-const float kAdditionalWaterLostWhenGetsLight = 1.f;
+const float kLightIncreasePerSecond = 5.0f;
+const float kWaterIncreasePerWatering = 30.0f;
 
-const float kMinLightForTomato = 50.0f;
-const float kMinWaterForTomato = 50.0f;
+const float kAdditionalWaterLostWhenGetsLight = 0.5f;
+
+const float kLightLostPerSecond = 0.5f;
+const float kWaterLostPerSecond = 0.5f;
+
+const float kWaterAndLighThresholdToGrow = 40.0f;
+const float kWaterAndLighThresholdToDie = 5.0f;
+
 // TODO: Slow on purpose for testing.
-const sf::Time kMinTimeForTomato = sf::seconds(5.0f);
-
-const float kWaterToDie = 5.0f;
-const float kSunToDie = 5.0f;
-
-const sf::Time kWaterEffectDuration = sf::seconds(2.0f);
+const sf::Time kGrowInterval = sf::seconds(5.0f);
 
 Plant::Plant(vec pos) : BoxEntity(pos, vec(16.0f, 16.0f)) {
-    water = kMaxStats/2;
-    light = kMaxStats / 2;
+    water = kInitialStats;
+    light = kInitialStats;
 }
 
 void Plant::Grow() {
-  if (height >= kMaxHeight) return;
-  ++height;
-  pos.y -= 8.0f;
-  size.y += 16.0f;
-  grow_clock.restart();
 }
 
 void Plant::Update(float dt) {
+
+    if (carrier != nullptr) {
+        pos = carrier->pos;
+        pos.x += (carrier->lookingLeft ? -1 : 1) * kCarryPositionOffset.x;
+        pos.y += kCarryPositionOffset.y - 8.0f * height;
+    }
+
+    if (!alive) return;
+
     water -= kWaterLostPerSecond * dt;
     light -= kLightLostPerSecond * dt;
 
-  if (carrier != nullptr) {
-    pos = carrier->pos;
-    pos.x += (carrier->lookingLeft ? -1 : 1) * kCarryPositionOffset.x;
-    pos.y += kCarryPositionOffset.y - 8.0f * height;
-  }
-
-
-  if (!alive) return;
-
-  if (height < kMaxHeight && grow_clock.getElapsedTime().asSeconds() > kSecondsToGrow) {
-    Grow();
-  }
-  if (gets_light) {
-    light = std::min(kMaxStats, light + dt * kLightIncrease);
-    water -= kAdditionalWaterLostWhenGetsLight * dt;
-  }
-  if (gets_water) {
-    water = std::min(kMaxStats, water + dt * kLightIncrease);
-    if (water_clock.getElapsedTime() >= kWaterEffectDuration) {
-      gets_water = false;
+    if (water >= kWaterAndLighThresholdToGrow && light >= kWaterAndLighThresholdToGrow && grow_clock.getElapsedTime().asSeconds() > kSecondsToGrow) {
+        grow_clock.restart();
+        if (height >= kMaxHeight) {
+            if (!has_tomato) {
+                has_tomato = true;
+                // Random offset.
+                for (int i = 0; i < kNumTomatoes; ++i) {
+                    tomato_offset[i] = vec(Random::rollf(-8.0f, 8.0f), Random::rollf(-16.0f, 16.0f));
+                }
+            }
+        }
+        else {
+            ++height;
+            pos.y -= 8.0f;
+            size.y += 16.0f;
+        }
     }
-  }
-
-
-  if (light < kSunToDie || water < kWaterToDie) {
-      alive = false;
-      
-      if (height >= kMaxHeight) {
-          height = kMaxHeight - 1;
-      }
-  }
-
-  if (light > kMinLightForTomato&&
-    water > kMinWaterForTomato &&
-    !has_tomato) {
-    tomato_timer += sf::seconds(dt);
-    if (tomato_timer >= kMinTimeForTomato) {
-      has_tomato = true;
-      // Random offset.
-      for (int i = 0; i < kNumTomatoes; ++i) {
-        tomato_offset[i] = vec(Random::rollf(-8.0f, 8.0f), Random::rollf(-16.0f, 16.0f));
-      }
+  
+    if (gets_light) {
+        light = std::min(kMaxStats, light + dt * kLightIncreasePerSecond);
+        water -= kAdditionalWaterLostWhenGetsLight * dt;
     }
-  }
+    if (gets_water) {
+        water = std::min(kMaxStats, water + dt * kWaterIncreasePerWatering);
+        gets_water = false;
+    }
+
+      if (light < kWaterAndLighThresholdToDie || water < kWaterAndLighThresholdToDie) {
+          alive = false;
+          if (height >= kMaxHeight) {
+              height = kMaxHeight - 1;
+          }
+      }
 }
 
 bool Plant::HasTomato() const {
@@ -91,10 +86,10 @@ bool Plant::HasTomato() const {
 
 void Plant::PickTomato() {
   has_tomato = false;
-  tomato_timer = sf::Time::Zero;
+  grow_clock.restart();
 }
 
-void Plant::Draw(sf::RenderTarget& window) const {
+void Plant::Draw(sf::RenderTarget& window) {
   // Draw tomato
   if (alive && has_tomato) {
     sf::Sprite sprite;
@@ -128,6 +123,14 @@ void Plant::Draw(sf::RenderTarget& window) const {
   if (gets_water) {
     DrawStatBar(water, 7.0f, sf::Color::Cyan, window);
   }
+
+#ifdef _DEBUG
+  ImGui::Begin("plant");
+  ImGui::SliderFloat("water", &water, 0.f, kMaxStats);
+  ImGui::SliderFloat("light", &light, 0.f, kMaxStats);
+  ImGui::Checkbox("alive", &alive);
+  ImGui::End();
+#endif
 }
 
 float Plant::getBottomY() const
@@ -159,7 +162,6 @@ void Plant::Drop()
 void Plant::SetHitByWater()
 {
   gets_water = true;
-  water_clock.restart();
 }
 
 void Plant::SetHitByLight(bool hit)
