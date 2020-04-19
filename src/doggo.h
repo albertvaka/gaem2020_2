@@ -145,19 +145,21 @@ struct Doggo : BoxEntity, EntS<Doggo>
       window.draw(bubble_sprite);
 	}
 
+	if (wantFood) {
 		// Draw bottom status.
-    sf::Sprite status_sprite;
-    status_sprite.setTexture(Assets::plantTexture);
-    status_sprite.setTextureRect({ 52,32,17,16 });
-    status_sprite.setOrigin(17 / 2, 0);
-    status_sprite.setPosition(pos + vec(0.0f, 17.0f));
-    window.draw(status_sprite);
-    // Draw face.
-    int happiness = std::min(int(menjar / (kMaxMenjar / 5)), 4);
-    status_sprite.setTextureRect({ 106,52 - 12 * happiness,13,12 });
-    status_sprite.setOrigin(6, 0);
-    status_sprite.setPosition(pos + vec(0.0f, 20.0f));
-    window.draw(status_sprite);
+		sf::Sprite status_sprite;
+		status_sprite.setTexture(Assets::plantTexture);
+		status_sprite.setTextureRect({ 52,32,17,16 });
+		status_sprite.setOrigin(17 / 2, 0);
+		status_sprite.setPosition(pos + vec(0.0f, 18.0f));
+		window.draw(status_sprite);
+		// Draw face.
+		int happiness = std::min(int(menjar / (kMaxMenjar / 5)), 4);
+		status_sprite.setTextureRect({ 106,52 - 12 * happiness,13,12 });
+		status_sprite.setOrigin(6, 0);
+		status_sprite.setPosition(pos + vec(0.0f, 21.0f));
+		window.draw(status_sprite);
+	}
   }
 
 	void Feed() {

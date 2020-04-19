@@ -183,21 +183,21 @@ void Plant::Draw(sf::RenderTarget& window) const {
     status_sprite.setTextureRect({52,16,30,16});
   }
   status_sprite.setOrigin(32/2, 0);
-  status_sprite.setPosition(vec(pos.x, getBottomY()) + vec(0.0f, 5.0f));
+  status_sprite.setPosition(vec(pos.x, getBottomY()) + vec(0.0f, 2.0f));
   window.draw(status_sprite);
   if (alive) {
     // Sun face.
     int sun_happiness = std::min(int(light/10), 4);
     status_sprite.setTextureRect({94,52-12*sun_happiness,12,12});
     status_sprite.setOrigin(6,0);
-    status_sprite.setPosition(vec(pos.x, getBottomY()) + vec(-8.0f, 8.0f));
+    status_sprite.setPosition(vec(pos.x, getBottomY()) + vec(-8.0f, 5.0f));
     window.draw(status_sprite);
     // Water
     // Sun face.
     int water_happiness = std::min(int(water/10), 4);
     status_sprite.setTextureRect({82,52-12*water_happiness,12,12});
     status_sprite.setOrigin(6,0);
-    status_sprite.setPosition(vec(pos.x, getBottomY()) + vec(6.0f, 8.0f));
+    status_sprite.setPosition(vec(pos.x, getBottomY()) + vec(6.0f, 5.0f));
     window.draw(status_sprite);
   }
 
