@@ -24,9 +24,9 @@ struct JumpMan : Entity, SingleInstance<JumpMan>
         crouchedTime = 0.0f;
         onWall = ONWALL_NO;
         dead = false;
-        if (holding != Holdable::None) {
-          DropItem();
-        }
+        holding = Holdable::None;
+        plant = nullptr;
+        cistell = nullptr;
     }
 
     Bounds bounds() const {

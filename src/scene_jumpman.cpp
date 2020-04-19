@@ -44,8 +44,6 @@ void JumpScene::EnterScene()
 
 	npc.Reset();
 	
-	player.Carry(JumpMan::Holdable::None);
-
 	Assets::sceneMusic[current_music].stop();
 	Assets::sceneMusic[current_music].play();
 }
