@@ -97,6 +97,14 @@ void Plant::Update(float dt) {
               size.y -= 16.0f;
           }
       }
+          
+#ifdef _DEBUG
+          ImGui::Begin((std::string("plant") + ::std::to_string(id)).c_str());
+      ImGui::SliderFloat("water", &water, 0.f, kMaxStats);
+      ImGui::SliderFloat("light", &light, 0.f, kMaxStats);
+      ImGui::Checkbox("alive", &alive);
+      ImGui::End();
+#endif
 }
 
 bool Plant::HasTomato() const {
@@ -108,7 +116,7 @@ void Plant::PickTomato() {
   grow_clock.restart();
 }
 
-void Plant::Draw(sf::RenderTarget& window) {
+void Plant::Draw(sf::RenderTarget& window) const {
   // Draw tomato
   if (alive && has_tomato) {
     sf::Sprite sprite;
@@ -190,13 +198,6 @@ void Plant::Draw(sf::RenderTarget& window) {
     window.draw(status_sprite);
   }
 
-#ifdef _DEBUG
-  ImGui::Begin((std::string("plant")+::std::to_string(id)).c_str());
-  ImGui::SliderFloat("water", &water, 0.f, kMaxStats);
-  ImGui::SliderFloat("light", &light, 0.f, kMaxStats);
-  ImGui::Checkbox("alive", &alive);
-  ImGui::End();
-#endif
 }
 
 float Plant::getBottomY() const
