@@ -9,6 +9,7 @@
 #include "npc.h"
 #include "input.h"
 #include "cistell.h"
+#include "rototext.h"
 #include "richtext.h"
 
 
@@ -18,6 +19,9 @@ struct JumpScene : Scene {
 	JumpMan player;
 	Npc npc;
 	Cistell cistell;
+	RotoText rototext;
+
+	bool lost = false;
 	int moneys = 150;
 	int cantbuyTimer = 0;
 

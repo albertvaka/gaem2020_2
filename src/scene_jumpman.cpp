@@ -30,6 +30,8 @@ JumpScene::JumpScene()
 
 void JumpScene::EnterScene() 
 {
+	lost = false;
+
 	player.Reset();
 	player.pos = TiledEntities::spawn;
 
@@ -69,6 +71,12 @@ void JumpScene::Update(float dt)
 		else Assets::sceneMusic[current_music].play();
 	}
 
+	if (lost) {
+		rototext.Update(dt);
+		return;
+	}
+
+
 	if (Keyboard::IsKeyJustPressed(GameKeys::DEBUG_DOGGO)) {
 		new Doggo();
 	}
@@ -85,6 +93,11 @@ void JumpScene::Update(float dt)
       }
     }
 		doggo->Update(dt);
+		if (doggo->menjar <= 0) {
+			doggo->menjar = 1;
+			lost = true;
+			rototext.ShowMessage("A DOGGO DIED");
+		}
 	}
 
 	//Camera::MoveCameraWithArrows(50, dt);
@@ -375,6 +388,10 @@ void JumpScene::Draw(sf::RenderTarget& window)
 		//player.bounds().Center().Debuggerino(sf::Color::Magenta);
 	}
 
+
+	if (lost) {
+		rototext.Draw(window);
+	}
 	//player.polvito.DrawImGUI("Polvito");
 }
 

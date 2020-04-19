@@ -46,6 +46,7 @@
     <ClInclude Include="src\mates.h" />
     <ClInclude Include="src\mesa.h" />
     <ClInclude Include="src\richtext.h" />
+    <ClInclude Include="src\rototext.h" />
     <ClInclude Include="src\savestation.h" />
     <ClInclude Include="src\screen.h" />
     <ClInclude Include="src\simplexnoise.h" />
