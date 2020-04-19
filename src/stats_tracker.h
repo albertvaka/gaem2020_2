@@ -16,6 +16,8 @@ struct StatsTracker {
     plant_watered = 0;
     plant_pickedup = 0;
     basked_pickedup = 0;
+    jumps_done = 0;
+    walljumps_done = 0;
     time_played = 0;
   }
 
@@ -30,7 +32,9 @@ struct StatsTracker {
       << "Plants purchased: " << std::to_string(plants_purchased) << "\n"
       << "Plants watered: " << std::to_string(plant_watered) << "\n"
       << "Plants picked up: " << std::to_string(plant_pickedup) << "\n"
-      << "Baskets picked up: " << std::to_string(basked_pickedup) << "\n";
+      << "Baskets picked up: " << std::to_string(basked_pickedup) << "\n"
+      << "Jumps done: " << std::to_string(jumps_done) << "\n"
+      << "Walljumps done: " << std::to_string(walljumps_done) << "\n";
     text.setPosition(vec(0.33f* Window::WINDOW_WIDTH, 0.5f* Window::WINDOW_HEIGHT)/(Window::GAME_ZOOM));
     return text;
   }
@@ -49,5 +53,7 @@ struct StatsTracker {
   static int plants_died;
   static int plant_pickedup;
   static int basked_pickedup;
+  static int jumps_done;
+  static int walljumps_done;
   static sf::Clock time_played_clock;
 };
