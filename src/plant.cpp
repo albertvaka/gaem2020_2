@@ -132,10 +132,11 @@ void Plant::Draw(sf::RenderTarget& window) {
 
   // Draw stats if they are changing
   static sf::Clock bubble_timer;
-  bool draw_bubble = (int(bubble_timer.getElapsedTime().asSeconds()) % 2 == 0);
+  bool draw_light_bubble = (int(bubble_timer.getElapsedTime().asSeconds()) % 2 == 0);
+  bool draw_water_bubble = !draw_light_bubble;
   if (gets_light) {
     DrawStatBar(light, 0.0f, sf::Color::Yellow, window);
-    if (draw_bubble) {
+    if (draw_light_bubble) {
       sf::Sprite bubble_sprite;
       bubble_sprite.setTexture(Assets::plantTexture);
       bubble_sprite.setTextureRect({34,0,18,23});
@@ -145,7 +146,7 @@ void Plant::Draw(sf::RenderTarget& window) {
   }
   if (gets_water) {
     DrawStatBar(water, 7.0f, sf::Color::Cyan, window);
-    if (draw_bubble) {
+    if (draw_water_bubble) {
       sf::Sprite bubble_sprite;
       bubble_sprite.setTexture(Assets::plantTexture);
       bubble_sprite.setTextureRect({34,23,18,23});
