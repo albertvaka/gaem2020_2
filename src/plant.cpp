@@ -88,6 +88,8 @@ void Plant::Update(float dt) {
           alive = false;
           if (height >= kMaxHeight) {
               height = kMaxHeight - 1;
+              pos.y += 8.0f;
+              size.y -= 16.0f;
           }
       }
 }
