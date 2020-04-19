@@ -15,8 +15,6 @@ struct TiledTiles
 		RSLOPE_1,
 		LSLOPE_1,
 		SOLID_1,
-		SOLID_2,
-		SOLID_3,
 		BREAKABLE_1,
 		SOLID_TRANSPARENT,
 	};

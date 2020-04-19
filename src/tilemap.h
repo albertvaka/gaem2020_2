@@ -90,7 +90,7 @@ struct TileMap : SingleInstance<TileMap>
 	Tile getTile(const sf::Vector2i& pos) const { return getTile(pos.x, pos.y); }
 
 	Tile getTile(int x, int y) const {
-		if (!inBounds(x, y)) return Tile::NONE;
+		if (!inBounds(x, y)) return Tile::SOLID_1;
 		return getTileUnsafe(x,y);
 	}
 
