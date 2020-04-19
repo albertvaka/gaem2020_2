@@ -68,6 +68,12 @@ void JumpScene::Update(float dt)
 		if (Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
 			Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
 			moneys += 30;
+			if (GoodRandom::roll_flipcoin()) {
+				Assets::soundSell1.play();
+			}
+			else {
+				Assets::soundSell2.play();
+			}
 			moneyText.clear();
 			moneyTextTimer = 0.5f;
 			moneyText << sfe::Outline(sf::Color::Black, 1) << sf::Color::Green << "$30";
@@ -92,6 +98,7 @@ void JumpScene::Update(float dt)
 			  Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
             plant->PickTomato();
             cistell.contents = Cistell::TOMATOES;
+			Assets::soundBucketTomatoes.play();
             can_drop = false;
             // Agafar tomàquets té prioritat per sobre deixar anar la cistella.
           }
@@ -104,6 +111,7 @@ void JumpScene::Update(float dt)
 			  Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
             plant->SetHitByWater();
             cistell.contents = Cistell::EMPTY;
+			Assets::soundWater.play();
             can_drop = false;
           }
 				}
@@ -116,6 +124,7 @@ void JumpScene::Update(float dt)
 			if (Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
 				Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
 				cistell.contents = Cistell::WATER;
+				Assets::soundBucketWater.play();
 			}
 			can_drop = false;
 		}
@@ -128,10 +137,12 @@ void JumpScene::Update(float dt)
 				Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
 				cistell.Drop();
 				player.Carry(JumpMan::Holdable::None);
+				Assets::soundPickupDrop.play();
 			} else if (can_carry) {
 				Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
 				cistell.PickUpBy(&player);
 				player.Carry(JumpMan::Holdable::Basket);
+				Assets::soundPickupDrop.play();
 			}
 		}
   }
@@ -148,10 +159,12 @@ void JumpScene::Update(float dt)
 					Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
 					plant->Drop();
 					player.Carry(JumpMan::Holdable::None);
+					Assets::soundPickupDrop.play();
 				} else if (can_carry) {
 					Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
 					plant->PickUpBy(&player);
 					player.Carry(JumpMan::Holdable::Plant);
+					Assets::soundPickupDrop.play();
 				}
 			}
 		}
@@ -173,6 +186,7 @@ void JumpScene::Update(float dt)
 				moneyText << sfe::Outline(sf::Color::Black, 1) << sf::Color::Red << "-$100";
 				(new Plant(vec()))->PickUpBy(&player);
 				player.Carry(JumpMan::Holdable::Plant);
+				Assets::soundBuy.play();
 			}
 			else {
 				cantbuyTimer = mainClock.getElapsedTime().asMilliseconds() + 1000;

@@ -90,6 +90,7 @@ void Plant::Update(float dt) {
 
       if (light < 0 || water < 0) {
           alive = false;
+          Assets::soundDeath.play();
           if (height >= kMaxHeight) {
               height = kMaxHeight - 1;
               pos.y += 8.0f;

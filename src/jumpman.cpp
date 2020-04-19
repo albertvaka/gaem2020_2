@@ -129,11 +129,23 @@ grounded_exit:
 		if (onWall && !grounded && !crouched) {
 			vel.x = vel_walljump * -1.0f * float(onWall);
 			lookingLeft = !lookingLeft;
+			if (GoodRandom::roll_flipcoin()) {
+				Assets::soundJump1.play();
+			}
+			else {
+				Assets::soundJump2.play();
+			}
 			DoPolvitoWallJump();
 		}
 		else {
 			bool ceiling = map->isSolid(TileMap::toTiles(pos.x - center.x + 1.f, pos.y - size.y - 1.f)) || map->isSolid(TileMap::toTiles(pos.x + center.x - 1.f, pos.y - size.y - 1.f));
 			if (!ceiling) {
+				if (GoodRandom::roll_flipcoin()) {
+					Assets::soundJump1.play();
+				}
+				else {
+					Assets::soundJump2.play();
+				}
 				DoPolvitoJump();
 				grounded = false;
 			}
@@ -354,7 +366,10 @@ horz_exit:
 			if (map->isPosOnSlope(posf.x, y-0.00001f)) { // hack: we want to get to the edge of a tile before stepping onto the next one, hence the epsilon deduced from the integer value.
 				//Debug::out << "set y on slope";
 				posf.y = y;
-				if (vel.y > 50) DoPolvitoLand();
+				if (vel.y > 50) {
+					Assets::soundLand.play();
+					DoPolvitoLand();
+				}
 				vel.y = 30.f; //this helps you get grounded as soon as the slope ends
 				onWall = ONWALL_NO;
 				grounded = true;
