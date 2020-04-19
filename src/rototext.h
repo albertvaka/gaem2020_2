@@ -30,7 +30,7 @@ public:
 		setOrigin(textRect.left + textRect.width/2.0f,
 						textRect.top  + textRect.height/2.0f);
 
-		messageTime = 0.01;
+		messageTime = 0.01f;
 		Update(0);
 
 	}
