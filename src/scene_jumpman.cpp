@@ -48,6 +48,13 @@ void JumpScene::ExitScene()
 
 void JumpScene::Update(float dt)
 {
+	if (Keyboard::IsKeyJustPressed(GameKeys::MUTE)) {
+		bool static muted = false;
+		muted = !muted;
+		if (muted) Assets::sceneMusic.pause();
+		else Assets::sceneMusic.play();
+	}
+
 	//Camera::MoveCameraWithArrows(50, dt);
 	if (Keyboard::IsKeyJustPressed(GameKeys::RESTART)) {
 		ExitScene();

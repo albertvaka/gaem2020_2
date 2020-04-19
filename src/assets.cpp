@@ -112,4 +112,5 @@ void Assets::LoadAll() {
 
     sceneMusic.openFromFile("data/plantetes_gameplay.ogg");
     sceneMusic.setVolume(60);
+    sceneMusic.setLoop(true);
 }
