@@ -57,6 +57,8 @@ void JumpScene::EnterScene()
 void JumpScene::ExitScene()
 {
 	Plant::deleteAll();
+	Doggo::deleteAll();
+	Doggo::AllDestinations().clear();
 }
 
 void JumpScene::Update(float dt)

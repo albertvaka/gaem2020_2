@@ -26,18 +26,39 @@ struct Doggo : BoxEntity, EntS<Doggo>
 	int destination = 0;
 	bool wantFood = false;
 
+
+	void PlaySound() {
+		switch (Random::roll(3)) {
+		case 0:
+			Assets::soundDoggo1.play();
+			break;
+		case 1:
+			Assets::soundDoggo2.play();
+			break;
+		case 2:
+			Assets::soundDoggo3.play();
+			break;
+		default:
+			assert(false);
+		}
+	}
+
+	static std::set<int>& AllDestinations() {
+		static std::set<int> all_destinations;
+		return all_destinations;
+	}
 	Doggo() : BoxEntity(vec(), vec(28,28)) {
 		anim.Ensure(DOGGO_RIGHT);
 
-		static std::set<int> all_destinations;
-		if (all_destinations.size() == TiledEntities::waypoint.size()) {
-			all_destinations.clear();
+		
+		if (AllDestinations().size() == TiledEntities::waypoint.size()) {
+			AllDestinations().clear();
 		}
 
 		while (true) {
 			destination = Random::roll(TiledEntities::waypoint.size());
-			if (all_destinations.find(destination) == all_destinations.end()) {
-				all_destinations.insert(destination);
+			if (AllDestinations().find(destination) == AllDestinations().end()) {
+				AllDestinations().insert(destination);
 				break;
 			}
 		}
@@ -52,16 +73,21 @@ struct Doggo : BoxEntity, EntS<Doggo>
 			nextPoint = TiledEntities::waypoint.size()-1;
 			forward = false;
 		}
+		PlaySound();
 	}
 
 	void Update(float dt)
 	{
 
 		anim.Update(dt * 1000);
-		menjar_bubble_timer -= dt;
 
 		if (wantFood) {
 			menjar -= kMenjarDecreasePerSecond * dt;
+
+			menjar_bubble_timer -= dt;
+			if (menjar_bubble_timer < 0) {
+				anim.Ensure(DOGGO_IDLE);
+			}
 		}
 		else {
 			vec dest = TiledEntities::waypoint[nextPoint];
@@ -77,6 +103,7 @@ struct Doggo : BoxEntity, EntS<Doggo>
 				if (nextPoint == destination) {
 					anim.Ensure(DOGGO_IDLE);
 					wantFood = true;
+					PlaySound();
 				}
 				else {
 					if (forward) {
@@ -116,7 +143,7 @@ struct Doggo : BoxEntity, EntS<Doggo>
       bubble_sprite.setTextureRect({16,0,18,23});
       bubble_sprite.setPosition(vec(pos) + vec(17.0f, -15.f));
       window.draw(bubble_sprite);
-    }
+	}
 
 		// Draw bottom status.
     sf::Sprite status_sprite;
@@ -136,7 +163,9 @@ struct Doggo : BoxEntity, EntS<Doggo>
 	void Feed() {
 		menjar = kMaxMenjar;
 		menjar_bubble_timer = kMenjarBubbleDuration;
+		anim.Ensure(DOGGO_EAT);
 		++StatsTracker::doggos_fed;
+		PlaySound();
 	}
 
 };
