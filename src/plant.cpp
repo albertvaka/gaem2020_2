@@ -22,7 +22,7 @@ const float kWaterLostPerSecond = 0.4f;
 const float kWaterAndLighThresholdToGrow = 40.0f;
 const float kWaterAndLighThresholdToDie = 5.0f;
 
-const float kWaterBubbleDuration = 2.0f;
+const float kWaterBubbleDuration = 3.0f;
 // TODO: Slow on purpose for testing.
 const sf::Time kGrowInterval = sf::seconds(5.0f);
 
