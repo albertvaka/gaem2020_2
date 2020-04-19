@@ -22,6 +22,18 @@ sf::Font Assets::font;
 
 sf::Shader Assets::tintShader;
 
+sf::SoundBuffer Assets::soundBucketTomatoes;
+sf::SoundBuffer Assets::soundBuy;
+sf::SoundBuffer Assets::soundSell1;
+sf::SoundBuffer Assets::soundSell2;
+sf::SoundBuffer Assets::soundWater;
+sf::SoundBuffer Assets::soundBucketWater;
+sf::SoundBuffer Assets::soundJump1;
+sf::SoundBuffer Assets::soundJump2;
+sf::SoundBuffer Assets::soundLand;
+sf::SoundBuffer Assets::soundPikcupDrop;
+sf::SoundBuffer Assets::soundDeath;
+
 void Assets::LoadAll() {
 
     hospitalTexture.loadFromFile("data/spritesheet.png");
@@ -52,4 +64,15 @@ void Assets::LoadAll() {
 
     tintShader.loadFromFile("data/tint.frag", sf::Shader::Fragment);
 
+    soundBucketTomatoes.loadFromFile("data/bucket_tomatoes.ogg");
+    soundBuy.loadFromFile("data/buy.ogg");
+    soundSell1.loadFromFile("data/sell1.ogg");
+    soundSell2.loadFromFile("data/sell2.ogg");
+    soundWater.loadFromFile("data/water.ogg");
+    soundBucketWater.loadFromFile("data/bucket_water.ogg");
+    soundJump1.loadFromFile("data/jump1.ogg");
+    soundJump2.loadFromFile("data/jump2.ogg");
+    soundLand.loadFromFile("data/land.ogg");
+    soundPikcupDrop.loadFromFile("data/pickup_drop.ogg");
+    soundDeath.loadFromFile("data/death.ogg");
 }

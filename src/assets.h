@@ -1,14 +1,18 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <array>
 
 struct Assets
 {
 	static void LoadAll();
 
+
 	static sf::Texture hospitalTexture;
 	static sf::Sprite hospitalSprite;
+
+	
 
   static std::array<sf::Texture, 3> sunTextures;	
 	static std::array<sf::Sprite, 3> sunSprites;
@@ -28,5 +32,18 @@ struct Assets
 	static sf::Font font;
 
 	static sf::Shader tintShader;
+
+	static sf::SoundBuffer soundBucketTomatoes;
+	static sf::SoundBuffer soundBuy;
+	static sf::SoundBuffer soundSell1;
+	static sf::SoundBuffer soundSell2;
+	static sf::SoundBuffer soundWater;
+	static sf::SoundBuffer soundBucketWater;
+	static sf::SoundBuffer soundJump1;
+	static sf::SoundBuffer soundJump2;
+	static sf::SoundBuffer soundLand;
+	static sf::SoundBuffer soundPikcupDrop;
+	static sf::SoundBuffer soundDeath;
+	
 };
 
