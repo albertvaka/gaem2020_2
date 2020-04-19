@@ -11,11 +11,13 @@
 const float kVel = 50;
 const float kMenjarDecreasePerSecond = 1;
 const float kMaxMenjar = 60;
+static int doggo_ids = 0;
 
 struct Doggo : BoxEntity, EntS<Doggo>
 {
 	float menjar = kMaxMenjar;
 	Animation anim;
+	int id = doggo_ids++;
 	int nextPoint;
 	bool forward;
 	int destination = 0;
@@ -85,7 +87,11 @@ struct Doggo : BoxEntity, EntS<Doggo>
 				pos += diff.Normalized() * kVel * dt;
 			}
 		}
-
+#ifdef _DEBUG
+      ImGui::Begin((std::string("doggo") + ::std::to_string(id)).c_str());
+      ImGui::SliderFloat("menjar", &menjar, 0.f, kMaxMenjar);
+      ImGui::End();
+#endif
 	}
 
 	void Draw(sf::RenderTarget& window) const
@@ -99,6 +105,10 @@ struct Doggo : BoxEntity, EntS<Doggo>
 		if (Debug::Draw) {
 			bounds().Draw(window);
 		}
+	}
+
+	void Feed() {
+		menjar = kMaxMenjar;
 	}
 
 };

@@ -73,7 +73,17 @@ void JumpScene::Update(float dt)
 		new Doggo();
 	}
 	
+	player.Update(dt);
 	for (Doggo* doggo : Doggo::getAll()) {
+    if (player.IsCarrying(JumpMan::Holdable::Basket) && cistell.contents == Cistell::TOMATOES && Collide(player.bounds(), doggo->bounds())) {
+      contextActionButton = GameKeys::ACTIVATE;
+      if (Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
+        Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
+        // Assets::DoggoEatingSound.play();
+				doggo->Feed();
+        cistell.contents = Cistell::EMPTY;
+      }
+    }
 		doggo->Update(dt);
 	}
 
@@ -83,7 +93,6 @@ void JumpScene::Update(float dt)
 		EnterScene();
 	}
 	
-	player.Update(dt);
 
 	Camera::ChangeZoomWithPlusAndMinus(20.f, dt);
 	//Debug::out << Camera::GetCameraCenter();
