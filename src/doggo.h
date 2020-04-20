@@ -45,9 +45,10 @@ struct Doggo : BoxEntity, EntS<Doggo>
 	}
 
 	static std::set<int>& AllDestinations() {
-		static std::set<int> all_destinations;
+		static std::set<int> all_destinations = { 2 };
 		return all_destinations;
 	}
+
 	Doggo() : BoxEntity(vec(), vec(28,28)) {
 		++StatsTracker::doggos_in_game;
 		anim.Ensure(DOGGO_RIGHT);
@@ -55,6 +56,7 @@ struct Doggo : BoxEntity, EntS<Doggo>
 		
 		if (AllDestinations().size() == TiledEntities::waypoint.size()) {
 			AllDestinations().clear();
+			AllDestinations().insert(2);
 		}
 
 		while (true) {
