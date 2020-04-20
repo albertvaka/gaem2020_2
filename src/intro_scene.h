@@ -7,6 +7,7 @@
 #include "input.h"
 #include "doggo.h"
 #include "assets.h"
+#include "richtext.h"
 #include "scene_jumpman.h"
 
 extern sf::Clock mainClock;
@@ -15,8 +16,9 @@ struct IntroScene : Scene {
 
 	sf::Text text;
 	RotoText rototext;
+	sfe::RichText credits;
 
-	IntroScene() {
+	IntroScene() : credits(Assets::font) {
 		Camera::SetZoom(Window::GAME_ZOOM);
 		Camera::SetCameraCenter(vec(Window::WINDOW_WIDTH / 4, Window::WINDOW_HEIGHT / 4));
 
@@ -28,8 +30,9 @@ struct IntroScene : Scene {
 		Assets::soundDoggo2.setVolume(0.f);
 		Assets::soundDoggo3.setVolume(0.f);
 
-		rototext.setCharacterSize(28);
+		rototext.setCharacterSize(30);
 		rototext.ShowMessage("Who let the doggos in?");
+		rototext.Update(100);
 
 		new Doggo();
 
@@ -42,21 +45,29 @@ struct IntroScene : Scene {
 		text.setOrigin(text.getLocalBounds().width/2,0);
 		text.setScale(0.65f, 0.65f);
 
+		credits << "A game by:\n\nAlbert Martinez\nAlbert Vaca";
+		credits.setPosition(20, 310);
+		credits.setScale(0.45f, 0.5f);
 	}
 
 	void ExitScene() override {
 		Doggo::deleteAll();
 		Assets::soundDoggo1.setVolume(100.f);
+		Assets::soundDoggo1.stop();
 		Assets::soundDoggo2.setVolume(100.f);
+		Assets::soundDoggo2.stop();
 		Assets::soundDoggo3.setVolume(100.f);
-
+		Assets::soundDoggo3.stop();
 	}
 
 	void Update(float dt) override {
 		rototext.Update(dt);
 		for (Doggo* doggo : Doggo::getAll()) {
 			doggo->Update(dt);
-			doggo->wantFood = false;
+			if (doggo->wantFood) {
+				doggo->anim.current_frame = (mainClock.getElapsedTime().asMilliseconds()/200)%2;
+				doggo->wantFood = false;
+			}
 		}
 		if (Keyboard::IsKeyJustPressed(GameKeys::START) || GamePad::IsButtonJustPressed(0, GamePad::Button::A)) {
 			SceneManager::SetScene(new JumpScene());
@@ -79,6 +90,7 @@ struct IntroScene : Scene {
 			window.draw(text);
 		}
 
+		window.draw(credits);
 	}
 
 };
