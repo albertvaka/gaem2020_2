@@ -505,11 +505,6 @@ void JumpMan::Draw(sf::RenderTarget& window) const {
 	polvito.Draw(window);
 
 	sf::Sprite& spr = Assets::marioSprite;
-	sf::Shader* shader = nullptr;
-	if (isHit()) {
-		shader = &Assets::tintShader;
-		shader->setUniform("flashColor", sf::Glsl::Vec4(1.f, 0.f, 0.f, 0.7f));
-	}
 
 	spr.setTextureRect(animation.CurrentFrame());
 	spr.setOrigin(center.x, size.y);
@@ -521,7 +516,7 @@ void JumpMan::Draw(sf::RenderTarget& window) const {
 		spr.setScale(1.f, 1.f);
 	}
 	spr.scale(1.25f, 1.25f);
-	window.draw(spr, shader);
+	window.draw(spr);
 
 	//Restore everything
 	spr.setScale(1.f, 1.f);

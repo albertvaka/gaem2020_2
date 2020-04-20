@@ -12,9 +12,7 @@ struct Assets
 	static sf::Texture hospitalTexture;
 	static sf::Sprite hospitalSprite;
 
-	
-
-  static std::array<sf::Texture, 3> sunTextures;	
+	static std::array<sf::Texture, 3> sunTextures;
 	static std::array<sf::Sprite, 3> sunSprites;
 
 	static sf::Texture marioTexture;
@@ -33,8 +31,6 @@ struct Assets
 	static sf::Sprite doggoSprite;
 
 	static sf::Font font;
-
-	static sf::Shader tintShader;
 
 	static sf::SoundBuffer soundBufferBucketTomatoes;
 	static sf::Sound soundBucketTomatoes;

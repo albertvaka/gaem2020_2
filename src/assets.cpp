@@ -23,8 +23,6 @@ sf::Sprite Assets::doggoSprite;
 
 sf::Font Assets::font;
 
-sf::Shader Assets::tintShader;
-
 sf::SoundBuffer Assets::soundBufferBucketTomatoes;
 sf::Sound Assets::soundBucketTomatoes;
 sf::SoundBuffer Assets::soundBufferBuy;
@@ -90,8 +88,6 @@ void Assets::LoadAll() {
     plantTexture.loadFromFile("data/plant.png");
 
     font.loadFromFile("data/PressStart2P.ttf");
-
-    tintShader.loadFromFile("data/tint.frag", sf::Shader::Fragment);
 
     soundBufferBucketTomatoes.loadFromFile("data/bucket_tomatoes.ogg");
     soundBucketTomatoes.setBuffer(soundBufferBucketTomatoes);
