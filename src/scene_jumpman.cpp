@@ -49,7 +49,7 @@ void JumpScene::EnterScene()
 
 	npc.Reset();
 	
-	Assets::sceneMusic[current_music].stop();
+
 	Assets::sceneMusic[current_music].play();
 }
 
@@ -150,12 +150,12 @@ void JumpScene::Update(float dt)
 		bool can_carry = !cistell.IsBeingCarried() && player_had_empty_hands;
 		bool can_drop = cistell.IsCarriedBy(&player) && player.grounded;
 
-    // Agafar tomàquets.
+    // Agafar tomï¿½quets.
     for (auto* plant : Plant::getAll()) {
       if (Collide(plant->bounds(), cistell.bounds()) && cistell.IsBeingCarried()) {
-        // Agafar Tomàeuts.
+        // Agafar Tomï¿½euts.
         if ((!cistell.contents) && plant->HasTomato()) {
-          // TODO: Treure això si la collita passa automaticament.
+          // TODO: Treure aixï¿½ si la collita passa automaticament.
           contextActionButton = GameKeys::ACTIVATE;
           if (Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
             Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
@@ -163,12 +163,12 @@ void JumpScene::Update(float dt)
             cistell.contents = Cistell::TOMATOES;
             Assets::soundBucketTomatoes.play();
             can_drop = false;
-            // Agafar tomàquets té prioritat per sobre deixar anar la cistella.
+            // Agafar tomï¿½quets tï¿½ prioritat per sobre deixar anar la cistella.
           }
         }
         // Regar plantes.
         else if (cistell.contents == Cistell::WATER) {
-          // TODO: Agafar la planta que necessiti més aigua?
+          // TODO: Agafar la planta que necessiti mï¿½s aigua?
           contextActionButton = GameKeys::ACTIVATE;
           if (Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
             Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
