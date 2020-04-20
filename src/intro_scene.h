@@ -45,9 +45,9 @@ struct IntroScene : Scene {
 		text.setOrigin(text.getLocalBounds().width/2,0);
 		text.setScale(0.65f, 0.65f);
 
-		credits << "A game by:\n\nAlbert Martinez\nAlbert Vaca";
-		credits.setPosition(20, 310);
-		credits.setScale(0.45f, 0.5f);
+		credits << "A game by:\n\nAlbert Martinez\nAlbert Vaca Cintora\n\nMusic by:\n\nVeuskemini";
+		credits.setPosition(15, 300);
+		credits.setScale(0.39f, 0.45f);
 	}
 
 	void ExitScene() override {
@@ -90,7 +90,21 @@ struct IntroScene : Scene {
 			window.draw(text);
 		}
 
-		window.draw(credits);
+		int i = 0;
+		for (auto line : credits.getLines()) {
+			auto p = line.getPosition();
+			if (i++ > 0) {
+				p.y -= 10;
+				if (i > 4) {
+					p.y -= 10;
+					if (i > 6) {
+						p.y -= 10;
+					}
+				}
+			}
+			line.setPosition(p);
+			window.draw(line, credits.getTransform());
+		}
 	}
 
 };
