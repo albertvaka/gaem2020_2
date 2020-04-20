@@ -106,7 +106,7 @@ void JumpScene::Update(float dt)
 			doggo->menjar = 1;
 			lost = true;
 			StatsTracker::Stop();
-			rototext.ShowMessage("A DOGGO DIED");
+			rototext.ShowMessage("A DOGGO STARVED");
 		}
 	}
 

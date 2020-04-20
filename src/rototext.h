@@ -10,15 +10,14 @@ extern sf::Clock mainClock;
 
 class RotoText : public sf::Text
 {
-	float messageTimeStart;
 	float messageTime;
 
 public:
 
-	RotoText() : sf::Text("NO TEXT",Assets::font, 58) {
+	RotoText() : sf::Text("NO TEXT",Assets::font, 48) {
 		setFillColor(sf::Color::White);
 		setOutlineColor(sf::Color::Black);
-		setOutlineThickness(3);
+		setOutlineThickness(2);
 		messageTime = -1;
 	}
 
