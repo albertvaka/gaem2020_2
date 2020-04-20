@@ -36,9 +36,6 @@
     <ClInclude Include="src\selfregister.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\taca.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\tilemap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -70,9 +67,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\mates.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mesa.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="imgui_sfml\imconfig-SFML.h">
@@ -108,9 +102,6 @@
     <ClInclude Include="src\partsys.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\bullet.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\assets.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -124,9 +115,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\tiledexport.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\screen.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\plant.h">
@@ -148,6 +136,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\stats_tracker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\intro_scene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -30,13 +30,13 @@
     <ClInclude Include="imgui_sfml\imgui-SFML_export.h" />
     <ClInclude Include="src\cistell.h" />
     <ClInclude Include="src\doggo.h" />
+    <ClInclude Include="src\intro_scene.h" />
     <ClInclude Include="src\npc.h" />
     <ClInclude Include="src\plant.h" />
     <ClInclude Include="src\animation.h" />
     <ClInclude Include="src\anim_data.h" />
     <ClInclude Include="src\assets.h" />
     <ClInclude Include="src\bounds.h" />
-    <ClInclude Include="src\bullet.h" />
     <ClInclude Include="src\collider.h" />
     <ClInclude Include="src\debug.h" />
     <ClInclude Include="src\entity.h" />
@@ -44,10 +44,8 @@
     <ClInclude Include="src\jumpman.h" />
     <ClInclude Include="src\magic_enum.h" />
     <ClInclude Include="src\mates.h" />
-    <ClInclude Include="src\mesa.h" />
     <ClInclude Include="src\richtext.h" />
     <ClInclude Include="src\rototext.h" />
-    <ClInclude Include="src\screen.h" />
     <ClInclude Include="src\simplexnoise.h" />
     <ClInclude Include="src\singleinstance.h" />
     <ClInclude Include="src\partsys.h" />
@@ -57,7 +55,6 @@
     <ClInclude Include="src\scene_manager.h" />
     <ClInclude Include="src\selfregister.h" />
     <ClInclude Include="src\stats_tracker.h" />
-    <ClInclude Include="src\taca.h" />
     <ClInclude Include="src\tiledexport.h" />
     <ClInclude Include="src\tilemap.h" />
     <ClInclude Include="src\transition.h" />

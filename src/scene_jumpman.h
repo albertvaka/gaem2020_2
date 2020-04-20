@@ -5,7 +5,6 @@
 #include "jumpman.h"
 #include "scene_manager.h"
 #include "transition.h"
-#include "screen.h"
 #include "npc.h"
 #include "input.h"
 #include "cistell.h"
@@ -20,7 +19,6 @@ struct JumpScene : Scene {
 	Npc npc;
 	Cistell cistell;
 	RotoText rototext;
-	
 
 	bool lost = false;
 	int moneys = 150;
