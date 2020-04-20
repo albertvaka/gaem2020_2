@@ -159,13 +159,8 @@ public:
 
 namespace Window
 {
-#ifdef __APPLE__ //Retina display
-	const int GUI_ZOOM = 2;
-	const int GAME_ZOOM = 4;
-#else 
 	const int GUI_ZOOM = 1;
 	const int GAME_ZOOM = 2;
-#endif
 	const int WINDOW_HEIGHT = 420*GAME_ZOOM;
 	const int WINDOW_WIDTH = 828*GAME_ZOOM;
 
