@@ -16,6 +16,7 @@
 #include "debug.h"
 
 #include "scene_jumpman.h"
+#include "intro_scene.h"
 
 Scene* SceneManager::currentScene = nullptr;
 sf::Clock mainClock;
@@ -48,7 +49,7 @@ int main()
 
 	sf::Clock dtClock;
 
-	Scene* currentScene = new JumpScene();
+	Scene* currentScene = new IntroScene();
 	SceneManager::SetScene(currentScene);
 	currentScene->EnterScene();
 	while (window.isOpen())
