@@ -46,6 +46,7 @@ void JumpScene::EnterScene()
 
 	cistell.carrier = nullptr;
 	cistell.pos = vec(550,355);
+	cistell.contents = Cistell::EMPTY;
 
 	npc.Reset();
 	
@@ -57,7 +58,7 @@ void JumpScene::ExitScene()
 {
 	Plant::deleteAll();
 	Doggo::deleteAll();
-	Doggo::AllDestinations().clear();
+	Doggo::ResetDestinations();
 }
 
 void JumpScene::Update(float dt)

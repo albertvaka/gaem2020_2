@@ -27,8 +27,7 @@ struct Doggo : BoxEntity, EntS<Doggo>
 	int destination = 0;
 	bool wantFood = false;
 
-
-	void PlaySound() {
+	static void PlaySound() {
 		switch (Random::roll(3)) {
 		case 0:
 			Assets::soundDoggo1.play();
@@ -49,14 +48,18 @@ struct Doggo : BoxEntity, EntS<Doggo>
 		return all_destinations;
 	}
 
+	static void ResetDestinations() {
+		AllDestinations().clear();
+		AllDestinations().insert(2);
+	}
+
 	Doggo() : BoxEntity(vec(), vec(28,28)) {
 		++StatsTracker::doggos_in_game;
 		anim.Ensure(DOGGO_RIGHT);
 
 		
 		if (AllDestinations().size() == TiledEntities::waypoint.size()) {
-			AllDestinations().clear();
-			AllDestinations().insert(2);
+			ResetDestinations();
 		}
 
 		while (true) {
