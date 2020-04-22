@@ -16,6 +16,12 @@ const int kMoneyBuyPlant = 100; //Super const, actually
 const float kDoggoInterval = 90; //seconds
 const float kinitialDoggoInterval = 40; //seconds
 
+static void AddPlayer() {
+	auto* player = new JumpMan();
+	player->pos = TiledEntities::spawn;
+	player->Carry(new Cistell());
+}
+
 JumpScene::JumpScene()
 	: map(TiledMap::map_size.x, TiledMap::map_size.y)
 	, moneyText(Assets::font)
@@ -87,6 +93,9 @@ void JumpScene::Update(float dt)
 		return;
 	}
 
+	if (Keyboard::IsKeyJustPressed(GameKeys::DEBUG_ADD_PLAYER)) {
+		AddPlayer();
+	}
 
 	if (Keyboard::IsKeyJustPressed(GameKeys::DEBUG_DOGGO)) {
 		new Doggo();

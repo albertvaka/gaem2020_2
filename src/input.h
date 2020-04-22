@@ -28,6 +28,7 @@ enum GameKeys
 	DEBUG_DOGGO,
 	DEBUG_SET_PLANTS_AT_MAX_STATS,
 	DEBUG_GET_MONEY,
+	DEBUG_ADD_PLAYER,
 	MUTE,
 	NEXT_TRACK,
 	RESTART,
@@ -55,6 +56,7 @@ inline void RemapInput()
 	key_map[GameKeys::DEBUG_DOGGO] = sf::Keyboard::Equal;
 	key_map[GameKeys::DEBUG_SET_PLANTS_AT_MAX_STATS] = sf::Keyboard::F8;
 	key_map[GameKeys::DEBUG_GET_MONEY] = sf::Keyboard::F6;
+	key_map[GameKeys::DEBUG_ADD_PLAYER] = sf::Keyboard::F7;
 	key_map[GameKeys::MUTE] = sf::Keyboard::M;
 	key_map[GameKeys::NEXT_TRACK] = sf::Keyboard::Comma;
 }
