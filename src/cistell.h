@@ -1,5 +1,6 @@
 #pragma once
 
+#include "selfregister.h"
 #include "entity.h"
 #include "animation.h"
 #include "singleinstance.h"
@@ -13,7 +14,7 @@
 
 const vec kCarryPositionOffset = {8.0f, -8.0f};
 
-struct Cistell : BoxEntity, SingleInstance<Cistell>
+struct Cistell : BoxEntity, EntS<Cistell>
 {
 	enum Contents : char {
 		EMPTY = 0,

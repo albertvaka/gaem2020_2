@@ -32,8 +32,8 @@ void JumpScene::EnterScene()
 {
 	lost = false;
 
-	player.Reset();
-	player.pos = TiledEntities::spawn;
+	auto* player = new JumpMan();
+	player->pos = TiledEntities::spawn;
 	StatsTracker::Restart();
 
 #ifdef _DEBUG
@@ -44,18 +44,19 @@ void JumpScene::EnterScene()
 
 	timerDoggo = kDoggoInterval - kinitialDoggoInterval;
 
-	cistell.carrier = nullptr;
-	cistell.pos = vec(550,355);
-	cistell.contents = Cistell::EMPTY;
+	auto* cistell = new Cistell();
+	cistell->carrier = nullptr;
+	cistell->pos = vec(550,355);
 
 	npc.Reset();
-	
 
 	Assets::sceneMusic[current_music].play();
 }
 
 void JumpScene::ExitScene()
 {
+	JumpMan::deleteAll();
+	Cistell::deleteAll();
 	Plant::deleteAll();
 	Doggo::deleteAll();
 	Doggo::ResetDestinations();
@@ -91,17 +92,23 @@ void JumpScene::Update(float dt)
 		new Doggo();
 	}
 	
-	player.Update(dt);
+	for (auto* player : JumpMan::getAll()) {
+    player->Update(dt);
+	}
 	for (Doggo* doggo : Doggo::getAll()) {
-    if (player.IsCarrying(JumpMan::Holdable::Basket) && cistell.contents == Cistell::TOMATOES && Collide(player.bounds(), doggo->bounds())) {
-      contextActionButton = GameKeys::ACTIVATE;
-      if (Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
-        Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
-        // Assets::DoggoEatingSound.play();
-				doggo->Feed();
-        cistell.contents = Cistell::EMPTY;
-      }
-    }
+		for (auto* player : JumpMan::getAll()) {
+			if (player->IsCarrying(JumpMan::Holdable::Basket) && player->cistell->contents == Cistell::TOMATOES && Collide(player->bounds(), doggo->bounds())) {
+        contextActionButton = GameKeys::ACTIVATE;
+        if (Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
+          Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
+          // Assets::DoggoEatingSound.play();
+          doggo->Feed();
+          player->cistell->contents = Cistell::EMPTY;
+          break;
+        }
+			}
+		}
+
 		doggo->Update(dt);
 		if (doggo->menjar <= 0) {
 			doggo->menjar = 1;
@@ -117,7 +124,9 @@ void JumpScene::Update(float dt)
 	contextActionButton = GameKeys::NONE;
 
 	npc.Update(dt);
-	cistell.Update(dt);
+	for (auto* cistell : Cistell::getAll()) {
+    cistell->Update(dt);
+	}
 
 	timerDoggo += dt;
 	if (timerDoggo >= kDoggoInterval) {
@@ -126,133 +135,142 @@ void JumpScene::Update(float dt)
 	}
 
 	// Sell tomatoes.
-	if (player.IsCarrying(JumpMan::Holdable::Basket) && cistell.contents == Cistell::TOMATOES && Collide(player.bounds(), TiledAreas::truck)) {
-		contextActionButton = GameKeys::ACTIVATE;
-		if (Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
-			Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
-			moneys += kMoneySellTomatoes;
-			++StatsTracker::tomatoes_delivered;
-			if (GoodRandom::roll_flipcoin()) {
-				Assets::soundSell1.play();
-			}
-			else {
-				Assets::soundSell2.play();
-			}
-			moneyText.clear();
-			moneyTextTimer = 0.5f;
-			moneyText << sfe::Outline(sf::Color::Black, 1) << sf::Color::Green << "$" << std::to_string(kMoneySellTomatoes);
-			cistell.contents = Cistell::EMPTY;
-		}
+	for (auto* player : JumpMan::getAll()) {
+    if (player->IsCarrying(JumpMan::Holdable::Basket) && player->cistell->contents == Cistell::TOMATOES && Collide(player->bounds(), TiledAreas::truck)) {
+      contextActionButton = GameKeys::ACTIVATE;
+      if (Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
+        Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
+        moneys += kMoneySellTomatoes;
+        ++StatsTracker::tomatoes_delivered;
+        if (GoodRandom::roll_flipcoin()) {
+          Assets::soundSell1.play();
+        }
+        else {
+          Assets::soundSell2.play();
+        }
+        moneyText.clear();
+        moneyTextTimer = 0.5f;
+        moneyText << sfe::Outline(sf::Color::Black, 1) << sf::Color::Green << "$" << std::to_string(kMoneySellTomatoes);
+        player->cistell->contents = Cistell::EMPTY;
+      }
+    }
 	}
 
 
-	bool player_had_empty_hands = player.CanCarry();
-  if (Collide(cistell.bounds(), player.bounds())) {
-		bool can_carry = !cistell.IsBeingCarried() && player_had_empty_hands;
-		bool can_drop = cistell.IsCarriedBy(&player) && player.grounded;
+	// All actions with the Player already carrying a Bucket.
+	for (auto* player : JumpMan::getAll()) {
+		auto* cistell = player->cistell;
+		if (cistell == nullptr) {
+			continue;
+		}
 
-    // Agafar tom�quets.
     for (auto* plant : Plant::getAll()) {
-      if (Collide(plant->bounds(), cistell.bounds()) && cistell.IsBeingCarried()) {
+      // Agafar tom�quets.
+      if (Collide(plant->bounds(), cistell->bounds())) {
         // Agafar Tom�euts.
-        if ((!cistell.contents) && plant->HasTomato()) {
+        if ((!cistell->contents) && plant->HasTomato()) {
           // TODO: Treure aix� si la collita passa automaticament.
           contextActionButton = GameKeys::ACTIVATE;
           if (Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
             Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
             plant->PickTomato();
-            cistell.contents = Cistell::TOMATOES;
+            cistell->contents = Cistell::TOMATOES;
             Assets::soundBucketTomatoes.play();
-            can_drop = false;
-            // Agafar tom�quets t� prioritat per sobre deixar anar la cistella.
           }
         }
         // Regar plantes.
-        else if (cistell.contents == Cistell::WATER) {
+        else if (cistell->contents == Cistell::WATER) {
           // TODO: Agafar la planta que necessiti m�s aigua?
           contextActionButton = GameKeys::ACTIVATE;
           if (Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
             Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
             plant->SetHitByWater();
-            cistell.contents = Cistell::EMPTY;
+            cistell->contents = Cistell::EMPTY;
             Assets::soundWater.play();
-            can_drop = false;
           }
         }
 
       }
     }
     // Agafar aigua.
-    if (Collide(TiledAreas::water, cistell.bounds()) && cistell.IsBeingCarried() && (!cistell.contents)) {
+    if (Collide(TiledAreas::water, cistell->bounds()) && !cistell->contents) {
       contextActionButton = GameKeys::ACTIVATE;
       if (Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
         Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
-        cistell.contents = Cistell::WATER;
+        cistell->contents = Cistell::WATER;
         Assets::soundBucketWater.play();
       }
-      can_drop = false;
     }
-
-		if (can_carry) {
-			contextActionButton = GameKeys::ACTIVATE;
-		}
-		if (Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
-			if (can_drop) {
-				Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
-				player.DropItem();
-				Assets::soundPickupDrop.play();
-			} else if (can_carry) {
-				Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
-				player.Carry(&cistell);
-				Assets::soundPickupDrop.play();
-			}
-		}
-  }
-
-	for (auto* plant : Plant::getAll()) {
-		if (Collide(plant->bounds(), player.bounds())) {
-			bool can_carry = !plant->IsBeingCarried() && player.CanCarry() && player_had_empty_hands;
-			bool can_drop = plant->IsCarriedBy(&player) && player.grounded;
-			if (can_carry) {
-				contextActionButton = GameKeys::ACTIVATE;
-			}
-			if (Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
-				if (can_drop) {
-					Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
-					player.DropItem();
-					Assets::soundPickupDrop.play();
-				} else if (can_carry) {
-					Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
-					player.Carry(plant);
-					Assets::soundPickupDrop.play();
-				}
-			}
-		}
-		plant->SetHitByLight(Collide(plant->bounds(), TiledAreas::sun));
-
-		plant->Update(dt);
-
+    // Drop Bucket
+    if (Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
+      Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
+      player->DropItem();
+      Assets::soundPickupDrop.play();
+    }
 	}
 
 
-	// Buy plant
-	if (npc.isSelling() && Collide(player.bounds(), TiledAreas::npc) && player.IsCarrying(JumpMan::Holdable::None)) {
-		contextActionButton = GameKeys::ACTIVATE;
-		if (Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
-			Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
-			if (moneys >= kMoneyBuyPlant) {
-				moneys -= kMoneyBuyPlant;
-				moneyText.clear();
-				moneyTextTimer = 0.5f;
-				moneyText << sfe::Outline(sf::Color::Black, 1) << sf::Color::Red << "-$" << std::to_string(kMoneyBuyPlant);
-				++StatsTracker::plants_purchased;
-				player.Carry(new Plant(vec()));
-				Assets::soundBuy.play();
-			}
-			else {
-				cantbuyTimer = mainClock.getElapsedTime().asMilliseconds() + 1000;
+	// Pick up Bucket by Player
+	for (auto* player : JumpMan::getAll()) {
+		for (auto* cistell : Cistell::getAll()) {
+			if (Collide(player->bounds(), cistell->bounds()) && player->CanCarry() && !cistell->IsBeingCarried()) {
+        contextActionButton = GameKeys::ACTIVATE;
+				if (Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
+					player->Carry(cistell);
+          Assets::soundPickupDrop.play();
+				}
 			}
 		}
+	}
+
+	for (auto* plant : Plant::getAll()) {
+		// Check if any player can pick up the plant.
+		for (auto* player : JumpMan::getAll()) {
+      if (Collide(plant->bounds(), player->bounds())) {
+        bool can_carry = !plant->IsBeingCarried() && player->CanCarry();
+        bool can_drop = plant->IsCarriedBy(player) && player->grounded;
+        if (can_carry) {
+          contextActionButton = GameKeys::ACTIVATE;
+        }
+        if (Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
+          if (can_drop) {
+            Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
+            player->DropItem();
+            Assets::soundPickupDrop.play();
+          } else if (can_carry) {
+            Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
+            player->Carry(plant);
+            Assets::soundPickupDrop.play();
+          }
+        }
+      }
+		}
+
+		plant->SetHitByLight(Collide(plant->bounds(), TiledAreas::sun));
+		plant->Update(dt);
+	}
+
+
+	// Buy plants from NPCs.
+	for (auto* player : JumpMan::getAll()) {
+    if (npc.isSelling() && Collide(player->bounds(), TiledAreas::npc) && player->IsCarrying(JumpMan::Holdable::None)) {
+      contextActionButton = GameKeys::ACTIVATE;
+      if (Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
+        Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
+        if (moneys >= kMoneyBuyPlant) {
+          moneys -= kMoneyBuyPlant;
+          moneyText.clear();
+          moneyTextTimer = 0.5f;
+          moneyText << sfe::Outline(sf::Color::Black, 1) << sf::Color::Red << "-$" << std::to_string(kMoneyBuyPlant);
+          ++StatsTracker::plants_purchased;
+          player->Carry(new Plant(vec()));
+          Assets::soundBuy.play();
+        }
+        else {
+          cantbuyTimer = mainClock.getElapsedTime().asMilliseconds() + 1000;
+        }
+      }
+    }
 	}
 
 	moneyTextTimer -= dt;
@@ -334,12 +352,16 @@ void JumpScene::Draw(sf::RenderTarget& window)
 		plant->Draw(window);
 	}
 	
-	cistell.Draw(window);
-	player.Draw(window);
-
-
-	if (cistell.IsBeingCarried()) {
-		cistell.Draw(window);
+	for (const auto* cistell : Cistell::getAll()) {
+    cistell->Draw(window);
+	}
+	for (const auto* player : JumpMan::getAll()) {
+    player->Draw(window);
+	}
+	for (const auto* cistell : Cistell::getAll()) {
+    if (cistell->IsBeingCarried()) {
+      cistell->Draw(window);
+    }
 	}
 	for (auto* plant : Plant::getAll()) {
 		if (plant->IsBeingCarried()) {
@@ -347,7 +369,6 @@ void JumpScene::Draw(sf::RenderTarget& window)
 			break;
 		}
 	}
-
 
 	//Truck
 	spr.setPosition(702, 297);
@@ -364,12 +385,15 @@ void JumpScene::Draw(sf::RenderTarget& window)
 	// Sunny sun.
   DrawSun(window);
 
-	if (contextActionButton != GameKeys::NONE) {
-		sf::Sprite& spr = Assets::hospitalSprite;
-		spr.setPosition(player.bounds().TopRight() + vec(2, -6));
-		AnimationType anim = BUTTON_A_PRESS; // TODO: switch depending on the key
-		spr.setTextureRect(Animation::AnimFrame(anim, globalMillis));
-		window.draw(spr);
+	// TODO: Do this properly for each player.
+	for (auto* player : JumpMan::getAll()) {
+    if (contextActionButton != GameKeys::NONE) {
+      sf::Sprite& spr = Assets::hospitalSprite;
+      spr.setPosition(player->bounds().TopRight() + vec(2, -6));
+      AnimationType anim = BUTTON_A_PRESS; // TODO: switch depending on the key
+      spr.setTextureRect(Animation::AnimFrame(anim, globalMillis));
+      window.draw(spr);
+    }
 	}
 
 	sfe::RichText text(Assets::font);
@@ -385,9 +409,12 @@ void JumpScene::Draw(sf::RenderTarget& window)
 	text << sfe::Outline(sf::Color::Black, 2) << "$" << std::to_string(moneys);
 	window.draw(text);
 
-	if (moneyTextTimer > 0) {
-		moneyText.setPosition(player.bounds().Center() - vec(moneyText.getLocalBounds().width/4, player.bounds().height/2 + moneyText.getLocalBounds().height - 35*moneyTextTimer));
-		window.draw(moneyText);
+	// TODO: Fix this for many players.
+	for (const auto* player : JumpMan::getAll()) {
+    if (moneyTextTimer > 0) {
+      moneyText.setPosition(player->bounds().Center() - vec(moneyText.getLocalBounds().width/4, player->bounds().height/2 + moneyText.getLocalBounds().height - 35*moneyTextTimer));
+      window.draw(moneyText);
+    }
 	}
 	
 	if (Debug::Draw) {
@@ -396,12 +423,14 @@ void JumpScene::Draw(sf::RenderTarget& window)
 		Bounds(TiledAreas::truck).Draw(window);
 		Bounds(TiledAreas::water).Draw(window);
 
-		player.bounds().Draw(window);
-		for (const auto& plant : Plant::getAll()) {
-			plant->bounds().Draw(window);
+		for (const auto* player : JumpMan::getAll()) {
+      player->bounds().Draw(window);
+      for (const auto& plant : Plant::getAll()) {
+        plant->bounds().Draw(window);
+      }
+      //player.pos.Debuggerino(sf::Color::White);
+      //player.bounds().Center().Debuggerino(sf::Color::Magenta);
 		}
-		//player.pos.Debuggerino(sf::Color::White);
-		//player.bounds().Center().Debuggerino(sf::Color::Magenta);
 	}
 
 

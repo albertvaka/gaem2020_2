@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <functional>
+#include <algorithm>
 
 /**
  * Inheriting from this class gives you a static method getAll()

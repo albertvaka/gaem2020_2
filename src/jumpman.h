@@ -1,5 +1,6 @@
 #pragma once
 
+#include "selfregister.h"
 #include "entity.h"
 #include "vector.h"
 #include "bounds.h"
@@ -11,7 +12,7 @@
 struct Cistell;
 struct Plant;
 
-struct JumpMan : Entity, SingleInstance<JumpMan>
+struct JumpMan : Entity, EntS<JumpMan>
 {
     JumpMan();
     void Update(float GameTime);

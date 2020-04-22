@@ -15,9 +15,7 @@
 struct JumpScene : Scene {
 
 	TileMap map;
-	JumpMan player;
 	Npc npc;
-	Cistell cistell;
 	RotoText rototext;
 
 	bool lost = false;
