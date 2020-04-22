@@ -6,7 +6,8 @@
 #include "input.h"
 #include "assets.h"
 
-extern sf::Clock mainClock;
+/*
+extern float mainClock;
 
 class RotoText : public sf::Text
 {
@@ -74,3 +75,4 @@ public:
 
 
 
+*/

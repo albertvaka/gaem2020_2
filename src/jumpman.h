@@ -16,7 +16,7 @@ struct JumpMan : Entity, EntS<JumpMan>
 {
     JumpMan();
     void Update(float GameTime);
-    void Draw(sf::RenderTarget& window) const;
+    void Draw() const;
     void Reset() {
         vel = vec(0, 0);
         polvito.Clear();

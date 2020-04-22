@@ -10,27 +10,22 @@ struct Assets
 
 
 	static sf::Texture hospitalTexture;
-	static sf::Sprite hospitalSprite;
 
 	static std::array<sf::Texture, 3> sunTextures;
-	static std::array<sf::Sprite, 3> sunSprites;
 
 	static sf::Texture marioTexture;
-	static sf::Sprite marioSprite;
 
 	static sf::Texture spritesTexture;
-	static sf::Sprite spritesSprite;
 	static sf::Texture npcTexture;
-	static sf::Sprite npcSprite;
 
 	static sf::Texture casaTexture;
-	static sf::Sprite casaSprite;
 	static sf::Texture plantTexture;
 
 	static sf::Texture doggoTexture;
-	static sf::Sprite doggoSprite;
-
+	
+	/*
 	static sf::Font font;
+		*/
 
 	static sf::SoundBuffer soundBufferBucketTomatoes;
 	static sf::Sound soundBucketTomatoes;

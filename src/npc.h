@@ -48,31 +48,22 @@ struct Npc : BoxEntity, SingleInstance<Npc>
 		animation.Update(dt * 1000);
 	}
 
-	void Draw(sf::RenderTarget& window) const
+	void Draw() const
 	{
-		sf::Sprite& spr = Assets::npcSprite;
-		//spr.setScale(1.f, 1.f);
-		spr.setOrigin(15,25);
-		spr.setPosition(pos.x, pos.y);
-		spr.setTextureRect(animation.CurrentFrame());
-		window.draw(spr);
-		spr.setOrigin(0, 0);
-		spr.setScale(1.f, 1.f);
+		Window::Draw(Assets::npcTexture, pos)
+			.withRect(animation.CurrentFrame())
+			.withOrigin(15, 25);
 
 		if (timer > 4.f) {
-			sf::Sprite& spr = Assets::spritesSprite;
-			spr.setOrigin(45, 64);
 			float scale = Mates::MinOf((timer-4)*5,1.f);
-			spr.setScale(scale, scale);
-			spr.setPosition(pos.x, pos.y+4);
-			spr.setTextureRect(sf::IntRect(0,41,89,128-42));
-			window.draw(spr);
-			spr.setOrigin(0, 0);
-			spr.setScale(1.f, 1.f);
+			Window::Draw(Assets::spritesTexture, pos + vec(0, 4))
+				.withRect(0, 41, 89, 128 - 42)
+				.withScale(scale)
+				.withOrigin(45, 64);
 		}
 
 		if (Debug::Draw) {
-			bounds().Draw(window);
+			bounds().Draw();
 		}
 	}
 };

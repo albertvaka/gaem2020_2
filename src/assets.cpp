@@ -1,28 +1,22 @@
 #include "assets.h"
 
 sf::Texture Assets::hospitalTexture;
-sf::Sprite Assets::hospitalSprite;
 
 std::array<sf::Texture, 3> Assets::sunTextures;	
-std::array<sf::Sprite, 3> Assets::sunSprites;	
 
 sf::Texture Assets::marioTexture;
-sf::Sprite Assets::marioSprite;
 
 sf::Texture Assets::casaTexture;
-sf::Sprite Assets::casaSprite;
 sf::Texture Assets::plantTexture;
 
 sf::Texture Assets::spritesTexture;
-sf::Sprite Assets::spritesSprite;
 sf::Texture Assets::npcTexture;
-sf::Sprite Assets::npcSprite;
 
 sf::Texture Assets::doggoTexture;
-sf::Sprite Assets::doggoSprite;
 
+/*
 sf::Font Assets::font;
-
+*/
 sf::SoundBuffer Assets::soundBufferBucketTomatoes;
 sf::Sound Assets::soundBucketTomatoes;
 sf::SoundBuffer Assets::soundBufferBuy;
@@ -57,38 +51,32 @@ sf::Sound Assets::soundDoggo3;
 
 sf::Music Assets::sceneMusic[2];
 
+
 void Assets::LoadAll() {
 
     hospitalTexture.loadFromFile("data/spritesheet.png");
-    hospitalSprite.setTexture(hospitalTexture);
 
     marioTexture.loadFromFile("data/mario.png");
-    marioSprite.setTexture(marioTexture);
 
     for (int i = 0; i < 3; ++i) {	
       std::string filename = "data/sun" + std::to_string(i) + ".png";	
-      sunTextures[i].loadFromFile(filename);	
-      sunSprites[i].setTexture(sunTextures[i]);	
-      sunSprites[i].setPosition(217.0f, 0.0f);	
+      sunTextures[i].loadFromFile(filename);
     }
 
     spritesTexture.loadFromFile("data/sprites.png");
-    spritesSprite.setTexture(spritesTexture);
 
     npcTexture.loadFromFile("data/npc.png");
-    npcSprite.setTexture(npcTexture);
 
     casaTexture.loadFromFile("data/bg.png");
-    casaSprite.setTexture(casaTexture);
 
     doggoTexture.loadFromFile("data/doggo.png");
-    doggoSprite.setTexture(doggoTexture);
 
 
     plantTexture.loadFromFile("data/plant.png");
 
+    /*
     font.loadFromFile("data/PressStart2P.ttf");
-
+    */
     soundBufferBucketTomatoes.loadFromFile("data/bucket_tomatoes.ogg");
     soundBucketTomatoes.setBuffer(soundBufferBucketTomatoes);
 

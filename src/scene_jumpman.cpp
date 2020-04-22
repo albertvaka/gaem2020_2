@@ -7,8 +7,9 @@
 #include "debug.h"
 #include "doggo.h"
 #include "stats_tracker.h"
+#include "cistell.h"
 
-extern sf::Clock mainClock;
+extern float mainClock;
 
 const int kInitialMoney = 120;
 const int kMoneySellTomatoes = 30;
@@ -24,9 +25,9 @@ static void AddPlayer() {
 
 JumpScene::JumpScene()
 	: map(TiledMap::map_size.x, TiledMap::map_size.y)
-	, moneyText(Assets::font)
+	//, moneyText(Assets::font)
 {
-	moneyText.setScale(0.45f, 0.45f);
+	//moneyText.setScale(0.45f, 0.45f);
 	map.LoadFromTiled();
 
 	Camera::SetZoom(Window::GAME_ZOOM);
@@ -89,7 +90,7 @@ void JumpScene::Update(float dt)
 	}
 
 	if (lost) {
-		rototext.Update(dt);
+		//rototext.Update(dt);
 		return;
 	}
 
@@ -122,8 +123,8 @@ void JumpScene::Update(float dt)
 		if (doggo->menjar <= 0) {
 			doggo->menjar = 1;
 			lost = true;
-			StatsTracker::Stop();
-			rototext.ShowMessage("A DOGGO STARVED");
+			//StatsTracker::Stop();
+			//rototext.ShowMessage("A DOGGO STARVED");
 		}
 	}
 
@@ -145,26 +146,25 @@ void JumpScene::Update(float dt)
 
 	// Sell tomatoes.
 	for (auto* player : JumpMan::getAll()) {
-    if (player->IsCarrying(JumpMan::Holdable::Basket) && player->cistell->contents == Cistell::TOMATOES && Collide(player->bounds(), TiledAreas::truck)) {
-      contextActionButton = GameKeys::ACTIVATE;
-      if (Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
-        Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
-        moneys += kMoneySellTomatoes;
-        ++StatsTracker::tomatoes_delivered;
-        if (GoodRandom::roll_flipcoin()) {
-          Assets::soundSell1.play();
-        }
-        else {
-          Assets::soundSell2.play();
-        }
-        moneyText.clear();
-        moneyTextTimer = 0.5f;
-        moneyText << sfe::Outline(sf::Color::Black, 1) << sf::Color::Green << "$" << std::to_string(kMoneySellTomatoes);
-        player->cistell->contents = Cistell::EMPTY;
-      }
-    }
+		if (player->IsCarrying(JumpMan::Holdable::Basket) && player->cistell->contents == Cistell::TOMATOES && Collide(player->bounds(), TiledAreas::truck)) {
+			contextActionButton = GameKeys::ACTIVATE;
+			if (Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
+				Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
+				moneys += kMoneySellTomatoes;
+				++StatsTracker::tomatoes_delivered;
+				if (GoodRandom::roll_flipcoin()) {
+					Assets::soundSell1.play();
+				}
+				else {
+					Assets::soundSell2.play();
+				}
+				//moneyText.clear();
+				//moneyTextTimer = 0.5f;
+				//moneyText << sfe::Outline(sf::Color::Black, 1) << sf::Color::Green << "$" << std::to_string(kMoneySellTomatoes);
+				player->cistell->contents = Cistell::EMPTY;
+			}
+		}
 	}
-
 
 	// All actions with the Player already carrying a Bucket.
 	for (auto* player : JumpMan::getAll()) {
@@ -262,33 +262,33 @@ void JumpScene::Update(float dt)
 
 	// Buy plants from NPCs.
 	for (auto* player : JumpMan::getAll()) {
-    if (npc.isSelling() && Collide(player->bounds(), TiledAreas::npc) && player->IsCarrying(JumpMan::Holdable::None)) {
-      contextActionButton = GameKeys::ACTIVATE;
-      if (Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
-        Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
-        if (moneys >= kMoneyBuyPlant) {
-          moneys -= kMoneyBuyPlant;
-          moneyText.clear();
-          moneyTextTimer = 0.5f;
-          moneyText << sfe::Outline(sf::Color::Black, 1) << sf::Color::Red << "-$" << std::to_string(kMoneyBuyPlant);
-          ++StatsTracker::plants_purchased;
-          player->Carry(new Plant(vec()));
-          Assets::soundBuy.play();
-        }
-        else {
-          cantbuyTimer = mainClock.getElapsedTime().asMilliseconds() + 1000;
-        }
-      }
-    }
+		if (npc.isSelling() && Collide(player->bounds(), TiledAreas::npc) && player->IsCarrying(JumpMan::Holdable::None)) {
+			contextActionButton = GameKeys::ACTIVATE;
+			if (Keyboard::IsKeyJustPressed(GameKeys::ACTIVATE)) {
+			Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
+				if (moneys >= kMoneyBuyPlant) {
+					moneys -= kMoneyBuyPlant;
+					//moneyText.clear();
+					//moneyTextTimer = 0.5f;
+					//moneyText << sfe::Outline(sf::Color::Black, 1) << sf::Color::Red << "-$" << std::to_string(kMoneyBuyPlant);
+					++StatsTracker::plants_purchased;
+					player->Carry(new Plant(vec()));
+					Assets::soundBuy.play();
+				}
+				else {
+					cantbuyTimer = mainClock*1000 + 1000;
+				}
+			}
+		}
 	}
 
 	moneyTextTimer -= dt;
 
 	if (Keyboard::IsKeyJustPressed(GameKeys::DEBUG_GET_MONEY)) {
 		moneys += 100;
-		moneyText.clear();
+		//moneyText.clear();
 		moneyTextTimer = 0.5f;
-		moneyText << sfe::Outline(sf::Color::Black, 1) << sf::Color::Green << "$100";
+		//moneyText << sfe::Outline(sf::Color::Black, 1) << sf::Color::Green << "$100";
 	}
 
 }
@@ -307,13 +307,12 @@ static const float SunLimits[4][2] =
   {-4.0f, 3.0f}, // Repetir Sol2 per al principi
 };
 
-static void DrawSun(sf::RenderTarget& window)
+static void DrawSun()
 {
 	static sf::Clock sun_clock;
-	auto time = sun_clock.getElapsedTime().asSeconds();
-  if (time > 13.0f) {
-    sun_clock.restart();
-  }
+	float time = mainClock;
+	time -= int(time/13)*13;
+
 	const float max_alpha = 128.0f;
 	for (int i = 0; i < 4; ++i) {
 		if (time >= SunLimits[i][0] && time <= SunLimits[i][1]) {
@@ -321,90 +320,83 @@ static void DrawSun(sf::RenderTarget& window)
 			const float half_size = (SunLimits[i][1] - SunLimits[i][0])/2.0f;
       float ratio = (time < mid ? (time-SunLimits[i][0])/half_size : 1.0f-(time-mid)/half_size);
 			assert(ratio >= 0 && ratio <= 1.0f);
-      auto& spr = Assets::sunSprites[std::min(i, 2)];
-			spr.setColor(sf::Color(255, 255, 255, 50*ratio));
-			window.draw(spr);
+
+			Window::Draw(Assets::sunTextures[std::min(i, 2)], vec(217.0f, 0.0f))
+				.withAlpha(50 * ratio);
 		}
 	}
 }
 
-void JumpScene::Draw(sf::RenderTarget& window)
+void JumpScene::Draw()
 {
-	window.clear(sf::Color(34, 32, 52));
+	Window::Clear(34, 32, 52);
 
-	window.draw(Assets::casaSprite);
+	Window::Draw(Assets::casaTexture, vec(0,0));
 
 	if (Debug::Draw) {
-		map.Draw(window);
+		map.Draw();
 	}
 
-	int globalMillis = mainClock.getElapsedTime().asMilliseconds();
+	int globalMillis = int(mainClock*1000);
 
 	//Fountain
-	sf::Sprite& spr = Assets::spritesSprite;
-	spr.setPosition(413, 329);
-	spr.setOrigin(0, 0);
-	spr.setScale(1.8f, 1.45f);
-	spr.setTextureRect(Animation::AnimFrame(FOUNTAIN, globalMillis));
-	window.draw(spr);
-	spr.setScale(1.f, 1.f);
+	Window::Draw(Assets::spritesTexture, vec(413,329))
+		.withRect(Animation::AnimFrame(FOUNTAIN, globalMillis))
+		.withScale(1.8f, 1.45f);
 
-	npc.Draw(window);
+	npc.Draw();
 
 	for (Doggo* doggo : Doggo::getAll()) {
 		if (doggo->wantFood) {
-			doggo->Draw(window);
+			doggo->Draw();
 		}
 	}
 
 	for (auto* plant : Plant::getAll()) {
-		plant->Draw(window);
+		plant->Draw();
 	}
 	
 	for (const auto* cistell : Cistell::getAll()) {
-    cistell->Draw(window);
+		cistell->Draw();
 	}
 	for (const auto* player : JumpMan::getAll()) {
-    player->Draw(window);
+		player->Draw();
 	}
 	for (const auto* cistell : Cistell::getAll()) {
-    if (cistell->IsBeingCarried()) {
-      cistell->Draw(window);
-    }
+		if (cistell->IsBeingCarried()) {
+			cistell->Draw();
+		}
 	}
 	for (auto* plant : Plant::getAll()) {
 		if (plant->IsBeingCarried()) {
-			plant->Draw(window);
+			plant->Draw();
 			break;
 		}
 	}
 
 	//Truck
-	spr.setPosition(702, 297);
-	spr.setOrigin(0, 0);
-	spr.setTextureRect(sf::IntRect(0, 8 * 16, 11 * 16 + 4, 72));
-	window.draw(spr);
-
+	Window::Draw(Assets::spritesTexture, vec(702, 297))
+		.withRect(0, 8 * 16, 11 * 16 + 4, 72);
+		
 	for (Doggo* doggo : Doggo::getAll()) {
 		if (!doggo->wantFood) {
-			doggo->Draw(window);
+			doggo->Draw();
 		}
 	}
 
 	// Sunny sun.
-  DrawSun(window);
+  DrawSun();
 
 	// TODO: Do this properly for each player.
 	for (auto* player : JumpMan::getAll()) {
-    if (contextActionButton != GameKeys::NONE) {
-      sf::Sprite& spr = Assets::hospitalSprite;
-      spr.setPosition(player->bounds().TopRight() + vec(2, -6));
-      AnimationType anim = BUTTON_A_PRESS; // TODO: switch depending on the key
-      spr.setTextureRect(Animation::AnimFrame(anim, globalMillis));
-      window.draw(spr);
-    }
+		if (contextActionButton != GameKeys::NONE) {
+			AnimationType anim = BUTTON_A_PRESS; // TODO: switch depending on the key
+			Window::Draw(Assets::hospitalTexture, player->bounds().TopRight() + vec(2, -6))
+			  .withRect(Animation::AnimFrame(anim, globalMillis));
+		}
 	}
 
+	/*
 	sfe::RichText text(Assets::font);
 	text.setPosition(10, 10);
 	text.setScale(0.8f, 0.8f);
@@ -425,27 +417,27 @@ void JumpScene::Draw(sf::RenderTarget& window)
       window.draw(moneyText);
     }
 	}
-	
+	*/
+
 	if (Debug::Draw) {
-		Bounds(TiledAreas::sun).Draw(window);
-		Bounds(TiledAreas::npc).Draw(window);
-		Bounds(TiledAreas::truck).Draw(window);
-		Bounds(TiledAreas::water).Draw(window);
+		Bounds(TiledAreas::sun).Draw();
+		Bounds(TiledAreas::npc).Draw();
+		Bounds(TiledAreas::truck).Draw();
+		Bounds(TiledAreas::water).Draw();
 
 		for (const auto* player : JumpMan::getAll()) {
-      player->bounds().Draw(window);
-      for (const auto& plant : Plant::getAll()) {
-        plant->bounds().Draw(window);
-      }
-      //player.pos.Debuggerino(sf::Color::White);
-      //player.bounds().Center().Debuggerino(sf::Color::Magenta);
+			player->bounds().Draw();
+			for (const auto& plant : Plant::getAll()) {
+				plant->bounds().Draw();
+			}
+			//player.pos.Debuggerino(sf::Color::White);
+			//player.bounds().Center().Debuggerino(sf::Color::Magenta);
 		}
 	}
 
-
 	if (lost) {
-		StatsTracker::DrawStats(window);
-		rototext.Draw(window);
+		//StatsTracker::DrawStats();
+		//rototext.Draw(window);
 	}
 	//player.polvito.DrawImGUI("Polvito");
 }

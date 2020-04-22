@@ -46,26 +46,25 @@ struct Cistell : BoxEntity, EntS<Cistell>
 		}
 	}
 
-	void Draw(sf::RenderTarget& window) const
+	void Draw() const
 	{
-		sf::Sprite& spr = Assets::spritesSprite;
-		spr.setOrigin(size/2.0f);
-		spr.setPosition(pos.x, pos.y);
+		IntRect rect;
 		if (contents == TOMATOES) {
-			spr.setTextureRect(sf::Rect(168, 97, 25, 28));
+			rect = IntRect(168, 97, 25, 28);
 		}
 		else if (contents == WATER) {
-			spr.setTextureRect(sf::Rect(141, 97, 25, 28));
+			rect = IntRect(141, 97, 25, 28);
 		}
 		else {
-			spr.setTextureRect(sf::Rect(114, 97, 25, 28));
+			rect = IntRect(114, 97, 25, 28);
 		}
-		//spr.setScale(0.8f, 0.8f);
 		pos.Debuggerino();
-		window.draw(spr);
+		Window::Draw(Assets::spritesTexture, pos)
+			.withRect(rect)
+			.withOrigin(size / 2.f);
 
 		if (Debug::Draw) {
-			bounds().Draw(window);
+			bounds().Draw();
 		}
 	}
 

@@ -132,40 +132,35 @@ struct Doggo : BoxEntity, EntS<Doggo>
 #endif
 	}
 
-  void Draw(sf::RenderTarget& window) const
+  void Draw() const
   {
-    sf::Sprite& spr = Assets::doggoSprite;
-    spr.setOrigin(size / 2.0f);
-    spr.setPosition(pos.x, pos.y);
-    spr.setTextureRect(anim.CurrentFrame());
     pos.Debuggerino();
-    window.draw(spr);
-    if (Debug::Draw) {
-      bounds().Draw(window);
+	Window::Draw(Assets::doggoTexture, pos)
+		.withRect(anim.CurrentFrame())
+		.withOrigin(size/2.f);
+    
+		if (Debug::Draw) {
+      bounds().Draw();
     }
 
     if (menjar_bubble_timer > 0.0f && int(menjar_bubble_timer) != 1) {
-      sf::Sprite bubble_sprite;
-      bubble_sprite.setTexture(Assets::plantTexture);
-      bubble_sprite.setTextureRect({16,0,18,23});
-      bubble_sprite.setPosition(vec(pos) + vec(17.0f, -15.f));
-      window.draw(bubble_sprite);
+	  Window::Draw(Assets::plantTexture, pos + vec(17.0f, -15.f))
+		  .withRect(16,0,18,23);
 	}
 
 	if (wantFood) {
-		// Draw bottom status.
-		sf::Sprite status_sprite;
-		status_sprite.setTexture(Assets::plantTexture);
-		status_sprite.setTextureRect({ 52,32,17,16 });
-		status_sprite.setOrigin(17 / 2, 0);
-		status_sprite.setPosition(pos + vec(0.0f, 18.0f));
-		window.draw(status_sprite);
-		// Draw face.
+		
+		// Draw bottom status
+		Window::Draw(Assets::plantTexture, pos + vec(0.0f, 18.0f))
+			.withOrigin(17/2.f, 0)
+			.withRect(52,32,17,16);
+		
+		// Draw face
 		int happiness = std::min(int(menjar / (kMaxMenjar / 5)), 4);
-		status_sprite.setTextureRect({ 106,52 - 12 * happiness,13,12 });
-		status_sprite.setOrigin(6, 0);
-		status_sprite.setPosition(pos + vec(0.0f, 21.0f));
-		window.draw(status_sprite);
+		Window::Draw(Assets::plantTexture, pos + vec(0.0f, 21.0f))
+			.withOrigin(6, 0)
+			.withRect(106, 52 - 12 * happiness, 13, 12);
+
 	}
   }
 

@@ -5,6 +5,7 @@
 #include "magic_enum.h"
 
 #include "bounds.h"
+#include "window.h"
 
 // Static stuff here:
 //
@@ -154,26 +155,6 @@ public:
 	static void _UpdateInputState__XboxNormal(int joy, int player);
 	static void _UpdateInputState();
 };
-
-
-//WINDOW MANAGEMENT
-//=================
-
-namespace Window
-{
-	const int GUI_ZOOM = 1;
-	const int GAME_ZOOM = 2;
-	const int WINDOW_HEIGHT = 420*GAME_ZOOM;
-	const int WINDOW_WIDTH = 828*GAME_ZOOM;
-
-	void SetWindowCaption(const std::string& s);
-	bool WindowHasFocus();
-	void CloseWindow();
-	void SetWindowSize(sf::Vector2u size, bool centerCamera = true);
-	sf::Vector2u GetWindowSize();
-	Bounds GetWindowBounds();
-	bool IsMouseInsideWindow();
-}
 
 
 //KEYBOARD ACCESS

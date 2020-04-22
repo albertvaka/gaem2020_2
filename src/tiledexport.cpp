@@ -1,6 +1,6 @@
 #include "tiledexport.h"
 
-const sf::IntRect TiledTiles::tileToTextureRect[] = {
+const IntRect TiledTiles::tileToTextureRect[] = {
 	{},	//NONE
 	{ 32 * 16, 19 * 16, 16, 16 }, //=1, ONEWAY_1, gid=1039
 	{ 36 * 16, 11 * 16, 16, 16 }, //=2, RSLOPE_1, gid=619
@@ -10,7 +10,7 @@ const sf::IntRect TiledTiles::tileToTextureRect[] = {
 	{},	//SOLID_TRANSPARENT
 };
 
-const sf::Vector2f TiledMap::map_size = sf::Vector2f(64, 32);
+const vec TiledMap::map_size = vec(64, 32);
 
 const unsigned short TiledMap::map[] = {
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,4,0,0,0,0,0,0,0,0,0,0,
@@ -48,30 +48,30 @@ const unsigned short TiledMap::map[] = {
 	
 };
 
-const std::array<sf::Rect<float>, 0> TiledMap::screens = {
+const std::array<Bounds, 0> TiledMap::screens = {
 };
 
-const sf::Vector2f TiledEntities::spawn = sf::Vector2f(288.0f, 239.0f);
+const vec TiledEntities::spawn = vec(288.0f, 239.0f);
 
-const std::array<sf::Vector2f, 8> TiledEntities::waypoint = {
-	sf::Vector2f(160.5f, 256.5f),
-	sf::Vector2f(320.182f, 255.818f),
-	sf::Vector2f(480.0f, 256.364f),
-	sf::Vector2f(592.364f, 160.182f),
-	sf::Vector2f(480.364f, 256.182f),
-	sf::Vector2f(255.818f, 256.0f),
-	sf::Vector2f(368.182f, 352.182f),
-	sf::Vector2f(544.182f, 352.364f),
+const std::array<vec, 8> TiledEntities::waypoint = {
+	vec(160.5f, 256.5f),
+	vec(320.182f, 255.818f),
+	vec(480.0f, 256.364f),
+	vec(592.364f, 160.182f),
+	vec(480.364f, 256.182f),
+	vec(255.818f, 256.0f),
+	vec(368.182f, 352.182f),
+	vec(544.182f, 352.364f),
 };
 
-const sf::Vector2f TiledEntities::doggo_begin = sf::Vector2f(-16.0f, 256.333f);
+const vec TiledEntities::doggo_begin = vec(-16.0f, 256.333f);
 
-const sf::Vector2f TiledEntities::doggo_end = sf::Vector2f(864.333f, 353.0f);
+const vec TiledEntities::doggo_end = vec(864.333f, 353.0f);
 
 
 
-const sf::Rect<float> TiledAreas::sun =sf::Rect<float>(236.5f,84.0f,379.5f,86.6818f);
-const sf::Rect<float> TiledAreas::water =sf::Rect<float>(389.75f,321.417f,78.6667f,47.1667f);
-const sf::Rect<float> TiledAreas::truck =sf::Rect<float>(651.0f,257.417f,211.0f,114.167f);
-const sf::Rect<float> TiledAreas::npc =sf::Rect<float>(18.6668f,177.417f,106.666f,88.5f);
+const Bounds TiledAreas::sun =Bounds(236.5f,84.0f,379.5f,86.6818f);
+const Bounds TiledAreas::water =Bounds(389.75f,321.417f,78.6667f,47.1667f);
+const Bounds TiledAreas::truck =Bounds(651.0f,257.417f,211.0f,114.167f);
+const Bounds TiledAreas::npc =Bounds(18.6668f,177.417f,106.666f,88.5f);
 

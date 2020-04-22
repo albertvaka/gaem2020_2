@@ -8,7 +8,7 @@
 #include "plant.h"
 #include "stats_tracker.h"
 
-extern sf::Clock mainClock;
+extern float mainClock;
 
 // accel
 const float run_acc = 1400;
@@ -72,8 +72,9 @@ inline vec posOnLeftSlope(vec pos) {
 }
 
 JumpMan::JumpMan()
+	: polvito(Assets::hospitalTexture)
 {
-	polvito.AddSprite(Assets::hospitalTexture, sf::IntRect(69, 50, 2, 2));
+	polvito.AddSprite(IntRect(69, 50, 2, 2));
 
 	animation.Ensure(MARIO_IDLE);
 	size = standing_size;
@@ -500,28 +501,14 @@ Bounds JumpMan::maxBounds() const
 	return Bounds(pos, standing_size, vec(standing_size.x / 2, standing_size.y));
 }
 
-void JumpMan::Draw(sf::RenderTarget& window) const {
+void JumpMan::Draw() const {
 
-	polvito.Draw(window);
+	polvito.Draw();
 
-	sf::Sprite& spr = Assets::marioSprite;
-
-	spr.setTextureRect(animation.CurrentFrame());
-	spr.setOrigin(center.x, size.y);
-	spr.setPosition(pos.x, pos.y);
-	if (lookingLeft) {
-		spr.setScale(-1.f, 1.f);
-	}
-	else {
-		spr.setScale(1.f, 1.f);
-	}
-	spr.scale(1.25f, 1.25f);
-	window.draw(spr);
-
-	//Restore everything
-	spr.setScale(1.f, 1.f);
-	spr.setOrigin(0.f, 0.f);
-	spr.setRotation(0.f);
+	Window::Draw(Assets::marioTexture, pos)
+		.withScale(lookingLeft ? -1.25f : 1.25f, 1.25f)
+		.withOrigin(center.x, size.y)
+		.withRect(animation.CurrentFrame());
 }
 
 
