@@ -19,7 +19,7 @@
 #include "intro_scene.h"
 
 Scene* SceneManager::currentScene = nullptr;
-sf::Clock mainClock;
+float mainClock;
 
 #define _FPS_COUNTER
 
@@ -28,7 +28,7 @@ int main()
 
 	sf::RenderWindow window(sf::VideoMode(Window::WINDOW_WIDTH, Window::WINDOW_HEIGHT), "LD46");
 
-	window.setFramerateLimit(60);
+	//window.setFramerateLimit(60);
 #ifdef _DEBUG
 	ImGui::SFML::Init(window);
 #endif
@@ -44,8 +44,8 @@ int main()
 	txt_fps.setPosition(Window::WINDOW_WIDTH - 100, 10);
 	sf::Clock fpsClock;
 	int fps_counter = 0;
-	bool slowDown = false;
 #endif
+	bool slowDown = false;
 
 	sf::Clock dtClock;
 
@@ -93,10 +93,11 @@ int main()
 				dt = 0.06f; //Slow game down instead of epic jumps
 				slowDown = true;
 			}
+			mainClock += dt;
 			currentScene->Update(dt);
 		}
 
-		currentScene->Draw(window);
+		currentScene->Draw();
 
 #ifdef _DEBUG
 		if (Debug::Draw) {

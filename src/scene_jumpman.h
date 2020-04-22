@@ -7,7 +7,6 @@
 #include "transition.h"
 #include "npc.h"
 #include "input.h"
-#include "cistell.h"
 #include "rototext.h"
 #include "richtext.h"
 
@@ -16,13 +15,13 @@ struct JumpScene : Scene {
 
 	TileMap map;
 	Npc npc;
-	RotoText rototext;
+	//RotoText rototext;
 
 	bool lost = false;
 	int moneys = 150;
 	int cantbuyTimer = 0;
 
-	sfe::RichText moneyText;
+	//sfe::RichText moneyText;
 	float moneyTextTimer = 0;
 	int current_music = 0;
 	float timerDoggo = 0;
@@ -33,6 +32,6 @@ struct JumpScene : Scene {
 	void EnterScene() override;
 	void ExitScene() override;
 	void Update(float dt) override;
-	void Draw(sf::RenderTarget& window) override;
+	void Draw() override;
 
 };

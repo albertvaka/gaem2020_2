@@ -23,8 +23,8 @@ const float kWaterLostPerSecond = 0.5f;
 const float kWaterAndLighThresholdToGrow = 40.0f;
 
 const float kWaterBubbleDuration = 3.0f;
-// TODO: Slow on purpose for testing.
-const sf::Time kGrowInterval = sf::seconds(5.0f);
+
+extern float mainClock;
 
 static int ids = 0;
 Plant::Plant(vec pos) : BoxEntity(pos, vec(16.0f, 16.0f)) {
@@ -119,86 +119,58 @@ void Plant::PickTomato() {
   ++StatsTracker::tomatoes_collected;
 }
 
-void Plant::Draw(sf::RenderTarget& window) const {
+void Plant::Draw() const {
   // Draw tomato
   if (alive && has_tomato) {
-    sf::Sprite sprite;
-    sprite.setTexture(Assets::plantTexture);
-    sf::IntRect texture_rect(22, 54, 10, 10);
-    sprite.setTextureRect(texture_rect);
-    sprite.setOrigin(5, 5);
     for (int i = 0; i < kNumTomatoes; ++i) {
-      sprite.setPosition(pos + tomato_offset[i]);
-      window.draw(sprite);
+      Window::Draw(Assets::plantTexture, pos + tomato_offset[i])
+          .withOrigin(5, 5)
+          .withRect(22, 54, 10, 10);
     }
   }
 
-  sf::Sprite sprite;
-  sprite.setTexture(Assets::plantTexture);
-  sf::IntRect texture_rect(0, 64 - 16 * height, 16, 16 * height);
-  if (!alive) {
-      sprite.setColor(sf::Color(128,128,128,255));
-  }
-  else {
-      sprite.setColor(sf::Color(255, 255, 255, 255));
-  }
-  sprite.setTextureRect(texture_rect);
-  sprite.setOrigin(size/2.0f);
-  if (mirror) {
-    sprite.setScale(-1,1);
-  }
-  sprite.setPosition(pos);
-  window.draw(sprite);
+  int color = alive? 255 : 128;
+  vec scale = mirror ? vec(-1, 1) : vec(1, 1);
+  Window::Draw(Assets::plantTexture, pos)
+      .withRect(0, 64 - 16 * height, 16, 16 * height)
+      .withColor(color, color, color)
+      .withScale(scale)
+      .withOrigin(size / 2.0f);
 
   // Draw stats if they are changing
-  static sf::Clock bubble_timer;
-  bool draw_light_bubble = (int(bubble_timer.getElapsedTime().asSeconds()) % 2 == 0);
+  bool draw_light_bubble = (int(mainClock) % 2 == 0);
   bool draw_water_bubble = !draw_light_bubble;
   if (alive && gets_light) {
-    //DrawStatBar(light, 0.0f, sf::Color::Yellow, window);
     if (draw_light_bubble) {
-      sf::Sprite bubble_sprite;
-      bubble_sprite.setTexture(Assets::plantTexture);
-      bubble_sprite.setTextureRect({34,0,18,23});
-      bubble_sprite.setPosition(vec(pos) + vec(10.0f, -23.f));
-      window.draw(bubble_sprite);
+      Window::Draw(Assets::plantTexture, vec(pos) + vec(10.0f, -23.f))
+          .withRect(34, 0, 18, 23);
     }
   }
   if (alive && time_left_water_bubble > 0.0f) {
-    //DrawStatBar(water, 7.0f, sf::Color::Cyan, window);
     if (draw_water_bubble) {
-      sf::Sprite bubble_sprite;
-      bubble_sprite.setTexture(Assets::plantTexture);
-      bubble_sprite.setTextureRect({34,23,18,23});
-      bubble_sprite.setPosition(vec(pos) + vec(10.0f, -23.0f));
-      window.draw(bubble_sprite);
+      Window::Draw(Assets::plantTexture, vec(pos) + vec(10.0f, -23.0f))
+          .withRect(34, 23, 18, 23);
     }
   }
   // Draw faces on the plant underneath.
     // Background
-  sf::Sprite status_sprite;
-  status_sprite.setTexture(Assets::plantTexture);
-  status_sprite.setTextureRect({52,0,30,16});
-  if (!alive) {
-    status_sprite.setTextureRect({52,16,30,16});
-  }
-  status_sprite.setOrigin(32/2, 0);
-  status_sprite.setPosition(vec(pos.x, getBottomY()) + vec(0.0f, 2.0f));
-  window.draw(status_sprite);
+  Window::Draw(Assets::plantTexture, vec(pos.x, getBottomY()) + vec(0.0f, 2.0f))
+      .withOrigin(32/2,0)
+      .withRect(52, alive?0:16,30,16);
+
   if (alive) {
-    // Sun face.
+
+    // Sun face
     int sun_happiness = std::min(int(light/10), 4);
-    status_sprite.setTextureRect({94,52-12*sun_happiness,12,12});
-    status_sprite.setOrigin(6,0);
-    status_sprite.setPosition(vec(pos.x, getBottomY()) + vec(-8.0f, 5.0f));
-    window.draw(status_sprite);
-    // Water
-    // Sun face.
+    Window::Draw(Assets::plantTexture, vec(pos.x, getBottomY()) + vec(-8.0f, 5.0f))
+        .withOrigin(6, 0)
+        .withRect(94, 52 - 12 * sun_happiness, 12, 12);
+
+    // Water face
     int water_happiness = std::min(int(water/10), 4);
-    status_sprite.setTextureRect({82,52-12*water_happiness,12,12});
-    status_sprite.setOrigin(6,0);
-    status_sprite.setPosition(vec(pos.x, getBottomY()) + vec(6.0f, 5.0f));
-    window.draw(status_sprite);
+    Window::Draw(Assets::plantTexture, vec(pos.x, getBottomY()) + vec(6.0f, 5.0f))
+        .withOrigin(6, 0)
+        .withRect(82, 52 - 12 * water_happiness, 12, 12);
   }
 
 }
@@ -238,21 +210,5 @@ void Plant::SetHitByWater()
 void Plant::SetHitByLight(bool hit)
 {
   gets_light = hit;
-}
-
-void Plant::DrawStatBar(float value, float y_offset, sf::Color color, sf::RenderTarget& window) const
-{
-  const float bar_height = 3.0f;
-  const float outline = 1.0f;
-  const float width_multiplier = 1 / 100.0f * 20.0f;
-  const float y = 10.0f + y_offset;
-  sf::RectangleShape background(vec(kMaxStats * width_multiplier + 2.0f * outline, bar_height + 2.0f * outline));
-  background.setPosition(vec(pos.x, getBottomY()) + vec(-0.5f * (kMaxStats * width_multiplier + 2.0f * outline), y));
-  background.setFillColor(sf::Color::Black);
-  window.draw(background);
-  sf::RectangleShape filled_bar(vec(value * width_multiplier, bar_height));
-  filled_bar.setPosition(vec(pos.x, getBottomY()) + vec(-0.5f * value * width_multiplier, y + 1.0f));
-  filled_bar.setFillColor(color);
-  window.draw(filled_bar);
 }
 

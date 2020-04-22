@@ -1,12 +1,10 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
-
 struct Scene {
 	virtual void EnterScene() = 0;
 	virtual void ExitScene() = 0;
 	virtual void Update(float dt) = 0;
-	virtual void Draw(sf::RenderTarget& window) = 0;
+	virtual void Draw() = 0;
 	virtual ~Scene() { }
 };
 

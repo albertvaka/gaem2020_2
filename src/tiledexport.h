@@ -2,11 +2,15 @@
 
 #include <array>
 
+#include "vector.h"
+#include "window.h"
+#include "bounds.h"
+
 #include <SFML/Graphics.hpp>
 
 struct TiledTiles
 {
-	static const sf::IntRect tileToTextureRect[];
+	static const IntRect tileToTextureRect[];
 
 	enum Value : unsigned short
 	{
@@ -32,24 +36,24 @@ struct TiledTiles
 struct TiledMap
 {
 	static const unsigned short map[];
-	static const sf::Vector2f map_size;
-	static const std::array<sf::Rect<float>, 0> screens;
+	static const vec map_size;
+	static const std::array<Bounds, 0> screens;
 };
 
 struct TiledEntities
 {
-	static const sf::Vector2f spawn;
-	static const std::array<sf::Vector2f, 8> waypoint;
-	static const sf::Vector2f doggo_begin;
-	static const sf::Vector2f doggo_end;
+	static const vec spawn;
+	static const std::array<vec, 8> waypoint;
+	static const vec doggo_begin;
+	static const vec doggo_end;
 	
 };
 
 struct TiledAreas
 {
-	static const sf::Rect<float> sun;
-	static const sf::Rect<float> water;
-	static const sf::Rect<float> truck;
-	static const sf::Rect<float> npc;
+	static const Bounds sun;
+	static const Bounds water;
+	static const Bounds truck;
+	static const Bounds npc;
 	
 };

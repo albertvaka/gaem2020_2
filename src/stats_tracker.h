@@ -1,7 +1,5 @@
 #pragma once
 
-#include <SFML/System/Clock.hpp>
-#include <SFML/Graphics.hpp>
 #include "input.h"
 #include "richtext.h"
 #include "assets.h"
@@ -22,12 +20,12 @@ struct StatsTracker {
     walljumps_done = 0;
     time_played = 0;
   }
-
+  /*
   static void DrawStats(sf::RenderTarget& window) {
     window.draw(statsRect);
     window.draw(statsText);
   }
-
+  
   static void Stop() {
     time_played = time_played_clock.getElapsedTime().asSeconds();
     time_played_clock.restart();
@@ -58,7 +56,7 @@ struct StatsTracker {
 		statsRect.setOutlineColor(sf::Color::Black);
 		statsRect.setOutlineThickness(4.0f);
   }
-
+  */
   static float time_played;
   static int tomatoes_delivered;
   static int tomatoes_collected;
@@ -71,7 +69,9 @@ struct StatsTracker {
   static int basked_pickedup;
   static int jumps_done;
   static int walljumps_done;
+  /*
   static sf::Clock time_played_clock;
   static sfe::RichText statsText;
   static sf::RectangleShape statsRect;
+  */
 };

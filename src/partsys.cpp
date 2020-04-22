@@ -18,18 +18,17 @@ void PartSys::UpdateParticles(float dt) {
 	}), particles.end());
 }
 
-void PartSys::Draw(sf::RenderTarget& rt) const {
+void PartSys::Draw() const {
 	for (const Particle& p : particles) {
-		sf::Sprite& spr = sprites[p.sprite];
-		spr.setPosition(p.pos);
-		spr.setScale(p.scale, p.scale);
-		spr.setRotation(p.rotation);
 		float alpha = p.alpha;
 		if (bounce_alpha  > 0.f && alpha > bounce_alpha) {
 			alpha = 2*bounce_alpha - alpha;
 		}
-		spr.setColor(sf::Color(255, 255, 255, 255*alpha));
-		rt.draw(spr);
+		Window::Draw(*texture, p.pos)
+			.withAlpha(255 * alpha)
+			.withScale(p.scale)
+			.withRect(sprites[p.sprite])
+			.withRotation(p.rotation);
 	}
 }
 

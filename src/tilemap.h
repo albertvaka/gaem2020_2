@@ -51,7 +51,7 @@ struct Tile : TiledTiles
 	operator Value() const { return value; }  // Allow switch and comparisons.
 	explicit operator bool() = delete;        // Prevent if(tile)
 
-	const sf::IntRect& textureRect() const { return tileToTextureRect[int(value)]; }
+	const IntRect& textureRect() const { return tileToTextureRect[int(value)]; }
 
 private:
 	Value value;
@@ -73,7 +73,7 @@ struct TileMap : SingleInstance<TileMap>
 		memcpy((void*)tiles, (void*)TiledMap::map, TiledMap::map_size.x * TiledMap::map_size.y * sizeof(Tile));
 	}
 	void Randomize(int seed);
-	void Draw(sf::RenderTarget& window) const;
+	void Draw() const;
 
 	//FIXME: I think these should be sizes.xy+1
 	Bounds boundsInWorld() const { return Bounds(0.f, 0.f, sizes.x * Tile::size, sizes.y * Tile::size); }

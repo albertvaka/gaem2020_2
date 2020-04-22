@@ -81,13 +81,13 @@ struct Animation
 		}
 	}
 
-	const sf::IntRect& CurrentFrame() const
+	const IntRect& CurrentFrame() const
 	{
 		AnimationData* anim_data = &anim_lib[(int)anim_type];
 		return anim_data->rect[current_frame];
 	}
 
-	static const sf::IntRect& AnimFrame(AnimationType type, int timer)
+	static const IntRect& AnimFrame(AnimationType type, int timer)
 	{
 		AnimationData* anim_data = &anim_lib[(int)type];
 

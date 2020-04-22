@@ -59,6 +59,7 @@
     <ClInclude Include="src\tilemap.h" />
     <ClInclude Include="src\transition.h" />
     <ClInclude Include="src\vector.h" />
+    <ClInclude Include="src\window.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="imgui\imgui.cpp" />
@@ -83,6 +84,7 @@
     <ClCompile Include="src\tilemap.cpp" />
     <ClCompile Include="src\transition.cpp" />
     <ClCompile Include="src\vector.cpp" />
+    <ClCompile Include="src\window.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

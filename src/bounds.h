@@ -54,8 +54,10 @@ struct Bounds : public sf::Rect<float>
         SetCenter(center.x, center.y);
     }
 
-	void Draw(sf::RenderTarget &rt, const sf::Color& color = sf::Color::Red, const sf::Color& fillColor = sf::Color::Transparent) const
+	void Draw(const sf::Color& color = sf::Color::Red, const sf::Color& fillColor = sf::Color::Transparent) const
 	{
+        //TODO: SDL
+        /*
 		sf::RectangleShape rs;
 
 		rs.setSize(vec(width,height));
@@ -66,6 +68,7 @@ struct Bounds : public sf::Rect<float>
 		rs.setOutlineThickness(1);
 
 		rt.draw(rs);
+        */
 	}
 
     [[nodiscard]] float Top() const
@@ -130,8 +133,10 @@ struct CircleBounds
     vec pos;
     float radius;
 
-    void Draw(sf::RenderTarget& window, const sf::Color& color = sf::Color::Red, const sf::Color& fillColor = sf::Color::Transparent) const
+    void Draw(const sf::Color& color = sf::Color::Red, const sf::Color& fillColor = sf::Color::Transparent) const
     {
+        //TODO: SDL
+        /*
         sf::CircleShape cs(radius);
         cs.setRadius(radius);
         cs.setOrigin(vec(radius, radius));
@@ -142,6 +147,7 @@ struct CircleBounds
         cs.setOutlineThickness(1);
 
         window.draw(cs);
+        */
     }
 
     float DistanceSq(const Bounds& a) const { return a.DistanceSq(*this); };

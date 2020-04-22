@@ -22,8 +22,8 @@ struct BoxEntity : Entity {
 		return Bounds::fromCenter(pos, size);
 	}
 
-	void drawBounds(sf::RenderTarget& window, const sf::Color& color = sf::Color::Red, const sf::Color& fillColor = sf::Color::Transparent) const {
-		bounds().Draw(window, color, fillColor);
+	void drawBounds(const sf::Color& color = sf::Color::Red, const sf::Color& fillColor = sf::Color::Transparent) const {
+		bounds().Draw(color, fillColor);
 	}
 };
 
@@ -37,8 +37,8 @@ struct CircleEntity : Entity {
 		return CircleBounds(pos, radius);
 	}
 
-	void drawBounds(sf::RenderTarget& window, const sf::Color& color = sf::Color::Red, const sf::Color& fillColor = sf::Color::Transparent) const {
-		bounds().Draw(window, color, fillColor);
+	void drawBounds(const sf::Color& color = sf::Color::Red, const sf::Color& fillColor = sf::Color::Transparent) const {
+		bounds().Draw(color, fillColor);
 	}
 };
 

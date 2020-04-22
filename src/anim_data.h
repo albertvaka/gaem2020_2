@@ -1,10 +1,10 @@
 #pragma once
-#include <SFML/Graphics.hpp>
+#include "window.h"
 
 struct AnimationData
 {
 	int frames;
-	sf::IntRect rect[16];
+	IntRect rect[16];
 	int timer[16];
 };
 

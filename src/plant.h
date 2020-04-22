@@ -9,7 +9,7 @@ const int kNumTomatoes = 3;
 struct Plant : public BoxEntity, EntS<Plant> {
 	Plant(vec pos);
 	void Update(float dt);
-	void Draw(sf::RenderTarget& window) const;
+	void Draw() const;
 
 	int id;
 	float getBottomY() const;

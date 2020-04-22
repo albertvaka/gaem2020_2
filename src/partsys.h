@@ -1,11 +1,13 @@
 #pragma once
 
 #include <vector>
-#include <SFML/Graphics.hpp>
 
 #include "vector.h"
+#include "window.h"
 
 struct PartSys {
+
+	const sf::Texture* texture;
 
 	struct Particle {
 		int sprite;
@@ -80,16 +82,15 @@ struct PartSys {
 
 	float time = 0.f;
 
-	sf::Sprite& AddSprite(const sf::Texture& texture, const sf::IntRect& rect) {
-		sprites.emplace_back(texture, rect);
-		sf::Sprite& sprite = sprites.back();
-		sprite.setOrigin(rect.width/2.f,rect.height/2.f);
-		return sprite;
+	PartSys(const sf::Texture& t) : texture(&t) { }
+
+	void AddSprite(const IntRect& rect) {
+		sprites.emplace_back(rect);
 	}
 
 	void Spawn(float dt);
 	void UpdateParticles(float dt); //Doesn't create new particles, use Spawn() 
-	void Draw(sf::RenderTarget& rt) const;
+	void Draw() const;
 
 	Particle& AddParticle();
 	inline void AddParticles(int n) {
@@ -111,6 +112,6 @@ struct PartSys {
 private:
 	//TODO: Turn into static arrays
 	std::vector<Particle> particles;
-	mutable std::vector<sf::Sprite> sprites;
+	mutable std::vector<IntRect> sprites;
 };
 
