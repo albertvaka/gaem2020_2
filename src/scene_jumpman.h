@@ -27,7 +27,7 @@ struct JumpScene : Scene {
 	sfe::RichText moneyText;
 	float moneyTextTimer = 0;
 	int current_music = 0;
-	float timerDoggo;
+	float timerDoggo = 0;
 
 	GameKeys contextActionButton = GameKeys::NONE;
 
