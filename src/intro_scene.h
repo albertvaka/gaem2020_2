@@ -71,7 +71,7 @@ struct IntroScene : Scene {
 				doggo->wantFood = false;
 			}
 		}
-		if (Keyboard::IsKeyJustPressed(GameKeys::START) || GamePad::IsButtonJustPressed(0, GamePad::Button::A)) {
+		if (Keyboard::IsKeyJustPressed(GameKeys::START)) {
 			SceneManager::SetScene(new JumpScene());
 			//Change scene
 		}

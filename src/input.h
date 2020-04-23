@@ -1,12 +1,11 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
-#include <SDL.h>
 #include "magic_enum.h"
 
 #include "bounds.h"
 #include "window.h"
+
+#include <SDL.h>
 
 // Static stuff here:
 //
@@ -33,37 +32,37 @@ enum GameKeys
 	NEXT_TRACK,
 	RESTART,
 };
-extern sf::Keyboard::Key key_map[magic_enum::enum_count<GameKeys>()];
+extern int key_map[magic_enum::enum_count<GameKeys>()];
 
 inline void RemapInput()
 {
-	key_map[GameKeys::NONE] = sf::Keyboard::Key::Unknown;
-	key_map[GameKeys::UP] = sf::Keyboard::Key::W;
-	key_map[GameKeys::DOWN] = sf::Keyboard::Key::S;
-	key_map[GameKeys::LEFT] = sf::Keyboard::Key::A;
-	key_map[GameKeys::RIGHT] = sf::Keyboard::Key::D;
-	key_map[GameKeys::ACTIVATE] = sf::Keyboard::Key::E;
-	key_map[GameKeys::ACTION] = sf::Keyboard::Key::P;
-	key_map[GameKeys::SHOOT] = sf::Keyboard::Key::O;
-	key_map[GameKeys::START] = sf::Keyboard::Key::Enter;
-	key_map[GameKeys::DEBUG_ZOOM_IN] = sf::Keyboard::Add;
-	key_map[GameKeys::DEBUG_ZOOM_OUT] = sf::Keyboard::Subtract;
-	key_map[GameKeys::RESTART] = sf::Keyboard::Escape;
-	key_map[GameKeys::DEBUG_FRAME_BY_FRAME] = sf::Keyboard::F1;
-	key_map[GameKeys::DEBUG_FRAME_BY_FRAME_NEXT] = sf::Keyboard::E;
-	key_map[GameKeys::DEBUG_MODE] = sf::Keyboard::F2;
-	key_map[GameKeys::DEBUG_KILLALL] = sf::Keyboard::F3;
-	key_map[GameKeys::DEBUG_DOGGO] = sf::Keyboard::Equal;
-	key_map[GameKeys::DEBUG_SET_PLANTS_AT_MAX_STATS] = sf::Keyboard::F8;
-	key_map[GameKeys::DEBUG_GET_MONEY] = sf::Keyboard::F6;
-	key_map[GameKeys::DEBUG_ADD_PLAYER] = sf::Keyboard::F7;
-	key_map[GameKeys::MUTE] = sf::Keyboard::M;
-	key_map[GameKeys::NEXT_TRACK] = sf::Keyboard::Comma;
+	key_map[GameKeys::NONE] = SDL_SCANCODE_UNKNOWN;
+	key_map[GameKeys::UP] = SDL_SCANCODE_W;
+	key_map[GameKeys::DOWN] = SDL_SCANCODE_S;
+	key_map[GameKeys::LEFT] = SDL_SCANCODE_A;
+	key_map[GameKeys::RIGHT] = SDL_SCANCODE_D;
+	key_map[GameKeys::ACTIVATE] = SDL_SCANCODE_E;
+	key_map[GameKeys::ACTION] = SDL_SCANCODE_P;
+	key_map[GameKeys::SHOOT] = SDL_SCANCODE_O;
+	key_map[GameKeys::START] = SDL_SCANCODE_RETURN;
+	key_map[GameKeys::DEBUG_ZOOM_IN] = SDL_SCANCODE_KP_PLUS;
+	key_map[GameKeys::DEBUG_ZOOM_OUT] = SDL_SCANCODE_KP_MINUS;
+	key_map[GameKeys::RESTART] = SDL_SCANCODE_ESCAPE;
+	key_map[GameKeys::DEBUG_FRAME_BY_FRAME] = SDL_SCANCODE_F1;
+	key_map[GameKeys::DEBUG_FRAME_BY_FRAME_NEXT] = SDL_SCANCODE_E;
+	key_map[GameKeys::DEBUG_MODE] = SDL_SCANCODE_F2;
+	key_map[GameKeys::DEBUG_KILLALL] = SDL_SCANCODE_F3;
+	key_map[GameKeys::DEBUG_DOGGO] = SDL_SCANCODE_EQUALS;
+	key_map[GameKeys::DEBUG_SET_PLANTS_AT_MAX_STATS] = SDL_SCANCODE_F8;
+	key_map[GameKeys::DEBUG_GET_MONEY] = SDL_SCANCODE_F6;
+	key_map[GameKeys::DEBUG_ADD_PLAYER] = SDL_SCANCODE_F7;
+	key_map[GameKeys::MUTE] = SDL_SCANCODE_M;
+	key_map[GameKeys::NEXT_TRACK] = SDL_SCANCODE_COMMA;
 }
 
 enum KeyStates { JUST_RELEASED, RELEASED, JUST_PRESSED, PRESSED };
 
-
+/*
 struct GamePad
 {
 
@@ -150,11 +149,10 @@ public:
 	static bool IsButtonReleased(int player, GamePad::Button b) { return (button_states[player][b] == RELEASED || button_states[player][b] == JUST_RELEASED); }
 	static bool IsButtonJustReleased(int player, GamePad::Button b) { return (button_states[player][b] == JUST_RELEASED); }
 
-	static void _UpdateInputState__MandoSteam(int joy, int player);
 	static void _UpdateInputState__XboxNormal(int joy, int player);
 	static void _UpdateInputState();
 };
-
+*/
 
 //KEYBOARD ACCESS
 //===============
@@ -208,28 +206,36 @@ struct Keyboard
 //============
 struct Mouse
 {
-	static bool IsPressed(sf::Mouse::Button b = sf::Mouse::Left)
+	static float scrollWheel;
+	enum Button {
+		None = 0,
+		Left = SDL_BUTTON_LEFT, //1
+		Middle = SDL_BUTTON_MIDDLE, //2
+		Right = SDL_BUTTON_RIGHT, //3
+	};
+
+	static bool IsPressed(Button b = Button::Left)
 	{
 		if (!Window::HasFocus()) return false;
 		if (!Window::IsMouseInsideWindow()) return false;
 		return (button_states[b] == PRESSED || button_states[b] == JUST_PRESSED);
 	}
 
-	static bool IsJustPressed(sf::Mouse::Button b = sf::Mouse::Left)
+	static bool IsJustPressed(Button b = Button::Left)
 	{
 		if (!Window::HasFocus()) return false;
 		if (!Window::IsMouseInsideWindow()) return false;
 		return (button_states[b] == JUST_PRESSED);
 	}
 
-	static bool IsReleased(sf::Mouse::Button b = sf::Mouse::Left)
+	static bool IsReleased(Button b = Button::Left)
 	{
 		if (!Window::HasFocus()) return false;
 		if (!Window::IsMouseInsideWindow()) return false;
 		return (button_states[b] == RELEASED || button_states[b] == JUST_RELEASED);
 	}
 
-	static bool IsJustReleased(sf::Mouse::Button b = sf::Mouse::Left)
+	static bool IsJustReleased(Button b = Left)
 	{
 		if (!Window::HasFocus()) return false;
 		if (!Window::IsMouseInsideWindow()) return false;
@@ -238,16 +244,18 @@ struct Mouse
 
 	static float GetScrollWheelMovement() { return scrollWheel; }
 
-	static sf::Vector2i GetPositionInWindow();
+	static veci GetPositionInWindow() { return pos; }
 
 	static vec GetPositionInWorld();
 
 
 	static void _UpdateInputState();
 
-	static float scrollWheel;
-	static KeyStates button_states[sf::Mouse::ButtonCount];
-	
+
+	static KeyStates button_states[magic_enum::enum_count<Button>()];
+private:
+	static veci pos;
+
 };
 
 namespace Input

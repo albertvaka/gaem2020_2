@@ -9,7 +9,7 @@
 namespace Camera
 {
 	extern float zoom;
-	extern vec cam;
+	extern vec pos;
 }
 
 namespace Window
@@ -30,14 +30,14 @@ namespace Camera
 
 	inline void SetCenter(const vec& center)
 	{
-		cam = center*zoom-vec(Window::WINDOW_WIDTH/2, Window::WINDOW_HEIGHT/2);
+		pos = center*zoom-vec(Window::WINDOW_WIDTH/2, Window::WINDOW_HEIGHT/2);
 	}
 
 	inline void SetCenter(float x, float y) { SetCenter(vec(x, y)); }
 
 	inline vec GetCenter()
 	{
-		return cam * zoom +vec(Window::WINDOW_WIDTH/2, Window::WINDOW_HEIGHT/2);
+		return pos * zoom +vec(Window::WINDOW_WIDTH/2, Window::WINDOW_HEIGHT/2);
 	}
 
 	inline vec GetSize()
@@ -178,8 +178,8 @@ struct PartialDraw {
 			dest.x -= center.x;
 			dest.y -= center.y;
 		}
-		dest.x -= Camera::cam.x;
-		dest.y -= Camera::cam.y;
+		dest.x -= Camera::pos.x;
+		dest.y -= Camera::pos.y;
 		dest.w = src.w * scale.x;
 		dest.h = src.h * scale.y;
 		SDL_RenderCopyExF(Window::renderer, t, &src, &dest, rotation, centerp, flip);
@@ -206,5 +206,3 @@ namespace Window
 		SDL_RenderClear(renderer); 
 	}
 }
-
-void _ProcessWindowEvents();

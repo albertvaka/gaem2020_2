@@ -1,14 +1,6 @@
 #include <map>
 
-#ifdef _DEBUG
-#include "imgui.h"
-#include "imgui_sdl.h"
-#include "imgui_impl_sdl.h"
-#endif
-
 #define SDL_MAIN_HANDLED
-#include <SDL.h>
-#include <SDL_image.h>
 
 #include <string>
 
@@ -20,6 +12,15 @@
 
 #include "scene_jumpman.h"
 #include "intro_scene.h"
+
+#ifdef _DEBUG
+#include "imgui.h"
+#include "imgui_sdl.h"
+#include "imgui_impl_sdl.h"
+#endif
+
+#include <SDL.h>
+#include <SDL_image.h>
 
 Scene* SceneManager::currentScene = nullptr;
 float mainClock;

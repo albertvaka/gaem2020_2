@@ -8,7 +8,7 @@ void Bounds::Draw(int r, int g, int b) const
 {
     SDL_SetRenderDrawColor(Window::renderer, r, g, b, 255);
 
-    SDL_Rect rect = { int(left - Camera::cam.x), int(top - Camera::cam.y), int(width), int(height) };
+    SDL_Rect rect = { int(left - Camera::pos.x), int(top - Camera::pos.y), int(width), int(height) };
 
     SDL_RenderDrawRect(Window::renderer, &rect);
 }
@@ -26,14 +26,14 @@ void CircleBounds::Draw(int r, int g, int b) const
     while (x >= y)
     {
         //  Each of the following renders an octant of the circle
-        SDL_RenderDrawPoint(Window::renderer, pos.x + x - Camera::cam.x, pos.y - y - Camera::cam.y);
-        SDL_RenderDrawPoint(Window::renderer, pos.x + x - Camera::cam.x, pos.y + y - Camera::cam.y);
-        SDL_RenderDrawPoint(Window::renderer, pos.x - x - Camera::cam.x, pos.y - y - Camera::cam.y);
-        SDL_RenderDrawPoint(Window::renderer, pos.x - x - Camera::cam.x, pos.y + y - Camera::cam.y);
-        SDL_RenderDrawPoint(Window::renderer, pos.x + y - Camera::cam.x, pos.y - x - Camera::cam.y);
-        SDL_RenderDrawPoint(Window::renderer, pos.x + y - Camera::cam.x, pos.y + x - Camera::cam.y);
-        SDL_RenderDrawPoint(Window::renderer, pos.x - y - Camera::cam.x, pos.y - x - Camera::cam.y);
-        SDL_RenderDrawPoint(Window::renderer, pos.x - y - Camera::cam.x, pos.y + x - Camera::cam.y);
+        SDL_RenderDrawPoint(Window::renderer, pos.x + x - Camera::pos.x, pos.y - y - Camera::pos.y);
+        SDL_RenderDrawPoint(Window::renderer, pos.x + x - Camera::pos.x, pos.y + y - Camera::pos.y);
+        SDL_RenderDrawPoint(Window::renderer, pos.x - x - Camera::pos.x, pos.y - y - Camera::pos.y);
+        SDL_RenderDrawPoint(Window::renderer, pos.x - x - Camera::pos.x, pos.y + y - Camera::pos.y);
+        SDL_RenderDrawPoint(Window::renderer, pos.x + y - Camera::pos.x, pos.y - x - Camera::pos.y);
+        SDL_RenderDrawPoint(Window::renderer, pos.x + y - Camera::pos.x, pos.y + x - Camera::pos.y);
+        SDL_RenderDrawPoint(Window::renderer, pos.x - y - Camera::pos.x, pos.y - x - Camera::pos.y);
+        SDL_RenderDrawPoint(Window::renderer, pos.x - y - Camera::pos.x, pos.y + x - Camera::pos.y);
 
         if (error <= 0)
         {

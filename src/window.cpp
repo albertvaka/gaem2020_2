@@ -1,9 +1,10 @@
 #include "window.h"
 #include "input.h"
+#include "imgui_impl_sdl.h"
 
 namespace Camera {
     float zoom = 1.f;
-    vec cam(Window::WINDOW_WIDTH / 2, Window::WINDOW_HEIGHT / 2);
+    vec pos(Window::WINDOW_WIDTH / 2, Window::WINDOW_HEIGHT / 2);
 }
 
 namespace Window
@@ -84,10 +85,19 @@ namespace Window
         {
             switch (event.type)
             {
+            case SDL_WINDOWEVENT_FOCUS_LOST:
+                focus = false;
+                break;
+            case SDL_WINDOWEVENT_FOCUS_GAINED:
+                focus = true;
+                break;
+            case SDL_MOUSEWHEEL:
+                Mouse::scrollWheel += event.wheel.y;
             case SDL_QUIT:
                 exit(0);
                 break;
             }
+            //ImGui_ImplSDL2_ProcessEvent(&event);
         }
 
         /*
@@ -98,18 +108,7 @@ namespace Window
             ImGui::SFML::ProcessEvent(sfmlevent);
     #endif
             switch (sfmlevent.type) {
-            case sf::Event::LostFocus:
-                Window::focus = false;
-                break;
-            case sf::Event::GainedFocus:
-                Window::focus = true;
-                break;
-            case sf::Event::Closed:
-                Window::window->close();
-                break;
-            case sf::Event::MouseWheelScrolled:
-                Mouse::scrollWheel += sfmlevent.mouseWheelScroll.delta;
-                break;
+
             case sf::Event::Resized: //To disable sfml's automatic scaling
             {
                 // GameView: scale from center

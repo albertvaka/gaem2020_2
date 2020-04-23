@@ -5,7 +5,7 @@
 #include "imgui.h"
 #include "imgui_impl_sdl.h"
 #endif
-
+/*
 int GamePad::player_to_joystick[GamePad::JoystickCountMax];
 
 const GamePad::AnalogStick GamePad::AnalogStick::Left(sf::Joystick::Axis::X, sf::Joystick::Axis::Y);
@@ -15,13 +15,15 @@ GamePad::Trigger::LeftTrigger GamePad::Trigger::Left;
 GamePad::Trigger::RightTrigger GamePad::Trigger::Right;
 
 KeyStates GamePad::button_states[GamePad::JoystickCountMax][sf::Joystick::ButtonCount];
-KeyStates Mouse::button_states[sf::Mouse::ButtonCount];
+*/
+KeyStates Mouse::button_states[magic_enum::enum_count<Button>()];
 float Mouse::scrollWheel;
+veci Mouse::pos(0,0);
 KeyStates Keyboard::key_states[magic_enum::enum_count<GameKeys>()];
 float Keyboard::key_times[magic_enum::enum_count<GameKeys>()];
-sf::Keyboard::Key key_map[magic_enum::enum_count<GameKeys>()];
+int key_map[magic_enum::enum_count<GameKeys>()];
 
-
+/*
 KeyStates GamePad::calculateJustPressed(bool pressed, KeyStates state)
 {
     if (pressed)
@@ -52,24 +54,6 @@ KeyStates GamePad::calculateJustPressed(bool pressed, KeyStates state)
     return state;
 }
 
-void GamePad::_UpdateInputState__MandoSteam(int joy, int player)
-{
-    //TODO: Fix this
-    for (int i = 0; i < sf::Joystick::ButtonCount; i++)
-    {
-        bool pressed = (sf::Joystick::isButtonPressed(joy, i));
-        button_states[player][i] = calculateJustPressed(pressed, button_states[player][i]);
-    }
-    {
-        bool pressed = (Trigger::Left.get(player) > 50);
-        Trigger::Left.state[player] = calculateJustPressed(pressed, Trigger::Left.state[player]);
-    }
-    {
-        bool pressed = (Trigger::Right.get(player) > 50);
-        Trigger::Right.state[player] = calculateJustPressed(pressed, Trigger::Right.state[player]);
-    }
-}
-
 void GamePad::_UpdateInputState__XboxNormal(int joy, int player)
 {
     for (int i = 0; i < sf::Joystick::ButtonCount; i++)
@@ -86,53 +70,6 @@ void GamePad::_UpdateInputState__XboxNormal(int joy, int player)
         Trigger::Right.state[player] = calculateJustPressed(pressed, Trigger::Right.state[player]);
     }
 }
-
-
-void Mouse::_UpdateInputState()
-{
-    for (int i = 0; i < sf::Mouse::ButtonCount; i++)
-	{
-        if (sf::Mouse::isButtonPressed((sf::Mouse::Button)i))
-		{
-            if (button_states[i] == JUST_PRESSED || button_states[i] == PRESSED)
-			{
-                button_states[i] = PRESSED;
-            }
-            else
-			{
-                button_states[i] = JUST_PRESSED;
-            }
-        }
-        else
-		{
-            if (button_states[i] == JUST_RELEASED || button_states[i] == RELEASED)
-			{
-                button_states[i] = RELEASED;
-            }
-            else
-			{
-                button_states[i] = JUST_RELEASED;
-            }
-        }
-    }
-
-}
-
-sf::Vector2i Mouse::GetPositionInWindow()
-{
-    //return sf::Mouse::getPosition(*Window::window); //window arg is needed for relative coords
-    return sf::Vector2i();
-}
-
-vec Mouse::GetPositionInWorld()
-{
-    /*
-    vec displacement = Camera::gameView.getCenter() - (Camera::gameView.getSize() / 2.f);
-    return (vec(GetPositionInWindow())/Camera::zoom) + displacement;
-    */
-    return vec();
-}
-
 
 void GamePad::_UpdateInputState()
     {
@@ -151,11 +88,6 @@ void GamePad::_UpdateInputState()
             const int ID_MANDO_STEAM = 999999;
             switch (id_joy.productId)
             {
-            case ID_MANDO_STEAM:
-            {
-                _UpdateInputState__MandoSteam(joystick, player);
-            } break;
-
             default:
             {
                 _UpdateInputState__XboxNormal(joystick, player);
@@ -177,12 +109,51 @@ void GamePad::_UpdateInputState()
         }
 
 }
+*/
+
+
+void Mouse::_UpdateInputState()
+{
+    int pressed = SDL_GetRelativeMouseState(&pos.x, &pos.y);
+    for (size_t i = 1; i < magic_enum::enum_count<Button>(); i++) //skip NONE
+    {
+        if (pressed & SDL_BUTTON(i))
+        {
+            if (button_states[i] == JUST_PRESSED || button_states[i] == PRESSED)
+            {
+                button_states[i] = PRESSED;
+            }
+            else
+            {
+                button_states[i] = JUST_PRESSED;
+            }
+        }
+        else
+        {
+            if (button_states[i] == JUST_RELEASED || button_states[i] == RELEASED)
+            {
+                button_states[i] = RELEASED;
+            }
+            else
+            {
+                button_states[i] = JUST_RELEASED;
+            }
+        }
+    }
+
+}
+
+vec Mouse::GetPositionInWorld()
+{
+    return (vec(GetPositionInWindow()) / Camera::zoom) + Camera::pos;
+}
 
 void Keyboard::_UpdateInputState(float dt)
 {
+    const Uint8* state = SDL_GetKeyboardState(NULL);
     for (size_t i = 1; i < magic_enum::enum_count<GameKeys>(); i++) //Skip GameKeys::NONE
 	{
-        if (sf::Keyboard::isKeyPressed(key_map[i]) && Window::HasFocus())
+        if (state[key_map[i]] && Window::HasFocus())
 		{
             if (key_states[i] == JUST_PRESSED || key_states[i] == PRESSED)
 			{
@@ -217,7 +188,7 @@ namespace Input
     void Update(float dt)
 	{
         Mouse::scrollWheel = 0.f;
-        /*
+
 #ifdef _DEBUG
         ImGuiIO& io = ImGui::GetIO();
         if (!io.WantCaptureKeyboard)
@@ -232,16 +203,16 @@ namespace Input
         {
             Mouse::_UpdateInputState();
         }
+        /*
         GamePad::_UpdateInputState();
         */
+
     }
     void Init()
 	{
-        /*
         RemapInput();
         for (size_t i = 0; i < magic_enum::enum_count<GameKeys>(); i++) Keyboard::key_states[i] = RELEASED;
-        for (size_t i = 0; i < sf::Mouse::ButtonCount; i++) Mouse::button_states[i] = RELEASED;
-        */
+        for (size_t i = 0; i < magic_enum::enum_count<Mouse::Button>(); i++) Mouse::button_states[i] = RELEASED;
         
     }
     
