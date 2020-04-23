@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SDL.h>
+#include <SDL_ttf.h>
 #include <SFML/Audio.hpp>
 #include <array>
 
@@ -23,9 +24,7 @@ struct Assets
 
 	static SDL_Texture* doggoTexture;
 	
-	/*
-	static sf::Font font;
-		*/
+	static TTF_Font* font;
 
 	static sf::SoundBuffer soundBufferBucketTomatoes;
 	static sf::Sound soundBucketTomatoes;

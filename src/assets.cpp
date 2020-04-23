@@ -17,9 +17,8 @@ SDL_Texture* Assets::npcTexture;
 
 SDL_Texture* Assets::doggoTexture;
 
-/*
-sf::Font Assets::font;
-*/
+TTF_Font* Assets::font;
+
 sf::SoundBuffer Assets::soundBufferBucketTomatoes;
 sf::Sound Assets::soundBucketTomatoes;
 sf::SoundBuffer Assets::soundBufferBuy;
@@ -88,9 +87,8 @@ void Assets::LoadAll() {
     doggoTexture = loadImage("data/doggo.png");
     plantTexture = loadImage("data/plant.png");
 
-    /*
-    font.loadFromFile("data/PressStart2P.ttf");
-    */
+    font = TTF_OpenFont("data/PressStart2P.ttf", 30);
+
     soundBufferBucketTomatoes.loadFromFile("data/bucket_tomatoes.ogg");
     soundBucketTomatoes.setBuffer(soundBufferBucketTomatoes);
 

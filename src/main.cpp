@@ -21,6 +21,7 @@
 
 #include <SDL.h>
 #include <SDL_image.h>
+#include <SDL_ttf.h>
 
 Scene* SceneManager::currentScene = nullptr;
 float mainClock;
@@ -30,7 +31,8 @@ float mainClock;
 int main(int argc, char* argv[])
 {
 	SDL_Init(SDL_INIT_VIDEO);
-	IMG_Init(IMG_INIT_PNG); // | IMG_INIT_JPG
+	IMG_Init(IMG_INIT_PNG);
+	TTF_Init();
 
 	Window::Init();
 
