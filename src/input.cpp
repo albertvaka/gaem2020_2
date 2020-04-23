@@ -3,7 +3,7 @@
 
 #ifdef _DEBUG
 #include "imgui.h"
-#include "imgui-SFML.h"
+#include "imgui_impl_sdl.h"
 #endif
 
 int GamePad::player_to_joystick[GamePad::JoystickCountMax];
@@ -182,7 +182,7 @@ void Keyboard::_UpdateInputState(float dt)
 {
     for (size_t i = 1; i < magic_enum::enum_count<GameKeys>(); i++) //Skip GameKeys::NONE
 	{
-        if (sf::Keyboard::isKeyPressed(key_map[i]) && Window::WindowHasFocus())
+        if (sf::Keyboard::isKeyPressed(key_map[i]) && Window::HasFocus())
 		{
             if (key_states[i] == JUST_PRESSED || key_states[i] == PRESSED)
 			{
@@ -214,21 +214,16 @@ void Keyboard::_UpdateInputState(float dt)
 
 namespace Input
 {
-    void Update(sf::Time deltaTime)
+    void Update(float dt)
 	{
-        /*
-#ifdef _DEBUG
-        ImGui::SFML::Update(*Window::window, deltaTime);
-#endif
         Mouse::scrollWheel = 0.f;
-        _ProcessWindowEvents();
-
+        /*
 #ifdef _DEBUG
         ImGuiIO& io = ImGui::GetIO();
         if (!io.WantCaptureKeyboard)
 #endif
         {
-            Keyboard::_UpdateInputState(deltaTime.asSeconds());
+            Keyboard::_UpdateInputState(dt);
 
         }
 #ifdef _DEBUG
@@ -240,11 +235,9 @@ namespace Input
         GamePad::_UpdateInputState();
         */
     }
-    void Init(SDL_Window* renderwindow)
+    void Init()
 	{
         /*
-        Camera::ResetCamera();
-        Camera::ResetGuiCamera();
         RemapInput();
         for (size_t i = 0; i < magic_enum::enum_count<GameKeys>(); i++) Keyboard::key_states[i] = RELEASED;
         for (size_t i = 0; i < sf::Mouse::ButtonCount; i++) Mouse::button_states[i] = RELEASED;

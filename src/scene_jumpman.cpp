@@ -30,8 +30,8 @@ JumpScene::JumpScene()
 	//moneyText.setScale(0.45f, 0.45f);
 	map.LoadFromTiled();
 
-	//Camera::SetZoom(Window::GAME_ZOOM);
-	//Camera::SetCenter(vec(0,0));
+	Camera::SetZoom(Window::GAME_ZOOM);
+	Camera::SetCenter(vec(Window::WINDOW_WIDTH / 4, Window::WINDOW_HEIGHT / 4));
 }
 
 void JumpScene::EnterScene() 

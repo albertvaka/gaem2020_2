@@ -204,63 +204,6 @@ struct Keyboard
 	static float key_times[magic_enum::enum_count<GameKeys>()];
 };
 
-//CAMERA MANAGEMENT
-//=================
-namespace Camera
-{
-
-	void SetCenter(const vec& center);
-	vec GetCenter();
-	Bounds GetBounds();
-	vec GetSize();
-	void ClampCameraTo(const Bounds& b);
-	void ResetCamera();
-
-	void SetZoom(float z);
-	float GetZoom();
-
-	void StartGuiDraw();
-	void EndGuiDraw();
-
-	//Useful for debug pourposes
-	/*
-	inline void MoveCameraWithArrows(float velocity, float dt) {
-		vec c = GetCenter();
-		float zoom = GetZoom();
-		if (Keyboard::IsKeyPressed(GameKeys::RIGHT))
-		{
-			c.x += velocity * dt * 10 / zoom;
-		}
-		if (Keyboard::IsKeyPressed(GameKeys::LEFT))
-		{
-			c.x -= velocity * dt * 10 / zoom;
-		}
-		if (Keyboard::IsKeyPressed(GameKeys::DOWN))
-		{
-			c.y += velocity * dt * 10 / zoom;
-		}
-		if (Keyboard::IsKeyPressed(GameKeys::UP))
-		{
-			c.y -= velocity * dt * 10 / zoom;
-		}
-		SetCenter(c);
-	}
-	inline void ChangeZoomWithPlusAndMinus(float zoomVel, float dt)
-	{
-		float zoom = GetZoom();
-		if (Keyboard::IsKeyPressed(GameKeys::DEBUG_ZOOM_IN))
-		{
-			zoom += zoomVel * dt;
-		}
-		if (Keyboard::IsKeyPressed(GameKeys::DEBUG_ZOOM_OUT))
-		{
-			zoom -= zoomVel * dt;
-		}
-		SetZoom(zoom);
-	}*/
-
-}
-
 
 
 //MOUSE ACCESS
@@ -269,28 +212,28 @@ struct Mouse
 {
 	static bool IsPressed(sf::Mouse::Button b = sf::Mouse::Left)
 	{
-		if (!Window::WindowHasFocus()) return false;
+		if (!Window::HasFocus()) return false;
 		if (!Window::IsMouseInsideWindow()) return false;
 		return (button_states[b] == PRESSED || button_states[b] == JUST_PRESSED);
 	}
 
 	static bool IsJustPressed(sf::Mouse::Button b = sf::Mouse::Left)
 	{
-		if (!Window::WindowHasFocus()) return false;
+		if (!Window::HasFocus()) return false;
 		if (!Window::IsMouseInsideWindow()) return false;
 		return (button_states[b] == JUST_PRESSED);
 	}
 
 	static bool IsReleased(sf::Mouse::Button b = sf::Mouse::Left)
 	{
-		if (!Window::WindowHasFocus()) return false;
+		if (!Window::HasFocus()) return false;
 		if (!Window::IsMouseInsideWindow()) return false;
 		return (button_states[b] == RELEASED || button_states[b] == JUST_RELEASED);
 	}
 
 	static bool IsJustReleased(sf::Mouse::Button b = sf::Mouse::Left)
 	{
-		if (!Window::WindowHasFocus()) return false;
+		if (!Window::HasFocus()) return false;
 		if (!Window::IsMouseInsideWindow()) return false;
 		return (button_states[b] == JUST_RELEASED);
 	}
@@ -311,6 +254,6 @@ struct Mouse
 
 namespace Input
 {
-	void Init(SDL_Window* renderwindow);
-	void Update(sf::Time dt);
+	void Init();
+	void Update(float dt);
 }

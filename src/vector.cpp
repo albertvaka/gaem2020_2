@@ -1,35 +1,31 @@
 #include "vector.h"
 
-#include <SFML/Graphics.hpp>
 #include <vector>
 #include "debug.h"
+#include "bounds.h"
 
 const vec vec::Zero(0.f, 0.f);
 
 #ifdef _DEBUG
 struct debugvec {
-    debugvec(const vec& v, const sf::Color& c) : v(v), c(c) {}
+    debugvec(const vec& v, int r, int g, int b) : v(v), r(r), g(g), b(b) {}
     vec v; 
-    sf::Color c;
+    int r,g,b;
 };
 
 std::vector<debugvec> debugvecs;
 
-void vec::Debuggerino(const sf::Color& color) const {
-    debugvecs.emplace_back(*this, color);
+void vec::Debuggerino(int r, int g, int b) const {
+    debugvecs.emplace_back(*this, r, g, b);
 }
 
-void DrawDebugVecs() {
-    /*sf::RectangleShape rs(sf::Vector2f(1, 1));
-    rs.setFillColor(sf::Color::Transparent);
-    rs.setOutlineThickness(1);
-    rs.setOrigin(0.5f, 0.5f);
+void DrawDebugVecs() 
+{
     for (debugvec v : debugvecs) {
-        rs.setOutlineColor(v.c);
-        rs.setPosition(v.v);
-        window->draw(rs);
-    }*/
+        Bounds::fromCenter(v.v, vec(4, 4)).Draw(v.r,v.g,v.b);
+    }
 }
+
 void ClearDebugVecs() {
     debugvecs.clear();
 }

@@ -36,6 +36,8 @@ Plant::Plant(vec pos) : BoxEntity(pos, vec(16.0f, 16.0f)) {
 
 void Plant::Update(float dt) {
 
+    pos.Debuggerino();
+
     // For Debug
     if (Keyboard::IsKeyJustPressed(GameKeys::DEBUG_SET_PLANTS_AT_MAX_STATS)) {
         // Grow to the max.
@@ -101,11 +103,11 @@ void Plant::Update(float dt) {
       }
           
 #ifdef _DEBUG
-      //ImGui::Begin((std::string("plant") + ::std::to_string(id)).c_str());
-      //ImGui::SliderFloat("water", &water, 0.f, kMaxStats);
-      //ImGui::SliderFloat("light", &light, 0.f, kMaxStats);
-      //ImGui::Checkbox("alive", &alive);
-      //ImGui::End();
+      ImGui::Begin((std::string("plant") + ::std::to_string(id)).c_str());
+      ImGui::SliderFloat("water", &water, 0.f, kMaxStats);
+      ImGui::SliderFloat("light", &light, 0.f, kMaxStats);
+      ImGui::Checkbox("alive", &alive);
+      ImGui::End();
 #endif
 }
 

@@ -22,20 +22,22 @@ namespace Window
 	const int GAME_ZOOM = 2;
 	const int WINDOW_HEIGHT = 420 * GAME_ZOOM;
 	const int WINDOW_WIDTH = 828 * GAME_ZOOM;
+	constexpr const char* WINDOW_TITLE = "LD46";
 }
-
-
 
 namespace Camera
 {
+
 	inline void SetCenter(const vec& center)
 	{
-		cam = center+vec(Window::WINDOW_WIDTH/2, Window::WINDOW_HEIGHT/ 2);
+		cam = center*zoom-vec(Window::WINDOW_WIDTH/2, Window::WINDOW_HEIGHT/2);
 	}
+
+	inline void SetCenter(float x, float y) { SetCenter(vec(x, y)); }
 
 	inline vec GetCenter()
 	{
-		return cam-vec(Window::WINDOW_WIDTH / 2, Window::WINDOW_HEIGHT / 2);;
+		return cam * zoom +vec(Window::WINDOW_WIDTH/2, Window::WINDOW_HEIGHT/2);
 	}
 
 	inline vec GetSize()
@@ -48,7 +50,6 @@ namespace Camera
 		return Bounds(GetCenter(), GetSize());
 	}
 
-	/*
 	inline void ClampCameraTo(const Bounds& limit)
 	{
 		vec c = GetCenter();
@@ -65,26 +66,14 @@ namespace Camera
 		if (c.y - halfScreenHeight < limit.Top()) c.y = limit.Top() + halfScreenHeight;
 
 		SetCenter(c);
-	}*/
-
-	inline void ResetCamera()
-	{
-		/*
-		gameView.setSize(sf::Vector2f(Window::window->getSize()));
-		gameView.setCenter(vec(Window::window->getSize()) / 2);
-		zoom = 1.f;
-		gameView.zoom(1.f / zoom);
-		gameView.setViewport(sf::FloatRect(0, 0, 1, 1));
-		//GUI View is never moved so it shouldn't be necessary to reset it
-		Window::window->setView(gameView);
-		_ProcessWindowEvents();
-		*/
 	}
 
 	inline void SetZoom(float z)
 	{
+		vec c = GetCenter();
 		zoom = z;
 		SDL_RenderSetScale(Window::renderer, z, z);
+		SetCenter(c);
 	}
 
 	inline float GetZoom()
@@ -92,6 +81,9 @@ namespace Camera
 		return zoom;
 	}
 
+	//Useful for debug pourposes
+	void MoveCameraWithArrows(float velocity, float dt);
+	void ChangeZoomWithPlusAndMinus(float zoomVel, float dt);
 }
 
 
@@ -199,13 +191,15 @@ struct PartialDraw {
 
 namespace Window
 {
-	void SetWindowCaption(const std::string& s);
-	bool WindowHasFocus();
-	void CloseWindow();
-	void SetWindowSize(sf::Vector2u size, bool centerCamera = true);
-	sf::Vector2u GetWindowSize();
-	Bounds GetWindowBounds();
+	void Init();
+	void ProcessEvents();
+
+	inline bool HasFocus() { return focus; }
 	bool IsMouseInsideWindow();
+
+	inline vec GetWindowSize() { return vec(WINDOW_WIDTH, WINDOW_HEIGHT); }
+	inline Bounds GetWindowBounds() { return Bounds(vec::Zero, GetWindowSize()); }
+
 	inline PartialDraw Draw(SDL_Texture* t, const vec& pos) { return PartialDraw(t, pos); }
 	inline void Clear(int r, int g, int b) {
 		SDL_SetRenderDrawColor(Window::renderer, r, g, b, 0xFF);

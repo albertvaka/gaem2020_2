@@ -25,9 +25,8 @@
     <ClInclude Include="imgui\imstb_rectpack.h" />
     <ClInclude Include="imgui\imstb_textedit.h" />
     <ClInclude Include="imgui\imstb_truetype.h" />
-    <ClInclude Include="imgui_sfml\imconfig-SFML.h" />
-    <ClInclude Include="imgui_sfml\imgui-SFML.h" />
-    <ClInclude Include="imgui_sfml\imgui-SFML_export.h" />
+    <ClInclude Include="SDL2\include\imgui_impl_sdl.h" />
+    <ClInclude Include="SDL2\include\imgui_sdl.h" />
     <ClInclude Include="src\cistell.h" />
     <ClInclude Include="src\doggo.h" />
     <ClInclude Include="src\intro_scene.h" />
@@ -66,7 +65,9 @@
     <ClCompile Include="imgui\imgui_demo.cpp" />
     <ClCompile Include="imgui\imgui_draw.cpp" />
     <ClCompile Include="imgui\imgui_widgets.cpp" />
-    <ClCompile Include="imgui_sfml\imgui-SFML.cpp" />
+    <ClCompile Include="SDL2\include\imgui_impl_sdl.cpp" />
+    <ClCompile Include="SDL2\include\imgui_sdl.cpp" />
+    <ClCompile Include="src\bounds.cpp" />
     <ClCompile Include="src\plant.cpp" />
     <ClCompile Include="src\anim_data.cpp" />
     <ClCompile Include="src\assets.cpp" />

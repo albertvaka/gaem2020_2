@@ -9,17 +9,20 @@
 
 struct CircleBounds;
 
-struct Bounds : public sf::Rect<float>
+struct Bounds
 {
-    Bounds() : sf::Rect<float>(0,0,0,0) { }
-    Bounds(const sf::Rect<float>& r) : sf::Rect<float>(r) { }
-    explicit Bounds(const vec& size) : sf::Rect<float>(0,0,size.x,size.y) { }
-    Bounds(const vec& topleft, const vec& size) : sf::Rect<float>(topleft.x, topleft.y, size.x, size.y) {}
-    explicit Bounds(const vec& pos, const vec& size, const vec& origin) : sf::Rect<float>(pos.x, pos.y, size.x, size.y) {
+    float left, top;
+    float width, height;
+
+    Bounds(float x, float y, float w, float h) : left(x), top(y), width(w), height(h) { }
+    Bounds() : Bounds(-1,-1,-1,-1) { }
+    Bounds(const vec& topleft, const vec& size) : Bounds(topleft.x, topleft.y, size.x, size.y) {}
+    explicit Bounds(const vec& size) : Bounds(0,0,size.x,size.y) { }
+    explicit Bounds(const vec& pos, const vec& size, const vec& origin) : Bounds(pos.x, pos.y, size.x, size.y) {
         left -= origin.x;
         top -= origin.y;
     }
-    Bounds(float left, float top, float width, float height) : sf::Rect<float>(left , top, width, height) { }
+
     static Bounds fromCenter(const vec& center, const vec& size) { return Bounds(center - size/2, size); }
 
     //Expands arround the center by a factor
@@ -54,22 +57,7 @@ struct Bounds : public sf::Rect<float>
         SetCenter(center.x, center.y);
     }
 
-	void Draw(const sf::Color& color = sf::Color::Red, const sf::Color& fillColor = sf::Color::Transparent) const
-	{
-        //TODO: SDL
-        /*
-		sf::RectangleShape rs;
-
-		rs.setSize(vec(width,height));
-		rs.setPosition(vec(left,top));
-
-		rs.setFillColor(fillColor);
-		rs.setOutlineColor(color);
-		rs.setOutlineThickness(1);
-
-		rt.draw(rs);
-        */
-	}
+    void Draw(int r = 255, int g = 0, int b = 0) const;
 
     [[nodiscard]] float Top() const
 	{
@@ -103,13 +91,22 @@ struct Bounds : public sf::Rect<float>
         return vec(Right(), Bottom());
     }
 
-    [[nodiscard]] bool IsInside(const vec& point) const
+    [[nodiscard]] bool Contains(const vec& point) const
 	{
         if (point.x < left) return false;
         if (point.x >= left+width) return false;
         if (point.y < top) return false;
         if (point.y >= top+height) return false;
 		return true;
+    }
+
+    [[nodiscard]] bool Contains(const Bounds& b) const
+    {
+        if (b.left < left) return false;
+        if (b.left+b.width >= left + width) return false;
+        if (b.top < top) return false;
+        if (b.top+ b.height >= top + height) return false;
+        return true;
     }
 
     [[nodiscard]] vec Size() const {
@@ -133,22 +130,7 @@ struct CircleBounds
     vec pos;
     float radius;
 
-    void Draw(const sf::Color& color = sf::Color::Red, const sf::Color& fillColor = sf::Color::Transparent) const
-    {
-        //TODO: SDL
-        /*
-        sf::CircleShape cs(radius);
-        cs.setRadius(radius);
-        cs.setOrigin(vec(radius, radius));
-        cs.setPosition(pos);
-
-        cs.setFillColor(fillColor);
-        cs.setOutlineColor(color);
-        cs.setOutlineThickness(1);
-
-        window.draw(cs);
-        */
-    }
+    void Draw(int r = 255, int g = 0, int b = 0) const;
 
     float DistanceSq(const Bounds& a) const { return a.DistanceSq(*this); };
     float Distance(const Bounds& a) const { return a.Distance(*this); }

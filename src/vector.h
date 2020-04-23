@@ -156,7 +156,7 @@ struct vec
       return vec(-x, -y);
   }
 
-  void Debuggerino(const sf::Color& color = sf::Color::White) const
+  void Debuggerino(int r = 255, int g = 255, int b = 255) const
 #ifdef _DEBUG
       ;
 #else
