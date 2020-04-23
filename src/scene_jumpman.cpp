@@ -30,9 +30,8 @@ JumpScene::JumpScene()
 	//moneyText.setScale(0.45f, 0.45f);
 	map.LoadFromTiled();
 
-	Camera::SetZoom(Window::GAME_ZOOM);
-	Camera::SetCameraCenter(vec(Window::WINDOW_WIDTH / 4, Window::WINDOW_HEIGHT / 4));
-
+	//Camera::SetZoom(Window::GAME_ZOOM);
+	//Camera::SetCenter(vec(0,0));
 }
 
 void JumpScene::EnterScene() 
@@ -57,7 +56,7 @@ void JumpScene::EnterScene()
 
 	npc.Reset();
 
-	Assets::sceneMusic[current_music].play();
+	//Assets::sceneMusic[current_music].play();
 }
 
 void JumpScene::ExitScene()
@@ -71,6 +70,15 @@ void JumpScene::ExitScene()
 
 void JumpScene::Update(float dt)
 {
+
+	//float f = Camera::GetZoom();
+	//f -= 0.2*dt;
+	//Camera::SetZoom(f);
+
+	//vec a = Camera::GetCenter();
+	//a.x += 100*dt;
+	//Camera::SetCenter(a);
+
 	if (Keyboard::IsKeyJustPressed(GameKeys::NEXT_TRACK)) {
 		Assets::sceneMusic[current_music].stop();
 		current_music = 1-current_music;
@@ -128,7 +136,7 @@ void JumpScene::Update(float dt)
 		}
 	}
 
-	Camera::ChangeZoomWithPlusAndMinus(20.f, dt);
+	//Camera::ChangeZoomWithPlusAndMinus(20.f, dt);
 	//Debug::out << Camera::GetCameraCenter();
 
 	contextActionButton = GameKeys::NONE;
@@ -331,7 +339,7 @@ void JumpScene::Draw()
 {
 	Window::Clear(34, 32, 52);
 
-	Window::Draw(Assets::casaTexture, vec(0,0));
+	Window::Draw(Assets::casaTexture, vec(0, 0));
 
 	if (Debug::Draw) {
 		map.Draw();

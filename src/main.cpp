@@ -2,11 +2,12 @@
 
 #ifdef _DEBUG
 #include "imgui.h"
-#include "imgui-SFML.h"
 #endif
-#include <SFML/Graphics.hpp>
-#include <SFML/System/Clock.hpp>
-#include <SFML/Window/Event.hpp>
+
+#define SDL_MAIN_HANDLED
+#include <SDL.h>
+#include <SDL_image.h>
+
 #include <string>
 
 #include "scene_manager.h"
@@ -21,16 +22,29 @@
 Scene* SceneManager::currentScene = nullptr;
 float mainClock;
 
-//#define _FPS_COUNTER
+#define _FPS_COUNTER
 
-int main()
+int main(int argc, char* argv[])
 {
+	SDL_Init(SDL_INIT_VIDEO);
+	IMG_Init(IMG_INIT_PNG); // | IMG_INIT_JPG
 
-	sf::RenderWindow window(sf::VideoMode(Window::WINDOW_WIDTH, Window::WINDOW_HEIGHT), "LD46");
+	SDL_Window* window = SDL_CreateWindow("LD46_SDL", 
+		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+		Window::WINDOW_WIDTH, Window::WINDOW_HEIGHT,
+		SDL_WINDOW_SHOWN
+	);
+	Window::window = window;
+	Window::renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC); //
+	if (Window::renderer == NULL) {
+		printf("Renderer Creation Error: %s\n", SDL_GetError());
+		return false;
+	}
+	//SDL_Rect viewport = { 0,0, Window::WINDOW_WIDTH,Window::WINDOW_HEIGHT };
+	//SDL_RenderSetViewport(Window::renderer, &viewport);
 
-	window.setFramerateLimit(60);
 #ifdef _DEBUG
-	ImGui::SFML::Init(window);
+	//ImGui::SFML::Init(window);
 #endif
 	Input::Init(window);
 
@@ -39,9 +53,9 @@ int main()
 	srand(time(NULL));
 
 #ifdef _FPS_COUNTER
-	sf::Text txt_fps;
-	txt_fps.setFont(Assets::font);
-	txt_fps.setPosition(Window::WINDOW_WIDTH - 100, 10);
+	//sf::Text txt_fps;
+	//txt_fps.setFont(Assets::font);
+	//txt_fps.setPosition(Window::WINDOW_WIDTH - 100, 10);
 	sf::Clock fpsClock;
 	int fps_counter = 0;
 #endif
@@ -49,10 +63,10 @@ int main()
 
 	sf::Clock dtClock;
 
-	Scene* currentScene = new IntroScene();
+	Scene* currentScene = new JumpScene();
 	SceneManager::SetScene(currentScene);
 	currentScene->EnterScene();
-	while (window.isOpen())
+	while (true)
 	{
 		if (SceneManager::CurrentScene() != currentScene) {
 			currentScene->ExitScene();
@@ -63,7 +77,17 @@ int main()
 
 		sf::Time time = dtClock.restart();
 
-		Input::Update(time);
+		//Input::Update(time);
+		SDL_Event event;
+		while (SDL_PollEvent(&event) > 0)
+		{
+			switch (event.type)
+			{
+			case SDL_QUIT:
+				return 0;
+				break;
+			}
+		}
 
 #ifdef _DEBUG
 		if (Keyboard::IsKeyJustPressed(DEBUG_MODE)) {
@@ -78,7 +102,7 @@ int main()
 		}
 	
 		if (frameByFrame && Debug::Draw) {
-			Camera::MoveCameraWithArrows(100.f, time.asSeconds());
+			//Camera::MoveCameraWithArrows(100.f, time.asSeconds());
 		}
 
 		if (!frameByFrame || Keyboard::IsKeyJustPressed(DEBUG_FRAME_BY_FRAME_NEXT) || Keyboard::IsKeyJustPressed(RESTART))
@@ -101,32 +125,42 @@ int main()
 
 #ifdef _DEBUG
 		if (Debug::Draw) {
-			DrawDebugVecs(&window);
+			DrawDebugVecs();
 		}
 #endif
 
-		Camera::StartGuiDraw();
+		//Camera::StartGuiDraw();
 
 #ifdef _FPS_COUNTER
 		fps_counter++;
 		if (fpsClock.getElapsedTime().asSeconds() > 0.5f)
 		{
-			txt_fps.setString(std::to_string(int(fps_counter / fpsClock.restart().asSeconds())) + (slowDown ? "!" : ""));
+			Debug::out << std::to_string(int(fps_counter / fpsClock.restart().asSeconds())) + (slowDown ? "!" : "");
+			//txt_fps.setString(std::to_string(int(fps_counter / fpsClock.restart().asSeconds())) + (slowDown ? "!" : ""));
 			slowDown = false;
 			fps_counter = 0;
 		}
-		window.draw(txt_fps);
+		//window.draw(txt_fps);
 #endif
 
 #ifdef _DEBUG
-		ImGui::SFML::Render(window);
+		//ImGui::SFML::Render();
 #endif
-		Camera::EndGuiDraw();
+		//Camera::EndGuiDraw();
 
-		window.display();
+
+		//SDL_RenderClear(Window::renderer);
+		//SDL_RenderCopy(Window::renderer, Assets::casaTexture, NULL, NULL);
+
+		//Update the surface
+		SDL_RenderPresent(Window::renderer);
+
 	}
 
 #ifdef _DEBUG
-	ImGui::SFML::Shutdown();
+	//ImGui::SFML::Shutdown();
 #endif
+
+	SDL_DestroyWindow(window);
+	SDL_Quit();
 }

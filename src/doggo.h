@@ -126,9 +126,9 @@ struct Doggo : BoxEntity, EntS<Doggo>
 			}
 		}
 #ifdef _DEBUG
-      ImGui::Begin((std::string("doggo") + ::std::to_string(id)).c_str());
-      ImGui::SliderFloat("menjar", &menjar, 0.f, kMaxMenjar);
-      ImGui::End();
+      //ImGui::Begin((std::string("doggo") + ::std::to_string(id)).c_str());
+	  //ImGui::SliderFloat("menjar", &menjar, 0.f, kMaxMenjar);
+	  //ImGui::End();
 #endif
 	}
 

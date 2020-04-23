@@ -4,13 +4,19 @@
 
 namespace Window
 {
-    sf::RenderWindow* window;
+    SDL_Window* window;
+    SDL_Renderer* renderer;
     bool focus = true;
+}
+
+namespace Camera {
+    float zoom = 1.f;
+    vec cam(0, 0); //Window::WINDOW_WIDTH / 2, Window::WINDOW_HEIGHT / 2);
 }
 
 void _ProcessWindowEvents()
 {
-
+    /*
     sf::Event sfmlevent;
     while (Window::window->pollEvent(sfmlevent))
     {
@@ -31,26 +37,27 @@ void _ProcessWindowEvents()
             Mouse::scrollWheel += sfmlevent.mouseWheelScroll.delta;
             break;
         case sf::Event::Resized: //To disable sfml's automatic scaling
-        /*{
+        {
             // GameView: scale from center
             vec currentCenter = Camera::gameView.getCenter();
-            Camera::gameView.setSize(sf::Vector2f(Window::window->getSize()));
-            Camera::gameView.setCenter(currentCenter);
-            Camera::gameView.zoom(1.f / Camera::zoom);
+        //    Camera::gameView.setSize(sf::Vector2f(Window::window->getSize()));
+        //    Camera::gameView.setCenter(currentCenter);
+        //    Camera::gameView.zoom(1.f / Camera::zoom);
         }
         {
             // GuiView: scale from top-left corner
             vec oldSize = Camera::guiView.getSize() * (Window::GUI_ZOOM);
             vec newSize = sf::Vector2f(Window::window->getSize());
-            Camera::guiView.setSize(newSize);
-            Camera::guiView.zoom(1.f / Window::GUI_ZOOM);
-            Camera::guiView.setCenter(vec(Camera::guiView.getCenter()) + (newSize-oldSize)/(2*Window::GUI_ZOOM));
-        }*/
+        //    Camera::guiView.setSize(newSize);
+        //    Camera::guiView.zoom(1.f / Window::GUI_ZOOM);
+        //    Camera::guiView.setCenter(vec(Camera::guiView.getCenter()) + (newSize-oldSize)/(2*Window::GUI_ZOOM));
+        }
             break;
         default:
             break;
         }
     }
+    */
 }
 
 namespace Window
@@ -58,7 +65,7 @@ namespace Window
 
     void SetWindowCaption(const std::string& s)
 	{
-        window->setTitle(s);
+        //window->setTitle(s);
     }
 
     bool WindowHasFocus()
@@ -68,31 +75,33 @@ namespace Window
 
     void CloseWindow()
 	{
-        window->close();
+        //window->close();
     }
 
     void SetWindowSize(sf::Vector2u size, bool centerCamera)
 	{
-        window->setSize(size);
-        _ProcessWindowEvents();
-        if (centerCamera) Camera::SetCameraCenter(size / 2);
+        //window->setSize(size);
+        //_ProcessWindowEvents();
+        //if (centerCamera) Camera::SetCameraCenter(size / 2);
     }
 
     sf::Vector2u GetWindowSize()
 	{
-        return window->getSize();
+        //return window->getSize();
+        return sf::Vector2u();
     }
 
     Bounds GetWindowBounds()
 	{
-        return Bounds(0.f, 0.f, (float)window->getSize().x, (float)window->getSize().y);
+        //return Bounds(0.f, 0.f, (float)window->getSize().x, (float)window->getSize().y);
+        return Bounds();
     }
 
     bool IsMouseInsideWindow()
 	{
-        sf::Vector2i vec = sf::Mouse::getPosition(*window);
-        if (vec.x < 0 || vec.x >(int)window->getSize().x) return false;
-        if (vec.y < 0 || vec.y >(int)window->getSize().y) return false;
+        //sf::Vector2i vec = sf::Mouse::getPosition(*window);
+        //if (vec.x < 0 || vec.x >(int)window->getSize().x) return false;
+        //if (vec.y < 0 || vec.y >(int)window->getSize().y) return false;
         return true;
     }
 

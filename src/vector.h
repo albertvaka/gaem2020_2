@@ -16,13 +16,19 @@
 #include "mates.h"
 #include "rand.h"
 
-struct vec : public sf::Vector2f
+struct veci {
+    int x, y;
+    veci(int a, int b) : x(a), y(b) {}
+};
+
+struct vec
 {
-  vec():sf::Vector2f(0.0,0.0){}
-  vec(float a, float b):sf::Vector2f(a,b){}
-  vec(sf::Vector2u v):sf::Vector2f(float(v.x),float(v.y)){}
-  vec(sf::Vector2i v):sf::Vector2f(float(v.x),float(v.y)){}
-  vec(sf::Vector2f v):sf::Vector2f(v.x,v.y){}
+    float x, y;
+    vec() {}
+    vec(float a, float b) : x(a), y(b) {}
+    vec(const veci& v) : x(v.x), y(v.y) {}
+
+    static const vec Zero;
 
   [[nodiscard]] static vec Rand(float minX, float minY, float maxX, float maxY) {
       return vec(Random::rollf(minX, maxX), Random::rollf(minY, maxY));
@@ -36,8 +42,6 @@ struct vec : public sf::Vector2f
   {
       return x == px && y == py;
   }
-  //sets x and y to zero
-  void Zero(){x=0.0; y=0.0;}
 
   //returns true if both x and y are zero
   [[nodiscard]] bool isZero()const{return (x*x + y*y) < Mates::MinFloat;}
@@ -162,7 +166,7 @@ struct vec : public sf::Vector2f
 
 #ifdef _DEBUG
 namespace sf { class RenderTarget; }
-void DrawDebugVecs(sf::RenderTarget* window);
+void DrawDebugVecs();
 void ClearDebugVecs();
 #endif
 

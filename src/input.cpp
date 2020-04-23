@@ -1,4 +1,5 @@
 #include "input.h"
+#include <SDL.h>
 
 #ifdef _DEBUG
 #include "imgui.h"
@@ -20,99 +21,6 @@ KeyStates Keyboard::key_states[magic_enum::enum_count<GameKeys>()];
 float Keyboard::key_times[magic_enum::enum_count<GameKeys>()];
 sf::Keyboard::Key key_map[magic_enum::enum_count<GameKeys>()];
 
-
-namespace Camera
-{
-    sf::View gameView;
-    sf::View guiView;
-    float zoom;
-
-    void SetCameraCenter(const vec& center)
-	{
-        gameView.setCenter(center);
-        Window::window->setView(gameView);
-        _ProcessWindowEvents();
-    }
-
-    vec GetCameraCenter()
-	{
-        return gameView.getCenter();
-    }
-
-    Bounds GetCameraBounds()
-	{
-        sf::Vector2f viewSize = gameView.getSize();
-        vec viewOrigin = gameView.getCenter() - (viewSize / 2.f);
-        return Bounds(viewOrigin.x, viewOrigin.y, viewSize.x, viewSize.y);
-    }
-
-    vec GetCameraSize()
-    {
-        return gameView.getSize();
-    }
-
-    void ClampCameraTo(const Bounds& limit)
-	{
-        vec c = GetCameraCenter();
-
-        vec screenSize = Window::GetWindowSize();
-        screenSize /= zoom;
-        float halfScreenWidth = screenSize.x / 2.f;
-        float halfScreenHeight = screenSize.y / 2.f;
-
-        //TODO: Center if viewport is bigger than limits
-        if (c.x + halfScreenWidth > limit.Right()) c.x = limit.Right() - halfScreenWidth;
-        if (c.x - halfScreenWidth < limit.Left()) c.x = limit.Left() + halfScreenWidth;
-        if (c.y + halfScreenHeight > limit.Bottom()) c.y = limit.Bottom() - halfScreenHeight;
-        if (c.y - halfScreenHeight < limit.Top()) c.y = limit.Top() + halfScreenHeight;
-
-        SetCameraCenter(c);
-    }
-
-    void ResetCamera()
-	{
-        gameView.setSize(sf::Vector2f(Window::window->getSize()));
-        gameView.setCenter(vec(Window::window->getSize()) / 2);
-        zoom = 1.f;
-        gameView.zoom(1.f / zoom);
-        gameView.setViewport(sf::FloatRect(0, 0, 1, 1));
-        //GUI View is never moved so it shouldn't be necessary to reset it
-        Window::window->setView(gameView);
-        _ProcessWindowEvents();
-    }
-
-    void ResetGuiCamera()
-	{
-        guiView.setSize(sf::Vector2f(Window::window->getSize()));
-        guiView.setCenter(vec(Window::window->getSize()) / (2*Window::GUI_ZOOM));
-        guiView.zoom(1.f / Window::GUI_ZOOM);
-        guiView.setViewport(sf::FloatRect(0, 0, 1, 1));
-    }
-
-    void SetZoom(float z)
-	{
-        gameView.zoom(zoom);
-        zoom = z;
-        gameView.zoom(1.f / zoom);
-        Window::window->setView(gameView);
-        _ProcessWindowEvents();
-    }
-
-    float GetZoom()
-	{
-        return zoom;
-    }
-
-    void StartGuiDraw()
-	{
-        Window::window->setView(guiView);
-    }
-
-    void EndGuiDraw()
-	{
-        Window::window->setView(gameView);
-    }
-}
 
 KeyStates GamePad::calculateJustPressed(bool pressed, KeyStates state)
 {
@@ -212,13 +120,17 @@ void Mouse::_UpdateInputState()
 
 sf::Vector2i Mouse::GetPositionInWindow()
 {
-    return sf::Mouse::getPosition(*Window::window); //window arg is needed for relative coords
+    //return sf::Mouse::getPosition(*Window::window); //window arg is needed for relative coords
+    return sf::Vector2i();
 }
 
 vec Mouse::GetPositionInWorld()
 {
+    /*
     vec displacement = Camera::gameView.getCenter() - (Camera::gameView.getSize() / 2.f);
     return (vec(GetPositionInWindow())/Camera::zoom) + displacement;
+    */
+    return vec();
 }
 
 
@@ -304,6 +216,7 @@ namespace Input
 {
     void Update(sf::Time deltaTime)
 	{
+        /*
 #ifdef _DEBUG
         ImGui::SFML::Update(*Window::window, deltaTime);
 #endif
@@ -325,16 +238,18 @@ namespace Input
             Mouse::_UpdateInputState();
         }
         GamePad::_UpdateInputState();
+        */
     }
-    void Init(sf::RenderWindow & renderwindow)
+    void Init(SDL_Window* renderwindow)
 	{
-
-        Window::window = &renderwindow;
+        /*
         Camera::ResetCamera();
         Camera::ResetGuiCamera();
         RemapInput();
         for (size_t i = 0; i < magic_enum::enum_count<GameKeys>(); i++) Keyboard::key_states[i] = RELEASED;
         for (size_t i = 0; i < sf::Mouse::ButtonCount; i++) Mouse::button_states[i] = RELEASED;
-
+        */
+        
     }
+    
 }

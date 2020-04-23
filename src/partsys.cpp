@@ -24,7 +24,7 @@ void PartSys::Draw() const {
 		if (bounce_alpha  > 0.f && alpha > bounce_alpha) {
 			alpha = 2*bounce_alpha - alpha;
 		}
-		Window::Draw(*texture, p.pos)
+		Window::Draw(texture, p.pos)
 			.withAlpha(255 * alpha)
 			.withScale(p.scale)
 			.withRect(sprites[p.sprite])

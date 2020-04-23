@@ -1,18 +1,21 @@
 #include "assets.h"
+#include "window.h"
 
-sf::Texture Assets::hospitalTexture;
+#include <SDL_image.h>
 
-std::array<sf::Texture, 3> Assets::sunTextures;	
+SDL_Texture* Assets::hospitalTexture;
 
-sf::Texture Assets::marioTexture;
+std::array<SDL_Texture*, 3> Assets::sunTextures;	
 
-sf::Texture Assets::casaTexture;
-sf::Texture Assets::plantTexture;
+SDL_Texture* Assets::marioTexture;
 
-sf::Texture Assets::spritesTexture;
-sf::Texture Assets::npcTexture;
+SDL_Texture* Assets::casaTexture;
+SDL_Texture* Assets::plantTexture;
 
-sf::Texture Assets::doggoTexture;
+SDL_Texture* Assets::spritesTexture;
+SDL_Texture* Assets::npcTexture;
+
+SDL_Texture* Assets::doggoTexture;
 
 /*
 sf::Font Assets::font;
@@ -51,28 +54,39 @@ sf::Sound Assets::soundDoggo3;
 
 sf::Music Assets::sceneMusic[2];
 
+SDL_Texture* loadImage(const std::string& path) {
+
+    SDL_Surface* surface = IMG_Load(path.c_str());
+    if (!surface) {
+        printf("Unable to load image %s! SDL_image Error: %s\n", path.c_str(), IMG_GetError());
+        return nullptr;
+    }
+    
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(Window::renderer, surface);
+    if (!texture) {
+        printf("Unable to create texture image %s! SDL Error: %s\n", path.c_str(), SDL_GetError());
+    }
+
+
+    SDL_FreeSurface(surface);
+
+    return texture;
+}
 
 void Assets::LoadAll() {
 
-    hospitalTexture.loadFromFile("data/spritesheet.png");
-
-    marioTexture.loadFromFile("data/mario.png");
+    hospitalTexture = loadImage("data/spritesheet.png");
+    marioTexture = loadImage("data/mario.png");
 
     for (int i = 0; i < 3; ++i) {	
       std::string filename = "data/sun" + std::to_string(i) + ".png";	
-      sunTextures[i].loadFromFile(filename);
+      sunTextures[i] = loadImage(filename);
     }
-
-    spritesTexture.loadFromFile("data/sprites.png");
-
-    npcTexture.loadFromFile("data/npc.png");
-
-    casaTexture.loadFromFile("data/bg.png");
-
-    doggoTexture.loadFromFile("data/doggo.png");
-
-
-    plantTexture.loadFromFile("data/plant.png");
+    spritesTexture = loadImage("data/sprites.png");
+    npcTexture = loadImage("data/npc.png");
+    casaTexture = loadImage("data/bg.png");
+    doggoTexture = loadImage("data/doggo.png");
+    plantTexture = loadImage("data/plant.png");
 
     /*
     font.loadFromFile("data/PressStart2P.ttf");

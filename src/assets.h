@@ -1,6 +1,6 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
+#include <SDL.h>
 #include <SFML/Audio.hpp>
 #include <array>
 
@@ -9,19 +9,19 @@ struct Assets
 	static void LoadAll();
 
 
-	static sf::Texture hospitalTexture;
+	static SDL_Texture* hospitalTexture;
 
-	static std::array<sf::Texture, 3> sunTextures;
+	static std::array<SDL_Texture*, 3> sunTextures;
 
-	static sf::Texture marioTexture;
+	static SDL_Texture* marioTexture;
 
-	static sf::Texture spritesTexture;
-	static sf::Texture npcTexture;
+	static SDL_Texture* spritesTexture;
+	static SDL_Texture* npcTexture;
 
-	static sf::Texture casaTexture;
-	static sf::Texture plantTexture;
+	static SDL_Texture* casaTexture;
+	static SDL_Texture* plantTexture;
 
-	static sf::Texture doggoTexture;
+	static SDL_Texture* doggoTexture;
 	
 	/*
 	static sf::Font font;

@@ -86,15 +86,15 @@ struct TileMap : SingleInstance<TileMap>
 		tiles[y * sizes.x + x] = col;
 	}
 
-	void setTile(const sf::Vector2i& pos, Tile tile) { return setTile(pos.x, pos.y, tile); }
-	Tile getTile(const sf::Vector2i& pos) const { return getTile(pos.x, pos.y); }
+	void setTile(const veci& pos, Tile tile) { return setTile(pos.x, pos.y, tile); }
+	Tile getTile(const veci& pos) const { return getTile(pos.x, pos.y); }
 
 	Tile getTile(int x, int y) const {
 		if (!inBounds(x, y)) return Tile::SOLID_1;
 		return getTileUnsafe(x,y);
 	}
 
-	bool isSolid(const sf::Vector2i& pos) const { return isSolid(pos.x, pos.y); }
+	bool isSolid(const veci& pos) const { return isSolid(pos.x, pos.y); }
 	bool isSolid(int x, int y) const { return getTile(x, y).isSolid(); }
 
 	Tile getTileUnsafe(int x, int y) const { return tiles[y * sizes.x + x]; }
@@ -102,8 +102,8 @@ struct TileMap : SingleInstance<TileMap>
 
 	// Coordinate conversion functions
 
-	static sf::Vector2i toTiles(const vec& pos) { return toTiles(pos.x, pos.y); }
-	static sf::Vector2i toTiles(float x, float y) { return sf::Vector2i(toTiles(x), toTiles(y)); }
+	static veci toTiles(const vec& pos) { return toTiles(pos.x, pos.y); }
+	static veci toTiles(float x, float y) { return veci(toTiles(x), toTiles(y)); }
 	static int toTiles(float x) { return Mates::fastfloor(x / Tile::size); } // floor could be just a cast to int if we know we will never get < 0
 
 	static vec fromTiles(int x, int y) { return vec(x*Tile::size, y*Tile::size); }
@@ -123,7 +123,7 @@ struct TileMap : SingleInstance<TileMap>
 		return Bounds(x * Tile::size, y * Tile::size, Tile::size, Tile::size);
 	}
 
-	sf::Vector2i sizes;
+	veci sizes;
 	Tile* tiles = nullptr;
 
 	bool isPosOnSlope(const vec& v) const { return isPosOnSlope(v.x,v.y);  }

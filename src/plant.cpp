@@ -101,11 +101,11 @@ void Plant::Update(float dt) {
       }
           
 #ifdef _DEBUG
-          ImGui::Begin((std::string("plant") + ::std::to_string(id)).c_str());
-      ImGui::SliderFloat("water", &water, 0.f, kMaxStats);
-      ImGui::SliderFloat("light", &light, 0.f, kMaxStats);
-      ImGui::Checkbox("alive", &alive);
-      ImGui::End();
+      //ImGui::Begin((std::string("plant") + ::std::to_string(id)).c_str());
+      //ImGui::SliderFloat("water", &water, 0.f, kMaxStats);
+      //ImGui::SliderFloat("light", &light, 0.f, kMaxStats);
+      //ImGui::Checkbox("alive", &alive);
+      //ImGui::End();
 #endif
 }
 
@@ -130,11 +130,10 @@ void Plant::Draw() const {
   }
 
   int color = alive? 255 : 128;
-  vec scale = mirror ? vec(-1, 1) : vec(1, 1);
   Window::Draw(Assets::plantTexture, pos)
       .withRect(0, 64 - 16 * height, 16, 16 * height)
       .withColor(color, color, color)
-      .withScale(scale)
+      .withFlip(mirror)
       .withOrigin(size / 2.0f);
 
   // Draw stats if they are changing

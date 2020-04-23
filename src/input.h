@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
+#include <SDL.h>
 #include "magic_enum.h"
 
 #include "bounds.h"
@@ -208,10 +209,10 @@ struct Keyboard
 namespace Camera
 {
 
-	void SetCameraCenter(const vec& center);
-	vec GetCameraCenter();
-	Bounds GetCameraBounds();
-	vec GetCameraSize();
+	void SetCenter(const vec& center);
+	vec GetCenter();
+	Bounds GetBounds();
+	vec GetSize();
 	void ClampCameraTo(const Bounds& b);
 	void ResetCamera();
 
@@ -222,8 +223,9 @@ namespace Camera
 	void EndGuiDraw();
 
 	//Useful for debug pourposes
+	/*
 	inline void MoveCameraWithArrows(float velocity, float dt) {
-		vec c = GetCameraCenter();
+		vec c = GetCenter();
 		float zoom = GetZoom();
 		if (Keyboard::IsKeyPressed(GameKeys::RIGHT))
 		{
@@ -241,7 +243,7 @@ namespace Camera
 		{
 			c.y -= velocity * dt * 10 / zoom;
 		}
-		SetCameraCenter(c);
+		SetCenter(c);
 	}
 	inline void ChangeZoomWithPlusAndMinus(float zoomVel, float dt)
 	{
@@ -255,7 +257,7 @@ namespace Camera
 			zoom -= zoomVel * dt;
 		}
 		SetZoom(zoom);
-	}
+	}*/
 
 }
 
@@ -309,6 +311,6 @@ struct Mouse
 
 namespace Input
 {
-	void Init(sf::RenderWindow& renderwindow);
+	void Init(SDL_Window* renderwindow);
 	void Update(sf::Time dt);
 }

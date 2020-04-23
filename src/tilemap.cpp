@@ -52,7 +52,7 @@ inline void AddTile(size_t& i, float x, float y, const sf::IntRect& tr)
 
 void TileMap::Draw() const
 {
-	Bounds screen = Camera::GetCameraBounds();
+	Bounds screen = Camera::GetBounds();
 	int left = (screen.Left() / Tile::size) - 1;
 	int right = (screen.Right() / Tile::size) + 1;
 	int top = (screen.Top() / Tile::size) - 1;

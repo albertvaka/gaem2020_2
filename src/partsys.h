@@ -7,7 +7,7 @@
 
 struct PartSys {
 
-	const sf::Texture* texture;
+	SDL_Texture* texture;
 
 	struct Particle {
 		int sprite;
@@ -82,7 +82,7 @@ struct PartSys {
 
 	float time = 0.f;
 
-	PartSys(const sf::Texture& t) : texture(&t) { }
+	PartSys(SDL_Texture* t) : texture(t) { }
 
 	void AddSprite(const IntRect& rect) {
 		sprites.emplace_back(rect);

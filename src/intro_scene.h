@@ -19,8 +19,8 @@ struct IntroScene : Scene {
 	sfe::RichText credits;
 	*/
 	IntroScene() /*: credits(Assets::font)*/ {
-		Camera::SetZoom(Window::GAME_ZOOM);
-		Camera::SetCameraCenter(vec(Window::WINDOW_WIDTH / 4, Window::WINDOW_HEIGHT / 4));
+		//Camera::SetZoom(Window::GAME_ZOOM);
+		//Camera::SetCameraCenter(vec(Window::WINDOW_WIDTH / 4, Window::WINDOW_HEIGHT / 4));
 
 	}
 

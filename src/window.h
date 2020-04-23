@@ -1,92 +1,198 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
-
 #include "bounds.h"
 
+#include <SDL.h>
+
+#include "debug.h"
+
+namespace Camera
+{
+	extern float zoom;
+	extern vec cam;
+}
 
 namespace Window
 {
-	extern sf::RenderWindow* window;
+	extern SDL_Window* window;
+	extern SDL_Renderer* renderer;
 	extern bool focus;
 
 	const int GUI_ZOOM = 1;
 	const int GAME_ZOOM = 2;
 	const int WINDOW_HEIGHT = 420 * GAME_ZOOM;
 	const int WINDOW_WIDTH = 828 * GAME_ZOOM;
+}
+
+
+
+namespace Camera
+{
+	inline void SetCenter(const vec& center)
+	{
+		cam = center+vec(Window::WINDOW_WIDTH/2, Window::WINDOW_HEIGHT/ 2);
+	}
+
+	inline vec GetCenter()
+	{
+		return cam-vec(Window::WINDOW_WIDTH / 2, Window::WINDOW_HEIGHT / 2);;
+	}
+
+	inline vec GetSize()
+	{
+		return vec(Window::WINDOW_WIDTH, Window::WINDOW_HEIGHT);
+	}
+
+	inline Bounds GetBounds()
+	{
+		return Bounds(GetCenter(), GetSize());
+	}
+
+	/*
+	inline void ClampCameraTo(const Bounds& limit)
+	{
+		vec c = GetCenter();
+
+		vec screenSize(Window::WINDOW_WIDTH, Window::WINDOW_HEIGHT);
+		screenSize /= zoom;
+		float halfScreenWidth = screenSize.x / 2.f;
+		float halfScreenHeight = screenSize.y / 2.f;
+
+		//TODO: Center if viewport is bigger than limits
+		if (c.x + halfScreenWidth > limit.Right()) c.x = limit.Right() - halfScreenWidth;
+		if (c.x - halfScreenWidth < limit.Left()) c.x = limit.Left() + halfScreenWidth;
+		if (c.y + halfScreenHeight > limit.Bottom()) c.y = limit.Bottom() - halfScreenHeight;
+		if (c.y - halfScreenHeight < limit.Top()) c.y = limit.Top() + halfScreenHeight;
+
+		SetCenter(c);
+	}*/
+
+	inline void ResetCamera()
+	{
+		/*
+		gameView.setSize(sf::Vector2f(Window::window->getSize()));
+		gameView.setCenter(vec(Window::window->getSize()) / 2);
+		zoom = 1.f;
+		gameView.zoom(1.f / zoom);
+		gameView.setViewport(sf::FloatRect(0, 0, 1, 1));
+		//GUI View is never moved so it shouldn't be necessary to reset it
+		Window::window->setView(gameView);
+		_ProcessWindowEvents();
+		*/
+	}
+
+	inline void SetZoom(float z)
+	{
+		zoom = z;
+		SDL_RenderSetScale(Window::renderer, z, z);
+	}
+
+	inline float GetZoom()
+	{
+		return zoom;
+	}
 
 }
 
-struct IntRect {
+
+struct IntRect : SDL_Rect {
 	IntRect() {}
-	IntRect(int x, int y, int width, int height) : x(x), y(y), w(width), h(height) { }
-	IntRect(int x, int y, int size) : x(x), y(y), w(size), h(size) { }
-	int x, y;
-	int w, h;
+	IntRect(int _x, int _y, int width, int height) { x = _x; y = _y; w = width; h = height; }
+	IntRect(int _x, int _y, int size) : IntRect(x,y,size,size) { }
 };
 
 struct PartialDraw {
-	sf::Sprite sprite;
-	PartialDraw(PartialDraw&& o) noexcept : sprite(std::move(o.sprite)) {}
+	SDL_Texture* t;
+	SDL_FRect dest;
+	SDL_Rect src;
+	SDL_FPoint center;
+	SDL_FPoint* centerp = nullptr;
+	SDL_RendererFlip flip = SDL_FLIP_NONE;
+	float rotation = 0;
+	vec scale = vec(1.f,1.f);
 
-	PartialDraw(const sf::Texture& t, const vec& pos) {
-		sprite.setTexture(t);
-		sprite.setPosition(pos);
-	}
+	PartialDraw(PartialDraw&& o) noexcept : t(o.t), dest(std::move(o.dest)) {}
+
+	PartialDraw(SDL_Texture* t, const vec& pos) : t(t), dest({ pos.x, pos.y, 0, 0 }), src({ 0,0,0,0 }) { SDL_QueryTexture(t, NULL, NULL, &src.w, &src.h); }
 
 	PartialDraw& withRect(int x, int y, int w, int h) {
-		sprite.setTextureRect(sf::IntRect(x, y, w, h));
+		src = { x, y, w, h };
 		return *this;
 	}
 
 	PartialDraw& withRect(IntRect r) {
-		sprite.setTextureRect(sf::IntRect(r.x, r.y, r.w, r.h));
+		src = r;
 		return *this;
 	}
 
 	PartialDraw& withColor(int r, int g, int b) {
-		sprite.setColor(sf::Color(r,g,b,sprite.getColor().a));
+		SDL_SetTextureColorMod(t, r, g, b);
 		return *this;
 	}
+
 	PartialDraw& withAlpha(int a) {
-		const sf::Color& c = sprite.getColor();
-		sprite.setColor(sf::Color(c.r,c.g,c.b,a));
+		SDL_SetTextureAlphaMod(t, a);
 		return *this;
 	}
 
 	PartialDraw& withOrigin(float x, float y) {
-		sprite.setOrigin(x, y);
+		center.x = x;
+		center.y = y;
+		centerp = &center;
 		return *this;
 	}
 
 	PartialDraw& withOrigin(const vec& o) {
-		sprite.setOrigin(o);
+		center.x = o.x;
+		center.y = o.y;
+		centerp = &center;
 		return *this;
 	}
 
 	PartialDraw& withRotation(float r) {
-		sprite.setRotation(r);
+		rotation = r;
 		return *this;
 	}
 
 	PartialDraw& withScale(float s) {
-		sprite.setScale(s,s);
+		scale = vec(s,s);
 		return *this;
 	}
 
 	PartialDraw& withScale(float x, float y) {
-		sprite.setScale(x, y);
+		scale = vec(x, y);
 		return *this;
 	}
 
 	PartialDraw& withScale(const vec& v) {
-		sprite.setScale(v.x, v.y);
+		scale = v;
+		return *this;
+	}
+
+	PartialDraw& withFlip(bool h, bool v = false) {
+		if (v) {
+			flip = SDL_RendererFlip(flip | SDL_FLIP_VERTICAL);
+		}
+		if (h) {
+			flip = SDL_RendererFlip(flip | SDL_FLIP_HORIZONTAL);
+		}
 		return *this;
 	}
 
 	~PartialDraw() {
-		Window::window->draw(sprite);
+		if (centerp) {
+			center.x *= scale.x;
+			center.y *= scale.y;
+			dest.x -= center.x;
+			dest.y -= center.y;
+		}
+		dest.x -= Camera::cam.x;
+		dest.y -= Camera::cam.y;
+		dest.w = src.w * scale.x;
+		dest.h = src.h * scale.y;
+		SDL_RenderCopyExF(Window::renderer, t, &src, &dest, rotation, centerp, flip);
+		SDL_SetTextureColorMod(t, 255, 255, 255);
+		SDL_SetTextureAlphaMod(t, 255);
 	};
 };
 
@@ -100,8 +206,11 @@ namespace Window
 	sf::Vector2u GetWindowSize();
 	Bounds GetWindowBounds();
 	bool IsMouseInsideWindow();
-	inline PartialDraw Draw(const sf::Texture& t, const vec& pos) { return PartialDraw(t, pos); }
-	inline void Clear(int r, int g, int b) {window->clear(sf::Color(r, g, b)); }
+	inline PartialDraw Draw(SDL_Texture* t, const vec& pos) { return PartialDraw(t, pos); }
+	inline void Clear(int r, int g, int b) {
+		SDL_SetRenderDrawColor(Window::renderer, r, g, b, 0xFF);
+		SDL_RenderClear(renderer); 
+	}
 }
 
 void _ProcessWindowEvents();

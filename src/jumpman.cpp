@@ -506,8 +506,9 @@ void JumpMan::Draw() const {
 	polvito.Draw();
 
 	Window::Draw(Assets::marioTexture, pos)
-		.withScale(lookingLeft ? -1.25f : 1.25f, 1.25f)
+		.withScale(1.25f, 1.25f)
 		.withOrigin(center.x, size.y)
+		.withFlip(lookingLeft)
 		.withRect(animation.CurrentFrame());
 }
 
