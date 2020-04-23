@@ -2,9 +2,9 @@
 
 #include "bounds.h"
 
-#include <SDL.h>
-
 #include "debug.h"
+
+#include <SDL.h>
 
 namespace Camera
 {

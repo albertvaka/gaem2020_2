@@ -4,8 +4,6 @@
 #include "vector.h"
 #include "singleinstance.h"
 #include "bounds.h"
-#include <SFML/System/Vector2.hpp>
-#include <SFML/Graphics.hpp>
 #include "tiledexport.h"
 
 struct Tile : TiledTiles

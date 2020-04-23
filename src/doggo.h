@@ -8,6 +8,7 @@
 #include "mates.h"
 #include "debug.h"
 #include "assets.h"
+#include "imgui.h"
 #include "stats_tracker.h"
 
 const float kVel = 50;

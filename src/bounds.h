@@ -3,8 +3,6 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-#include <SFML/Graphics.hpp>
-
 #include "vector.h"
 
 struct CircleBounds;
@@ -172,7 +170,7 @@ inline vec Bounds::ClosesPointInBounds(const vec& target) const {
 
 inline float Bounds::DistanceSq(const CircleBounds& a) const {
     vec closestPoint = ClosesPointInBounds(a.pos);
-    //closestPoint.Debuggerino(sf::Color::Blue);
+    //closestPoint.Debuggerino();
     return closestPoint.DistanceSq(a.pos) - (a.radius * a.radius);
 }
 

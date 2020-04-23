@@ -2,10 +2,6 @@
 
 #include <cassert>
 
-#include <SFML/Graphics.hpp>
-
-#include "partsys.h"
-
 template <typename T>
 class SingleInstance
 {

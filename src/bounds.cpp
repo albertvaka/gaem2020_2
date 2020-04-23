@@ -1,7 +1,8 @@
 #include "bounds.h"
 
-#include <SDL.h>
 #include "window.h"
+
+#include <SDL.h>
 
 void Bounds::Draw(int r, int g, int b) const 
 {

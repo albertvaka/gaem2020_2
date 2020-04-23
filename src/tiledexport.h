@@ -6,8 +6,6 @@
 #include "window.h"
 #include "bounds.h"
 
-#include <SFML/Graphics.hpp>
-
 struct TiledTiles
 {
 	static const IntRect tileToTextureRect[];

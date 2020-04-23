@@ -13,8 +13,6 @@
 // - Keyboard
 // - Mouse
 // - GamePad
-// - Camera
-// - Window
 //
 
 enum GameKeys

@@ -10,9 +10,6 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-#include <SFML/System/Vector2.hpp>
-#include <SFML/Graphics/Color.hpp>
-
 #include "mates.h"
 #include "rand.h"
 
@@ -489,13 +486,6 @@ inline vec vec::RotatedToFacePosition(const vec& target, float maxTurnRateRads)
 //  printing
 //-----------------------------------------------------------------------------
 
-template <class T>
-std::ostream& operator<<(std::ostream& os, sf::Vector2<T>& rhs) 
-{
-    os << rhs.x << ',' << rhs.y;
-    return os;
-}
-
 inline std::ostream& operator<<(std::ostream& os, const vec& rhs)
 {
     os << rhs.x << "," << rhs.y;
@@ -506,13 +496,4 @@ inline std::ifstream& operator>>(std::ifstream& is, vec& lhs)
 {
     is >> lhs.x >> lhs.y;
     return is;
-}
-
-inline sf::Vector2i PosToTile(const vec& pos)
-{
-	return
-	{
-		int((pos.x) / 16),
-		int((pos.y) / 16)
-	};
 }

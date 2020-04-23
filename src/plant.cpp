@@ -61,8 +61,10 @@ void Plant::Update(float dt) {
     water -= kWaterLostPerSecond * dt;
     light -= kLightLostPerSecond * dt;
 
-    if (water >= kWaterAndLighThresholdToGrow && light >= kWaterAndLighThresholdToGrow && grow_clock.getElapsedTime().asSeconds() > kSecondsToGrow) {
-        grow_clock.restart();
+    growClock += dt;
+
+    if (water >= kWaterAndLighThresholdToGrow && light >= kWaterAndLighThresholdToGrow && growClock > kSecondsToGrow) {
+        growClock = 0;
         if (height >= kMaxHeight) {
             if (!has_tomato) {
                 has_tomato = true;
@@ -117,7 +119,7 @@ bool Plant::HasTomato() const {
 
 void Plant::PickTomato() {
   has_tomato = false;
-  grow_clock.restart();
+  growClock = 0;
   ++StatsTracker::tomatoes_collected;
 }
 

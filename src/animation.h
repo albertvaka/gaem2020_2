@@ -1,6 +1,5 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
 #include "anim_data.h"
 
 struct Animation
