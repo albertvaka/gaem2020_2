@@ -62,7 +62,7 @@ namespace Window
         if (window == NULL) {
             printf("Window Creation Error: %s\n", SDL_GetError());
         }
-        renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC); //
+        renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
         if (renderer == NULL) {
             printf("Renderer Creation Error: %s\n", SDL_GetError());
         }
@@ -78,8 +78,6 @@ namespace Window
 
     void ProcessEvents()
     {
-
-
         SDL_Event event;
         while (SDL_PollEvent(&event) > 0)
         {
@@ -104,11 +102,7 @@ namespace Window
         sf::Event sfmlevent;
         while (Window::window->pollEvent(sfmlevent))
         {
-    #ifdef _DEBUG
-            ImGui::SFML::ProcessEvent(sfmlevent);
-    #endif
             switch (sfmlevent.type) {
-
             case sf::Event::Resized: //To disable sfml's automatic scaling
             {
                 // GameView: scale from center
@@ -125,8 +119,6 @@ namespace Window
             //    Camera::guiView.zoom(1.f / Window::GUI_ZOOM);
             //    Camera::guiView.setCenter(vec(Camera::guiView.getCenter()) + (newSize-oldSize)/(2*Window::GUI_ZOOM));
             }
-                break;
-            default:
                 break;
             }
         }

@@ -1,5 +1,6 @@
-#include "assets.h"
 #include "window.h"
+
+#include "assets.h"
 
 #include <SDL_image.h>
 

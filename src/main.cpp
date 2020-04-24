@@ -1,8 +1,8 @@
-#include <map>
-
-#define SDL_MAIN_HANDLED
-
 #include <string>
+
+#ifdef _DEBUG
+#define SDL_MAIN_HANDLED
+#endif
 
 #include "scene_manager.h"
 #include "input.h"
@@ -58,7 +58,7 @@ int main(int argc, char* argv[])
 
 	int last_ticks = SDL_GetTicks();
 
-	Scene* currentScene = new JumpScene();
+	Scene* currentScene = new IntroScene();
 	SceneManager::SetScene(currentScene);
 	currentScene->EnterScene();
 	while (true)
@@ -138,7 +138,6 @@ int main(int argc, char* argv[])
 			fps_counter = 0;
 			fpsClock = 0;
 		}
-		Debug::out << txt_fps.getSize().x;
 		Window::Draw(txt_fps, vec(Window::WINDOW_WIDTH - 100, 10));
 #endif
 

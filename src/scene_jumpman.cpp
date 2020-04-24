@@ -317,7 +317,6 @@ static const float SunLimits[4][2] =
 
 static void DrawSun()
 {
-	static sf::Clock sun_clock;
 	float time = mainClock;
 	time -= int(time/13)*13;
 

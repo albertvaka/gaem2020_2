@@ -21,7 +21,7 @@ public:
 		messageTime = -1;
 	}
 
-	void ShowMessage(sf::String msg) {
+	void ShowMessage(const std::string& msg) {
 	
 		setString(msg);
 		
