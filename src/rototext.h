@@ -1,24 +1,23 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
-
 #include "vector.h"
 #include "input.h"
 #include "assets.h"
+#include "window.h"
+#include "text.h"
 
-/*
 extern float mainClock;
 
-class RotoText : public sf::Text
+class RotoText : public Text
 {
 	float messageTime;
-
+	float scale;
+	float rotation;
 public:
 
-	RotoText() : sf::Text("NO TEXT",Assets::font, 48) {
-		setFillColor(sf::Color::White);
-		setOutlineColor(sf::Color::Black);
-		setOutlineThickness(2);
+	RotoText() : Text(Assets::font_30, Assets::font_30_outline) {
+		setFillColor(255,255,255);
+		setOutlineColor(0,0,0);
 		messageTime = -1;
 	}
 
@@ -26,10 +25,6 @@ public:
 	
 		setString(msg);
 		
-		sf::FloatRect textRect = getLocalBounds();
-		setOrigin(textRect.left + textRect.width/2.0f,
-						textRect.top  + textRect.height/2.0f);
-
 		messageTime = 0.01f;
 		Update(0);
 
@@ -45,7 +40,7 @@ public:
 
 			messageTime += dt/5;
 
-			float ang = sin(mainClock.getElapsedTime().asSeconds()*2)*10;
+			float ang = sin(mainClock*2)*10;
 			float sc = 1;
 			if(messageTime < 0.2)
 			{
@@ -53,26 +48,29 @@ public:
 				ang -= (0.2-messageTime)*600;
 			}
 			
-			setRotation(ang);
+			rotation = ang;
 
 			if(messageTime < 0.2) {
 				sc = messageTime / 0.2;
 			}
-			setScale(sc, sc);
+			scale = sc;
 
 		}
 
 	}
 
-	void Draw(sf::RenderTarget& rt) {
-		if (messageTime >= 0) {
-			setPosition(vec(0.5f*Window::WINDOW_WIDTH, 0.33f*Window::WINDOW_HEIGHT)/ (Window::GAME_ZOOM));
-			rt.draw(*this);
+	void Draw() {
+		if (messageTime < 0) {
+			return;
 		}
+
+		vec s = getSize();
+		Window::Draw(*this, vec(0.5f * Window::WINDOW_WIDTH, 0.33f * Window::WINDOW_HEIGHT) / (Window::GAME_ZOOM))
+			.withOrigin(s.x / 2.0f, s.y / 2.0f)
+			.withScale(scale)
+			.withRotation(rotation);
 	}
 
 };
 
 
-
-*/

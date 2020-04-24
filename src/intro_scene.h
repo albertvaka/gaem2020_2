@@ -7,21 +7,21 @@
 #include "input.h"
 #include "doggo.h"
 #include "assets.h"
-#include "richtext.h"
+#include "text.h"
+//#include "richtext.h"
 #include "scene_jumpman.h"
 
 extern float mainClock;
 
 struct IntroScene : Scene {
-	/*
-	sf::Text text;
+	
+	Text text;
 	RotoText rototext;
-	sfe::RichText credits;
-	*/
-	IntroScene() /*: credits(Assets::font)*/ {
-		//Camera::SetZoom(Window::GAME_ZOOM);
-		//Camera::SetCameraCenter(vec(Window::WINDOW_WIDTH / 4, Window::WINDOW_HEIGHT / 4));
+	//sfe::RichText credits;
 
+	IntroScene() : text(Assets::font_30, Assets::font_30_outline) /*, credits(Assets::font)*/  {
+		Camera::SetZoom(Window::GAME_ZOOM);
+		Camera::SetCenter(vec(Window::WINDOW_WIDTH / 4, Window::WINDOW_HEIGHT / 4));
 	}
 
 	void EnterScene() override
@@ -32,19 +32,13 @@ struct IntroScene : Scene {
 
 		new Doggo();
 
-		/*
-		rototext.setCharacterSize(30);
 		rototext.ShowMessage("Who let the doggos in?");
 		rototext.Update(100);
 
-		text.setFont(Assets::font);
-		text.setPosition(Window::WINDOW_WIDTH / 4, Window::WINDOW_HEIGHT / 3 + 55);
 		text.setString("PRESS START");
-		
-		text.setOutlineColor(sf::Color(0,0,0,255));
-		text.setOutlineThickness(2);
-		text.setOrigin(text.getLocalBounds().width/2,0);
-		text.setScale(0.65f, 0.65f);
+		text.setFillColor(255,255,255);
+		text.setOutlineColor(0, 0, 0);
+		/*
 
 		credits << "A game by:\n\nAlbert Martinez\nAlbert Vaca Cintora\n\nMusic by:\n\nVeuskemini";
 		credits.setPosition(15, 300);
@@ -63,7 +57,7 @@ struct IntroScene : Scene {
 	}
 
 	void Update(float dt) override {
-		//rototext.Update(dt);
+		rototext.Update(dt);
 		for (Doggo* doggo : Doggo::getAll()) {
 			doggo->Update(dt);
 			if (doggo->wantFood) {
@@ -81,18 +75,18 @@ struct IntroScene : Scene {
 	{
 		Window::Clear(34, 32, 52);
 
-		Window::Draw(Assets::casaTexture, vec());
+		Window::Draw(Assets::casaTexture, vec(0,0));
 		for (Doggo* doggo : Doggo::getAll()) {
 			doggo->Draw();
 		}
 
-		/*
-		rototext.Draw(window);
+		rototext.Draw();
 		
 		if ((int(mainClock*1000)/350)%2) {
-			window.draw(text);
+			Window::Draw(text, vec(Window::WINDOW_WIDTH / 4, Window::WINDOW_HEIGHT / 3 + 55)).withScale(0.65f).withOrigin(text.getSize().x/2,0);
 		}
 
+		/*
 		int i = 0;
 		for (auto line : credits.getLines()) {
 			auto p = line.getPosition();

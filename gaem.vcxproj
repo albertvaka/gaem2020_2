@@ -54,6 +54,7 @@
     <ClInclude Include="src\scene_manager.h" />
     <ClInclude Include="src\selfregister.h" />
     <ClInclude Include="src\stats_tracker.h" />
+    <ClInclude Include="src\text.h" />
     <ClInclude Include="src\tiledexport.h" />
     <ClInclude Include="src\tilemap.h" />
     <ClInclude Include="src\transition.h" />

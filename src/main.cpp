@@ -49,9 +49,8 @@ int main(int argc, char* argv[])
 	srand(time(NULL));
 
 #ifdef _FPS_COUNTER
-	//sf::Text txt_fps;
-	//txt_fps.setFont(Assets::font);
-	//txt_fps.setPosition(Window::WINDOW_WIDTH - 100, 10);
+	Text txt_fps(Assets::font_30);
+	txt_fps.setString("0");
 	int fps_counter = 0;
 #endif
 	float fpsClock = 0.f;
@@ -124,26 +123,31 @@ int main(int argc, char* argv[])
 		}
 #endif
 
+		//Draw debug GUI
+
+		vec saved_pos = Camera::pos;
+		SDL_RenderSetScale(Window::renderer, 1, 1);
+		
 #ifdef _FPS_COUNTER
 		fps_counter++;
 		fpsClock += dt;
 		if (fpsClock > 0.5f)
 		{
-			Debug::out << std::to_string(int(fps_counter / fpsClock)) + (slowDown ? "!" : "");
-			//txt_fps.setString(std::to_string(int(fps_counter / fpsClock.restart().asSeconds())) + (slowDown ? "!" : ""));
+			txt_fps.setString(std::to_string(int(fps_counter / fpsClock)) + (slowDown ? "!" : ""));
 			slowDown = false;
 			fps_counter = 0;
 			fpsClock = 0;
 		}
-		//window.draw(txt_fps);
+		Debug::out << txt_fps.getSize().x;
+		Window::Draw(txt_fps, vec(Window::WINDOW_WIDTH - 100, 10));
 #endif
 
 #ifdef _DEBUG
-		SDL_RenderSetScale(Window::renderer, 1, 1);
 		ImGui::Render();
 		ImGuiSDL::Render(ImGui::GetDrawData());
-		SDL_RenderSetScale(Window::renderer, Camera::zoom, Camera::zoom);
 #endif
+		Camera::pos = saved_pos;
+		SDL_RenderSetScale(Window::renderer, Camera::zoom, Camera::zoom);
 
 		SDL_RenderPresent(Window::renderer);
 

@@ -23,8 +23,9 @@ struct Assets
 	static SDL_Texture* plantTexture;
 
 	static SDL_Texture* doggoTexture;
-	
-	static TTF_Font* font;
+
+	static TTF_Font* font_30;
+	static TTF_Font* font_30_outline;
 
 	static sf::SoundBuffer soundBufferBucketTomatoes;
 	static sf::Sound soundBucketTomatoes;
