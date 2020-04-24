@@ -93,102 +93,6 @@ struct IntRect : SDL_Rect {
 	IntRect(int _x, int _y, int size) : IntRect(x,y,size,size) { }
 };
 
-struct PartialDraw {
-	SDL_Texture* t;
-	SDL_FRect dest;
-	SDL_Rect src;
-	SDL_FPoint center;
-	SDL_FPoint* centerp = nullptr;
-	SDL_RendererFlip flip = SDL_FLIP_NONE;
-	float rotation = 0;
-	vec scale = vec(1.f,1.f);
-
-	PartialDraw(PartialDraw&& o) noexcept : t(o.t), dest(std::move(o.dest)) {}
-
-	PartialDraw(SDL_Texture* t, const vec& pos) : t(t), dest({ pos.x, pos.y, 0, 0 }), src({ 0,0,0,0 }) { SDL_QueryTexture(t, NULL, NULL, &src.w, &src.h); }
-
-	PartialDraw& withRect(int x, int y, int w, int h) {
-		src = { x, y, w, h };
-		return *this;
-	}
-
-	PartialDraw& withRect(IntRect r) {
-		src = r;
-		return *this;
-	}
-
-	PartialDraw& withColor(int r, int g, int b) {
-		SDL_SetTextureColorMod(t, r, g, b);
-		return *this;
-	}
-
-	PartialDraw& withAlpha(int a) {
-		SDL_SetTextureAlphaMod(t, a);
-		return *this;
-	}
-
-	PartialDraw& withOrigin(float x, float y) {
-		center.x = x;
-		center.y = y;
-		centerp = &center;
-		return *this;
-	}
-
-	PartialDraw& withOrigin(const vec& o) {
-		center.x = o.x;
-		center.y = o.y;
-		centerp = &center;
-		return *this;
-	}
-
-	PartialDraw& withRotation(float r) {
-		rotation = r;
-		return *this;
-	}
-
-	PartialDraw& withScale(float s) {
-		scale = vec(s,s);
-		return *this;
-	}
-
-	PartialDraw& withScale(float x, float y) {
-		scale = vec(x, y);
-		return *this;
-	}
-
-	PartialDraw& withScale(const vec& v) {
-		scale = v;
-		return *this;
-	}
-
-	PartialDraw& withFlip(bool h, bool v = false) {
-		if (v) {
-			flip = SDL_RendererFlip(flip | SDL_FLIP_VERTICAL);
-		}
-		if (h) {
-			flip = SDL_RendererFlip(flip | SDL_FLIP_HORIZONTAL);
-		}
-		return *this;
-	}
-
-	~PartialDraw() {
-		if (centerp) {
-			center.x *= scale.x;
-			center.y *= scale.y;
-			dest.x -= center.x;
-			dest.y -= center.y;
-		}
-		dest.x -= Camera::pos.x;
-		dest.y -= Camera::pos.y;
-		dest.w = src.w * scale.x;
-		dest.h = src.h * scale.y;
-		SDL_RenderCopyExF(Window::renderer, t, &src, &dest, rotation, centerp, flip);
-		SDL_SetTextureColorMod(t, 255, 255, 255);
-		SDL_SetTextureAlphaMod(t, 255);
-	};
-};
-
-
 namespace Window
 {
 	void Init();
@@ -200,9 +104,108 @@ namespace Window
 	inline vec GetWindowSize() { return vec(WINDOW_WIDTH, WINDOW_HEIGHT); }
 	inline Bounds GetWindowBounds() { return Bounds(vec::Zero, GetWindowSize()); }
 
-	inline PartialDraw Draw(SDL_Texture* t, const vec& pos) { return PartialDraw(t, pos); }
+	//inline PartialDraw Draw(SDL_Texture* t, const vec& pos) { return PartialDraw(t, pos); }
 	inline void Clear(int r, int g, int b) {
 		SDL_SetRenderDrawColor(Window::renderer, r, g, b, 0xFF);
 		SDL_RenderClear(renderer); 
 	}
+
+
+
+	struct Draw {
+		SDL_Texture* t;
+		SDL_FRect dest;
+		SDL_Rect src;
+		SDL_FPoint center;
+		SDL_FPoint* centerp = nullptr;
+		SDL_RendererFlip flip = SDL_FLIP_NONE;
+		float rotation = 0;
+		vec scale = vec(1.f, 1.f);
+
+		Draw(SDL_Texture* t, const vec& pos) : t(t), dest({ pos.x, pos.y, 0, 0 }), src({ 0,0,0,0 }) {
+			SDL_QueryTexture(t, NULL, NULL, &src.w, &src.h); 
+		}
+
+		Draw& withRect(int x, int y, int w, int h) {
+			src = { x, y, w, h };
+			return *this;
+		}
+
+		Draw& withRect(IntRect r) {
+			src = r;
+			return *this;
+		}
+
+		Draw& withColor(int r, int g, int b) {
+			SDL_SetTextureColorMod(t, r, g, b);
+			return *this;
+		}
+
+		Draw& withAlpha(int a) {
+			SDL_SetTextureAlphaMod(t, a);
+			return *this;
+		}
+
+		Draw& withOrigin(float x, float y) {
+			center.x = x;
+			center.y = y;
+			centerp = &center;
+			return *this;
+		}
+
+		Draw& withOrigin(const vec& o) {
+			center.x = o.x;
+			center.y = o.y;
+			centerp = &center;
+			return *this;
+		}
+
+		Draw& withRotation(float r) {
+			rotation = r;
+			return *this;
+		}
+
+		Draw& withScale(float s) {
+			scale = vec(s, s);
+			return *this;
+		}
+
+		Draw& withScale(float x, float y) {
+			scale = vec(x, y);
+			return *this;
+		}
+
+		Draw& withScale(const vec& v) {
+			scale = v;
+			return *this;
+		}
+
+		Draw& withFlip(bool h, bool v = false) {
+			if (v) {
+				flip = SDL_RendererFlip(flip | SDL_FLIP_VERTICAL);
+			}
+			if (h) {
+				flip = SDL_RendererFlip(flip | SDL_FLIP_HORIZONTAL);
+			}
+			return *this;
+		}
+
+		~Draw() {
+			if (centerp) {
+				center.x *= scale.x;
+				center.y *= scale.y;
+				dest.x -= center.x;
+				dest.y -= center.y;
+			}
+			dest.x -= Camera::pos.x;
+			dest.y -= Camera::pos.y;
+			dest.w = src.w * scale.x;
+			dest.h = src.h * scale.y;
+			SDL_RenderCopyExF(Window::renderer, t, &src, &dest, rotation, centerp, flip);
+			SDL_SetTextureColorMod(t, 255, 255, 255);
+			SDL_SetTextureAlphaMod(t, 255);
+		};
+	};
+
+
 }
