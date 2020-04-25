@@ -90,6 +90,12 @@ namespace Window
             case SDL_WINDOWEVENT_FOCUS_GAINED:
                 focus = true;
                 break;
+            case SDL_JOYDEVICEADDED :
+                GamePad::_Added(SDL_GameControllerOpen(event.jdevice.which));
+                break;
+            case SDL_JOYDEVICEREMOVED:
+                GamePad::_Removed(SDL_GameControllerFromInstanceID(event.jdevice.which));
+                break;
             case SDL_MOUSEWHEEL:
                 Mouse::scrollWheel += event.wheel.y;
             case SDL_QUIT:

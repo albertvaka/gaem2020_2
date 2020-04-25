@@ -120,8 +120,6 @@ struct GamePad
 private:
 	GamePad() { }
 	
-	static int connectedGamepads;
-
 	static KeyStates button_states[PlayerInput::kMaxPlayers][SDL_CONTROLLER_BUTTON_MAX];
 	static SDL_GameController* player_to_joystick[PlayerInput::kMaxPlayers];
 
@@ -145,6 +143,7 @@ public:
 		{
 			float get(int player) const
 			{ //Pos between 0 and 100
+				//if (player > PlayerInput::kMaxPlayers) return vec();
 				SDL_GameController* joystick = player_to_joystick[player];
 				if (!joystick) return 0;
 				float a = SDL_GameControllerGetAxis(joystick, SDL_CONTROLLER_AXIS_TRIGGERLEFT) / 327.67f;
@@ -155,6 +154,7 @@ public:
 		{
 			float get(int player) const
 			{ //Pos between 0 and 100
+				//if (player > PlayerInput::kMaxPlayers) return vec();
 				SDL_GameController* joystick = player_to_joystick[player];
 				if (!joystick) return 0;
 				float a = SDL_GameControllerGetAxis(joystick, SDL_CONTROLLER_AXIS_TRIGGERRIGHT) / 327.67f;
@@ -171,9 +171,7 @@ public:
 		const static AnalogStick Right;
 		vec get(int player, float dead_area = 0) const
 		{ //Pos between -100 and 100
-			if (player > connectedGamepads) {
-				return vec();
-			}
+			//if (player > PlayerInput::kMaxPlayers) return vec();
 			SDL_GameController* joystick = player_to_joystick[player];
 			if (!joystick) return vec();
 			float a = SDL_GameControllerGetAxis(joystick, x) / 327.67f;
@@ -192,6 +190,8 @@ public:
 
 	static void _UpdateInputState__XboxNormal(SDL_GameController* joy, int player);
 	static void _UpdateInputState();
+	static void _Added(SDL_GameController* joystick);
+	static void _Removed(SDL_GameController* joystick);
 };
 
 //KEYBOARD ACCESS
