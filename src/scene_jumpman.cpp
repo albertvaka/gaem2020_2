@@ -23,9 +23,10 @@ static JumpMan* AddPlayer(int id) {
 	return player;
 }
 
-JumpScene::JumpScene()
+JumpScene::JumpScene(int first_player)
 	: map(TiledMap::map_size.x, TiledMap::map_size.y)
 	, moneyText(Assets::font)
+	, first_player(first_player)
 {
 	moneyText.setScale(0.45f, 0.45f);
 	map.LoadFromTiled();
@@ -41,9 +42,9 @@ void JumpScene::EnterScene()
 	for (int i = 0; i < PlayerInput::kMaxPlayers; ++i) {
 		players[i] = nullptr;
 	}
-	auto* player = new JumpMan(0);
+	auto* player = new JumpMan(first_player);
 	player->pos = TiledEntities::spawn;
-	players[0] = player;
+	players[first_player] = player;
 
 	StatsTracker::Restart();
 
@@ -88,9 +89,11 @@ void JumpScene::Update(float dt)
 	}
 
 	//Camera::MoveCameraWithArrows(50, dt);
-	if (Keyboard::IsKeyJustPressed(GameKeys::RESTART)) {
-		ExitScene();
-		EnterScene();
+	for (auto* player : JumpMan::getAll()) {
+    if (PlayerInput::IsActionJustPressed(player->id, GameKeys::RESTART)) {
+      ExitScene();
+      EnterScene();
+		}
 	}
 
 	if (lost) {
@@ -103,7 +106,8 @@ void JumpScene::Update(float dt)
 	}
 
 	for (int i = 0; i < 4; ++i) {
-    if (players[i] == nullptr && PlayerInput::IsActionJustPressed(i, GameKeys::ACTIVATE)) {
+    if (players[i] == nullptr && 
+			(PlayerInput::IsActionJustPressed(i, GameKeys::ACTIVATE) || PlayerInput::IsActionJustPressed(i, GameKeys::START))) {
 			PlayerInput::ConsumeJustPressed(i, GameKeys::ACTIVATE);
       players[i] = AddPlayer(i);
     }
