@@ -9,7 +9,6 @@
 #include "doggo.h"
 #include "assets.h"
 #include "text.h"
-//#include "richtext.h"
 #include "scene_jumpman.h"
 
 extern float mainClock;
@@ -79,7 +78,7 @@ struct IntroScene : Scene {
 		rototext.Draw();
 		
 		if ((int(mainClock*1000)/350)%2) {
-			Window::Draw(text, vec(Window::WINDOW_WIDTH / 4, Window::WINDOW_HEIGHT / 3 + 55))
+			Window::Draw(text, Camera::GetCenter()+vec(0, 90))
 				.withScale(0.65f)
 				.withOrigin(text.getSize().x/2,0);
 		}

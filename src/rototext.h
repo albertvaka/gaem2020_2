@@ -64,9 +64,8 @@ public:
 			return;
 		}
 
-		vec s = getSize();
-		Window::Draw(*this, vec(0.5f * Window::WINDOW_WIDTH, 0.33f * Window::WINDOW_HEIGHT) / (Window::GAME_ZOOM))
-			.withOrigin(s.x / 2.0f, s.y / 2.0f)
+		Window::Draw(*this, Camera::GetCenter() - vec(0,60))
+			.withOrigin(getSize() / 2.f)
 			.withScale(scale)
 			.withRotation(rotation);
 	}

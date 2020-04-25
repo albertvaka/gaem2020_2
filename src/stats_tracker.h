@@ -26,21 +26,22 @@ struct StatsTracker {
   }
   
   static void Draw() {
-
-    vec pos = vec(0.33f * Window::WINDOW_WIDTH, 0.5f * Window::WINDOW_HEIGHT) / (Window::GAME_ZOOM);
-
     const float margin = 10.0f;
-    
-    float scale = 0.4f;
-    vec textSize = statsText.getSize() * scale;
-    Bounds b(vec(pos.x - margin, pos.y - margin), vec(textSize.x + 2 * margin, textSize.y + 2 * margin));
-    
+    const float textScale = 0.4f;
+
+    vec center = Camera::GetCenter();
+
+    vec textSize = statsText.getSize() * textScale;
+    Bounds b(vec(center.x - textSize.x / 2 - margin, center.y - margin), vec(textSize.x + 2 * margin, textSize.y + 2 * margin));
+
     Window::DrawPrimitive::Rectangle(b, -1, 255, 255, 200, 128); //fill
     Window::DrawPrimitive::Rectangle(b, 4, 0, 0, 0, 255); //border
 
-    Window::Draw(statsText, pos)
-        .withScale(scale);
+    Window::Draw(statsText, center)
+        .withScale(textScale)
+        .withOrigin(statsText.getSize().x / 2, 0);
   }
+
   static void Update(float dt) {
       time_played += dt;
   }
