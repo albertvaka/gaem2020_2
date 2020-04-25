@@ -222,7 +222,7 @@ void JumpScene::Update(float dt)
       }
     }
     // Drop Bucket
-    if (PlayerInput::IsActionJustPressed(player->id, GameKeys::ACTIVATE)) {
+    if (PlayerInput::IsActionJustPressed(player->id, GameKeys::ACTIVATE) && player->grounded) {
       PlayerInput::ConsumeJustPressed(player->id, GameKeys::ACTIVATE);
       player->DropItem();
       Assets::soundPickupDrop.play();
