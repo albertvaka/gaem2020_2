@@ -99,6 +99,10 @@ void JumpScene::Update(float dt)
 	}
 
 	for (int i = 0; i < 4; ++i) {
+    contextActionButton[i] = GameKeys::NONE;
+	}
+
+	for (int i = 0; i < 4; ++i) {
     if (players[i] == nullptr && PlayerInput::IsActionJustPressed(i, GameKeys::ACTIVATE)) {
       players[i] = AddPlayer(i);
     }
@@ -114,7 +118,7 @@ void JumpScene::Update(float dt)
 	for (Doggo* doggo : Doggo::getAll()) {
 		for (auto* player : JumpMan::getAll()) {
 			if (player->IsCarrying(JumpMan::Holdable::Basket) && player->cistell->contents == Cistell::TOMATOES && Collide(player->bounds(), doggo->bounds())) {
-        contextActionButton = GameKeys::ACTIVATE;
+        contextActionButton[player->id] = GameKeys::ACTIVATE;
         if (PlayerInput::IsActionJustPressed(player->id, GameKeys::ACTIVATE)) {
           PlayerInput::ConsumeJustPressed(player->id, GameKeys::ACTIVATE);
           // Assets::DoggoEatingSound.play();
@@ -137,7 +141,6 @@ void JumpScene::Update(float dt)
 	Camera::ChangeZoomWithPlusAndMinus(20.f, dt);
 	//Debug::out << Camera::GetCameraCenter();
 
-	contextActionButton = GameKeys::NONE;
 
 	npc.Update(dt);
 	for (auto* cistell : Cistell::getAll()) {
@@ -153,7 +156,7 @@ void JumpScene::Update(float dt)
 	// Sell tomatoes.
 	for (auto* player : JumpMan::getAll()) {
     if (player->IsCarrying(JumpMan::Holdable::Basket) && player->cistell->contents == Cistell::TOMATOES && Collide(player->bounds(), TiledAreas::truck)) {
-      contextActionButton = GameKeys::ACTIVATE;
+      contextActionButton[player->id] = GameKeys::ACTIVATE;
       if (PlayerInput::IsActionJustPressed(player->id, GameKeys::ACTIVATE)) {
         PlayerInput::ConsumeJustPressed(player->id, GameKeys::ACTIVATE);
         moneys += kMoneySellTomatoes;
@@ -186,7 +189,7 @@ void JumpScene::Update(float dt)
         // Agafar Tom�euts.
         if ((!cistell->contents) && plant->HasTomato()) {
           // TODO: Treure aix� si la collita passa automaticament.
-          contextActionButton = GameKeys::ACTIVATE;
+          contextActionButton[player->id] = GameKeys::ACTIVATE;
           if (PlayerInput::IsActionJustPressed(player->id, GameKeys::ACTIVATE)) {
             PlayerInput::ConsumeJustPressed(player->id, GameKeys::ACTIVATE);
             plant->PickTomato();
@@ -197,7 +200,7 @@ void JumpScene::Update(float dt)
         // Regar plantes.
         else if (cistell->contents == Cistell::WATER) {
           // TODO: Agafar la planta que necessiti m�s aigua?
-          contextActionButton = GameKeys::ACTIVATE;
+          contextActionButton[player->id] = GameKeys::ACTIVATE;
           if (PlayerInput::IsActionJustPressed(player->id, GameKeys::ACTIVATE)) {
             PlayerInput::ConsumeJustPressed(player->id, GameKeys::ACTIVATE);
             plant->SetHitByWater();
@@ -210,7 +213,7 @@ void JumpScene::Update(float dt)
     }
     // Agafar aigua.
     if (Collide(TiledAreas::water, cistell->bounds()) && !cistell->contents) {
-      contextActionButton = GameKeys::ACTIVATE;
+      contextActionButton[player->id] = GameKeys::ACTIVATE;
       if (PlayerInput::IsActionJustPressed(player->id, GameKeys::ACTIVATE)) {
         PlayerInput::ConsumeJustPressed(player->id, GameKeys::ACTIVATE);
         cistell->contents = Cistell::WATER;
@@ -230,7 +233,7 @@ void JumpScene::Update(float dt)
 	for (auto* player : JumpMan::getAll()) {
 		for (auto* cistell : Cistell::getAll()) {
 			if (Collide(player->bounds(), cistell->bounds()) && player->CanCarry() && !cistell->IsBeingCarried()) {
-        contextActionButton = GameKeys::ACTIVATE;
+        contextActionButton[player->id] = GameKeys::ACTIVATE;
         if (PlayerInput::IsActionJustPressed(player->id, GameKeys::ACTIVATE)) {
 					player->Carry(cistell);
           Assets::soundPickupDrop.play();
@@ -246,7 +249,7 @@ void JumpScene::Update(float dt)
         bool can_carry = !plant->IsBeingCarried() && player->CanCarry();
         bool can_drop = plant->IsCarriedBy(player) && player->grounded;
         if (can_carry) {
-          contextActionButton = GameKeys::ACTIVATE;
+          contextActionButton[player->id] = GameKeys::ACTIVATE;
         }
         if (PlayerInput::IsActionJustPressed(player->id, GameKeys::ACTIVATE)) {
           if (can_drop) {
@@ -270,7 +273,7 @@ void JumpScene::Update(float dt)
 	// Buy plants from NPCs.
 	for (auto* player : JumpMan::getAll()) {
     if (npc.isSelling() && Collide(player->bounds(), TiledAreas::npc) && player->IsCarrying(JumpMan::Holdable::None)) {
-      contextActionButton = GameKeys::ACTIVATE;
+      contextActionButton[player->id] = GameKeys::ACTIVATE;
       if (PlayerInput::IsActionJustPressed(player->id, GameKeys::ACTIVATE)) {
         PlayerInput::ConsumeJustPressed(player->id, GameKeys::ACTIVATE);
         if (moneys >= kMoneyBuyPlant) {
@@ -403,7 +406,7 @@ void JumpScene::Draw(sf::RenderTarget& window)
 
 	// TODO: Do this properly for each player.
 	for (auto* player : JumpMan::getAll()) {
-    if (contextActionButton != GameKeys::NONE) {
+    if (contextActionButton[player->id] != GameKeys::NONE) {
       sf::Sprite& spr = Assets::hospitalSprite;
       spr.setPosition(player->bounds().TopRight() + vec(2, -6));
       AnimationType anim = BUTTON_A_PRESS; // TODO: switch depending on the key
