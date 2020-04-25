@@ -192,7 +192,7 @@ void PlayerInput::_UpdateAllPlayerInput(float dt)
     for (int player = 0; player < PlayerInput::kMaxPlayers; ++player) {
         int gamepad_id = player_id_to_gamepad_id[player];
         for (size_t k = 1; k < magic_enum::enum_count<GameKeys>(); k++) {  //Skip GameKeys::NONE
-            bool pressed_now = player == keyboard_player_id ? Keyboard::IsKeyPressed(GameKeys(k)) : gp_map[k](gamepad_id);
+            bool pressed_now = player == keyboard_player_id ? Keyboard::IsKeyPressed(GameKeys(k)) : (gp_map[k] && gp_map[k](gamepad_id));
             if (pressed_now) {
                 if (action_states[player][k] == JUST_PRESSED || action_states[player][k] == PRESSED) {
                     action_states[player][k] = PRESSED;

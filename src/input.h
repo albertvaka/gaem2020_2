@@ -246,8 +246,7 @@ extern GamePadInput gp_map[magic_enum::enum_count<GameKeys>()];
 
 inline void RemapGamePadInput()
 {
-  auto kEmpty = [](int){ return false; };
-	gp_map[GameKeys::NONE] = kEmpty;
+	gp_map[GameKeys::NONE] = nullptr;
 	gp_map[GameKeys::UP] = [](int p) { 
 		return GamePad::IsButtonPressed(p, SDL_CONTROLLER_BUTTON_B) ||
           GamePad::AnalogStick::Left.get(p, 30.f).y < -50.0f ||
@@ -266,22 +265,22 @@ inline void RemapGamePadInput()
 			GamePad::IsButtonPressed(p, SDL_CONTROLLER_BUTTON_DPAD_RIGHT);
 	};
 	gp_map[GameKeys::ACTIVATE] = [](int p) { return GamePad::IsButtonPressed(p, SDL_CONTROLLER_BUTTON_A); };
-	gp_map[GameKeys::ACTION] = kEmpty;
-	gp_map[GameKeys::SHOOT] = kEmpty;
+	gp_map[GameKeys::ACTION] = nullptr;
+	gp_map[GameKeys::SHOOT] = nullptr;
 	gp_map[GameKeys::START] = [](int p) { return GamePad::IsButtonPressed(p, SDL_CONTROLLER_BUTTON_START); };
-	gp_map[GameKeys::DEBUG_ZOOM_IN] = kEmpty;
-	gp_map[GameKeys::DEBUG_ZOOM_OUT] = kEmpty;
+	gp_map[GameKeys::DEBUG_ZOOM_IN] = nullptr;
+	gp_map[GameKeys::DEBUG_ZOOM_OUT] = nullptr;
 	gp_map[GameKeys::RESTART] = [](int p) { return GamePad::IsButtonPressed(p, SDL_CONTROLLER_BUTTON_BACK); };
-	gp_map[GameKeys::DEBUG_FRAME_BY_FRAME] = kEmpty;
-	gp_map[GameKeys::DEBUG_FRAME_BY_FRAME_NEXT] = kEmpty;
-	gp_map[GameKeys::DEBUG_MODE] = kEmpty;
-	gp_map[GameKeys::DEBUG_KILLALL] = kEmpty;
-	gp_map[GameKeys::DEBUG_DOGGO] = kEmpty;
-	gp_map[GameKeys::DEBUG_SET_PLANTS_AT_MAX_STATS] = kEmpty;
-	gp_map[GameKeys::DEBUG_GET_MONEY] = kEmpty;
-	gp_map[GameKeys::DEBUG_ADD_PLAYER] = kEmpty;
-	gp_map[GameKeys::MUTE] = kEmpty;
-	gp_map[GameKeys::NEXT_TRACK] = kEmpty;
+	gp_map[GameKeys::DEBUG_FRAME_BY_FRAME] = nullptr;
+	gp_map[GameKeys::DEBUG_FRAME_BY_FRAME_NEXT] = nullptr;
+	gp_map[GameKeys::DEBUG_MODE] = nullptr;
+	gp_map[GameKeys::DEBUG_KILLALL] = nullptr;
+	gp_map[GameKeys::DEBUG_DOGGO] = nullptr;
+	gp_map[GameKeys::DEBUG_SET_PLANTS_AT_MAX_STATS] = nullptr;
+	gp_map[GameKeys::DEBUG_GET_MONEY] = nullptr;
+	gp_map[GameKeys::DEBUG_ADD_PLAYER] = nullptr;
+	gp_map[GameKeys::MUTE] = nullptr;
+	gp_map[GameKeys::NEXT_TRACK] = nullptr;
 }
 
 
