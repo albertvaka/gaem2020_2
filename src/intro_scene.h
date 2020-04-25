@@ -10,17 +10,21 @@
 #include "assets.h"
 #include "text.h"
 #include "scene_jumpman.h"
+#include "bat.h"
 
 extern float mainClock;
 
 struct IntroScene : Scene {
 	
+	TileMap map;
 	Text credits;
 	Text text;
 	RotoText rototext;
 
-	IntroScene() : text(Assets::font_30, Assets::font_30_outline), credits(Assets::font_30, Assets::font_30_outline) {
+	IntroScene() : text(Assets::font_30, Assets::font_30_outline), credits(Assets::font_30, Assets::font_30_outline)
+		, map(TiledMap::map_size.x, TiledMap::map_size.y) {
 		Camera::SetZoom(Window::GAME_ZOOM, false);
+			map.LoadFromTiled();
 	}
 
 	void EnterScene() override
@@ -42,6 +46,7 @@ struct IntroScene : Scene {
 
 	void ExitScene() override {
 		Doggo::deleteAll();
+		Bat::deleteAll();
 		Assets::soundDoggo1.setVolume(100.f);
 		Assets::soundDoggo1.stop();
 		Assets::soundDoggo2.setVolume(100.f);
@@ -66,6 +71,15 @@ struct IntroScene : Scene {
         //Change scene
 			}
 		}
+
+		if (PlayerInput::IsActionJustPressed(0, GameKeys::DEBUG_KILLALL)) {
+			new Bat(vec::Rand(vec::Zero, Camera::GetSize()), true);
+		}
+		
+		for (Bat* b : Bat::getAll()) {
+			b->Update(dt);
+		}
+
 	}
 
 	void Draw() override
@@ -76,6 +90,14 @@ struct IntroScene : Scene {
 
 		for (Doggo* doggo : Doggo::getAll()) {
 			doggo->Draw();
+		}
+		
+		for (Bat* b : Bat::getAll()) {
+			b->Draw();
+
+			if (Debug::Draw) {
+				b->DrawSenseArea();
+			}
 		}
 
 		rototext.Draw();

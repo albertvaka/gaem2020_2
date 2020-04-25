@@ -150,6 +150,18 @@
     <ClInclude Include="SDL2\include\imgui_sdl.h">
       <Filter>Bundled Dependencies\imgui_sdl</Filter>
     </ClInclude>
+    <ClInclude Include="src\bat.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\steering_entity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\steering_behavior.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\steering_behavior_applier.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\rand.cpp">
@@ -229,6 +241,12 @@
     </ClCompile>
     <ClCompile Include="SDL2\SDL2_gfxPrimitives.c">
       <Filter>Bundled Dependencies</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\steering_behavior.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
