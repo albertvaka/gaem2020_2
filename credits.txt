@@ -1,7 +1,7 @@
 Code
 Tile collision algorithm by Jordi Santiago
+Emyl audio library by Jordi Santiago
 Animation system by Mario Gonzalez
-RichText by Cristian Pallarés
 
 Art
 Tileset based on OpenPixelProject https://openpixelproject.itch.io/

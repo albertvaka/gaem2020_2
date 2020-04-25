@@ -80,7 +80,7 @@ namespace internal
 	#endif
 
 	#if defined(_DEBUG)
-	#define EMYL_DEBUG
+	//#define EMYL_DEBUG
 	#endif
 
 	#ifdef ANDROID
@@ -418,7 +418,7 @@ public:
 	bool loadFromFile(const std::string& filename);
 	bool loadFromMemory(const void* data, std::size_t sizeInBytes);
 	bool loadFromStream(InputStream& stream);
-	bool loadFromSamples(const std::int16_t* samples, unsigned int sampleCount, unsigned int channelCount, unsigned int sampleRate);
+	bool loadFromSamples(const std::int16_t* samples, std::uint64_t sampleCount, unsigned int channelCount, unsigned int sampleRate);
 
 	const std::int16_t* getSamples() const;
 	std::uint64_t getSampleCount() const;

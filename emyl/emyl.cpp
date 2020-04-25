@@ -1515,7 +1515,7 @@ bool Buffer::loadFromStream(InputStream& stream)
 
 //---------------------------------------------------------------------------//
 
-bool Buffer::loadFromSamples(const std::int16_t* samples, unsigned int sampleCount, unsigned int channelCount, unsigned int sampleRate)
+bool Buffer::loadFromSamples(const std::int16_t* samples, std::uint64_t sampleCount, unsigned int channelCount, unsigned int sampleRate)
 {
 	if (samples && sampleCount && channelCount && sampleRate)
 	{
@@ -1524,7 +1524,7 @@ bool Buffer::loadFromSamples(const std::int16_t* samples, unsigned int sampleCou
 	}
 	else
 	{
-		EMYL_WARN("Failed to load sound buffer from samples (array: %p, count: %d, channels: %d, samplerate: %d)\n"
+		EMYL_WARN("Failed to load sound buffer from samples (array: %p, count: %llu, channels: %d, samplerate: %d)\n"
 			, samples, sampleCount, channelCount, sampleRate);
 
 		return false;
