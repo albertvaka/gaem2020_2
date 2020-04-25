@@ -1,27 +1,32 @@
 #pragma once
 
 #include <SDL.h>
+#include <SDL_ttf.h>
+#include <string>
+#include <vector>
 
-struct Text
+class Text
 {
-
 	TTF_Font* font;
 	TTF_Font* font_outline;
 	std::string str;
 	SDL_Color color = { 255,255,255 };
-	SDL_Color outline_color = { 255,255,255 };
-
+	SDL_Color outline_color = { 0,0,0 };
+	int spacing = 0;
+	int empty_line_spacing = 12;
 	SDL_Texture* cached = nullptr;
 
-	Text(TTF_Font* font, TTF_Font* font_outline = nullptr) : font(font), font_outline(font_outline) {}
+public:
+	Text(TTF_Font* font = nullptr, TTF_Font* font_outline = nullptr) : font(font), font_outline(font_outline) {}
 	~Text() {
 		if (cached) { 
 			SDL_DestroyTexture(cached); 
 		}
 	}
+
 	operator SDL_Texture*() {
 		if (cached == nullptr) {
-			SDL_Surface* surface = Render();
+			SDL_Surface* surface = MultiLineRender();
 			cached = SDL_CreateTextureFromSurface(Window::renderer, surface);
 			SDL_FreeSurface(surface);
 			if (!cached) {
@@ -31,9 +36,34 @@ struct Text
 		return cached;
 	};
 
-	Text& setString(const std::string& text) {
-		if (text != str) {
-			str = text;
+	Text& setFont(TTF_Font* newfont, TTF_Font* newfont_outline = nullptr) {
+		if (newfont != font || font_outline != newfont_outline) {
+			font_outline = newfont_outline;
+			font = newfont;
+			Invalidate();
+		}
+		return *this;
+	}
+
+	Text& setSpacing(int pixels) {
+		if (pixels != spacing) {
+			spacing = pixels;
+			Invalidate();
+		}
+		return *this;
+	}
+
+	Text& setEmptyLineSpacing(int pixels) {
+		if (pixels != empty_line_spacing) {
+			empty_line_spacing = pixels;
+			Invalidate();
+		}
+		return *this;
+	}
+
+	Text& setString(const std::string& newstr) {
+		if (newstr != str) {
+			str = newstr;
 			Invalidate();
 		}
 		return *this;
@@ -96,6 +126,43 @@ private:
 		SDL_FreeSurface(fg_surface);
 		
 		return bg_surface;
+	}
+
+	SDL_Surface* MultiLineRender() {
+		std::vector<SDL_Surface*> surfaces;
+		int totalHeight = 0;
+		int maxWidth = 0;
+		std::stringstream ss(str);
+		while (std::getline(ss, str, '\n')) {
+			if (str.empty()) {
+				surfaces.push_back(NULL);
+				totalHeight += empty_line_spacing;
+				continue;
+			}
+			SDL_Surface* s = Render();
+			totalHeight += s->h + spacing;
+			maxWidth = std::max(maxWidth, s->w);
+			surfaces.push_back(s);
+		}
+
+		if (surfaces.size() == 1) {
+			return surfaces[0];
+		}
+
+		SDL_Surface* final = SDL_CreateRGBSurfaceWithFormat(0, maxWidth, totalHeight, 32, SDL_PIXELFORMAT_ARGB8888);
+		totalHeight = 0;
+		for (SDL_Surface* surface : surfaces) {
+			if (!surface) {
+				totalHeight += empty_line_spacing;
+				continue;
+			}
+			SDL_Rect dest = { 0,totalHeight,surface->w,surface->h };
+			SDL_BlitSurface(surface, NULL, final, &dest);
+			SDL_FreeSurface(surface);
+			totalHeight += surface->h + spacing;
+		}
+
+		return final;
 	}
 };
 

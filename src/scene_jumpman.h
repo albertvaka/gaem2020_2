@@ -8,8 +8,6 @@
 #include "npc.h"
 #include "input.h"
 #include "rototext.h"
-#include "richtext.h"
-
 
 struct JumpScene : Scene {
 
@@ -21,7 +19,8 @@ struct JumpScene : Scene {
 	int moneys = 150;
 	int cantbuyTimer = 0;
 
-	//sfe::RichText moneyText;
+	Text totalMoneyText;
+	Text moneyText;
 	float moneyTextTimer = 0;
 	int current_music = 0;
 	float timerDoggo = 0;

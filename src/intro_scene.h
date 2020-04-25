@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <array>
 
 #include "scene_manager.h"
 #include "mates.h"
@@ -15,11 +16,11 @@ extern float mainClock;
 
 struct IntroScene : Scene {
 	
+	Text credits;
 	Text text;
 	RotoText rototext;
-	//sfe::RichText credits;
 
-	IntroScene() : text(Assets::font_30, Assets::font_30_outline) /*, credits(Assets::font)*/  {
+	IntroScene() : text(Assets::font_30, Assets::font_30_outline), credits(Assets::font_30, Assets::font_30_outline) {
 		Camera::SetZoom(Window::GAME_ZOOM);
 		Camera::SetCenter(vec(Window::WINDOW_WIDTH / 4, Window::WINDOW_HEIGHT / 4));
 	}
@@ -36,14 +37,9 @@ struct IntroScene : Scene {
 		rototext.Update(100);
 
 		text.setString("PRESS START");
-		text.setFillColor(255,255,255);
-		text.setOutlineColor(0, 0, 0);
-		/*
+		
+		credits.setString("A game by:\n\nAlbert Martinez\nAlbert Vaca Cintora\n\nMusic by:\n\nVeuskemini");
 
-		credits << "A game by:\n\nAlbert Martinez\nAlbert Vaca Cintora\n\nMusic by:\n\nVeuskemini";
-		credits.setPosition(15, 300);
-		credits.setScale(0.39f, 0.45f);
-				*/
 	}
 
 	void ExitScene() override {
@@ -86,23 +82,7 @@ struct IntroScene : Scene {
 			Window::Draw(text, vec(Window::WINDOW_WIDTH / 4, Window::WINDOW_HEIGHT / 3 + 55)).withScale(0.65f).withOrigin(text.getSize().x/2,0);
 		}
 
-		/*
-		int i = 0;
-		for (auto line : credits.getLines()) {
-			auto p = line.getPosition();
-			if (i++ > 0) {
-				p.y -= 10;
-				if (i > 4) {
-					p.y -= 10;
-					if (i > 6) {
-						p.y -= 10;
-					}
-				}
-			}
-			line.setPosition(p);
-			window.draw(line, credits.getTransform());
-		}
-		*/
+		Window::Draw(credits, vec(15, 300)).withScale(0.39f, 0.45f);
 	}
 
 };

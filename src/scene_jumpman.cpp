@@ -25,9 +25,9 @@ static void AddPlayer() {
 
 JumpScene::JumpScene()
 	: map(TiledMap::map_size.x, TiledMap::map_size.y)
-	//, moneyText(Assets::font)
+	, totalMoneyText(Assets::font_30, Assets::font_30_outline)
+	, moneyText(Assets::font_30, Assets::font_30_outline)
 {
-	//moneyText.setScale(0.45f, 0.45f);
 	map.LoadFromTiled();
 
 	Camera::SetZoom(Window::GAME_ZOOM);
@@ -70,6 +70,7 @@ void JumpScene::ExitScene()
 
 void JumpScene::Update(float dt)
 {
+	StatsTracker::Update(dt);
 
 	//float f = Camera::GetZoom();
 	//f -= 0.2*dt;
@@ -131,7 +132,7 @@ void JumpScene::Update(float dt)
 		if (doggo->menjar <= 0) {
 			doggo->menjar = 1;
 			lost = true;
-			//StatsTracker::Stop();
+			StatsTracker::Stop();
 			rototext.ShowMessage("A DOGGO STARVED");
 		}
 	}
@@ -166,9 +167,9 @@ void JumpScene::Update(float dt)
 				else {
 					Assets::soundSell2.play();
 				}
-				//moneyText.clear();
-				//moneyTextTimer = 0.5f;
-				//moneyText << sfe::Outline(sf::Color::Black, 1) << sf::Color::Green << "$" << std::to_string(kMoneySellTomatoes);
+				moneyTextTimer = 0.5f;
+				moneyText.setFillColor(0, 255, 0);
+				moneyText.setString("$" + std::to_string(kMoneySellTomatoes));
 				player->cistell->contents = Cistell::EMPTY;
 			}
 		}
@@ -276,9 +277,9 @@ void JumpScene::Update(float dt)
 			Keyboard::ConsumeJustPressed(GameKeys::ACTIVATE);
 				if (moneys >= kMoneyBuyPlant) {
 					moneys -= kMoneyBuyPlant;
-					//moneyText.clear();
-					//moneyTextTimer = 0.5f;
-					//moneyText << sfe::Outline(sf::Color::Black, 1) << sf::Color::Red << "-$" << std::to_string(kMoneyBuyPlant);
+					moneyTextTimer = 0.5f;
+					moneyText.setFillColor(255, 0, 0);
+					moneyText.setString("-$" + std::to_string(kMoneyBuyPlant));
 					++StatsTracker::plants_purchased;
 					player->Carry(new Plant(vec()));
 					Assets::soundBuy.play();
@@ -294,9 +295,9 @@ void JumpScene::Update(float dt)
 
 	if (Keyboard::IsKeyJustPressed(GameKeys::DEBUG_GET_MONEY)) {
 		moneys += 100;
-		//moneyText.clear();
 		moneyTextTimer = 0.5f;
-		//moneyText << sfe::Outline(sf::Color::Black, 1) << sf::Color::Green << "$100";
+		moneyText.setFillColor(0, 255, 0);
+		moneyText.setString("$100");
 	}
 
 }
@@ -307,7 +308,7 @@ void JumpScene::Update(float dt)
 // |                   <--------Sol1----------->           |
 // |                                    <--------Sol2------+------->
 // +--Sol2--->                                             |
-static const float SunLimits[4][2] = 
+static const float SunLimits[4][2] =
 {
   {0.0f, 7.0f},
   {4.0f, 11.0f},
@@ -318,14 +319,14 @@ static const float SunLimits[4][2] =
 static void DrawSun()
 {
 	float time = mainClock;
-	time -= int(time/13)*13;
+	time -= int(time / 13) * 13;
 
 	const float max_alpha = 128.0f;
 	for (int i = 0; i < 4; ++i) {
 		if (time >= SunLimits[i][0] && time <= SunLimits[i][1]) {
 			const float mid = (SunLimits[i][0] + SunLimits[i][1]) / 2.0f;
-			const float half_size = (SunLimits[i][1] - SunLimits[i][0])/2.0f;
-      float ratio = (time < mid ? (time-SunLimits[i][0])/half_size : 1.0f-(time-mid)/half_size);
+			const float half_size = (SunLimits[i][1] - SunLimits[i][0]) / 2.0f;
+			float ratio = (time < mid ? (time - SunLimits[i][0]) / half_size : 1.0f - (time - mid) / half_size);
 			assert(ratio >= 0 && ratio <= 1.0f);
 
 			Window::Draw(Assets::sunTextures[std::min(i, 2)], vec(217.0f, 0.0f))
@@ -344,10 +345,10 @@ void JumpScene::Draw()
 		map.Draw();
 	}
 
-	int globalMillis = int(mainClock*1000);
+	int globalMillis = int(mainClock * 1000);
 
 	//Fountain
-	Window::Draw(Assets::spritesTexture, vec(413,329))
+	Window::Draw(Assets::spritesTexture, vec(413, 329))
 		.withRect(Animation::AnimFrame(FOUNTAIN, globalMillis))
 		.withScale(1.8f, 1.45f);
 
@@ -362,7 +363,7 @@ void JumpScene::Draw()
 	for (auto* plant : Plant::getAll()) {
 		plant->Draw();
 	}
-	
+
 	for (const auto* cistell : Cistell::getAll()) {
 		cistell->Draw();
 	}
@@ -384,7 +385,7 @@ void JumpScene::Draw()
 	//Truck
 	Window::Draw(Assets::spritesTexture, vec(702, 297))
 		.withRect(0, 8 * 16, 11 * 16 + 4, 72);
-		
+
 	for (Doggo* doggo : Doggo::getAll()) {
 		if (!doggo->wantFood) {
 			doggo->Draw();
@@ -392,39 +393,37 @@ void JumpScene::Draw()
 	}
 
 	// Sunny sun.
-  DrawSun();
+	DrawSun();
 
 	// TODO: Do this properly for each player.
 	for (auto* player : JumpMan::getAll()) {
 		if (contextActionButton != GameKeys::NONE) {
 			AnimationType anim = BUTTON_A_PRESS; // TODO: switch depending on the key
 			Window::Draw(Assets::hospitalTexture, player->bounds().TopRight() + vec(2, -6))
-			  .withRect(Animation::AnimFrame(anim, globalMillis));
+				.withRect(Animation::AnimFrame(anim, globalMillis));
 		}
 	}
 
-	/*
-	sfe::RichText text(Assets::font);
-	text.setPosition(10, 10);
-	text.setScale(0.8f, 0.8f);
 
-	if (cantbuyTimer > globalMillis && (globalMillis/100)%2) {
-		text << sf::Color::Red;
+	if (cantbuyTimer > globalMillis && (globalMillis / 100) % 2) {
+		totalMoneyText.setFillColor(255, 0, 0);
 	}
 	else {
-		text << sf::Color::Cyan;
+		totalMoneyText.setFillColor(0, 255, 255);
 	}
-	text << sfe::Outline(sf::Color::Black, 2) << "$" << std::to_string(moneys);
-	window.draw(text);
+	totalMoneyText.setString("$" + std::to_string(moneys));
+	Window::Draw(totalMoneyText, vec(10,10))
+		.withScale(0.8f);
 
-	// TODO: Fix this for many players.
+	// TODO: Move text as a property of the player
 	for (const auto* player : JumpMan::getAll()) {
-    if (moneyTextTimer > 0) {
-      moneyText.setPosition(player->bounds().Center() - vec(moneyText.getLocalBounds().width/4, player->bounds().height/2 + moneyText.getLocalBounds().height - 35*moneyTextTimer));
-      window.draw(moneyText);
-    }
+		if (moneyTextTimer > 0) {
+			vec size = moneyText.getSize();
+			vec pos = player->bounds().Center() - vec(size.x / 4, player->bounds().height / 2 + size.y - 35 * moneyTextTimer);
+			Window::Draw(moneyText, pos).withScale(0.45f);
+		}
 	}
-	*/
+
 
 	if (Debug::Draw) {
 		Bounds(TiledAreas::sun).Draw();
@@ -443,7 +442,7 @@ void JumpScene::Draw()
 	}
 
 	if (lost) {
-		//StatsTracker::DrawStats();
+		StatsTracker::DrawStats();
 		rototext.Draw();
 	}
 	//player.polvito.DrawImGUI("Polvito");

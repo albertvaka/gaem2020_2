@@ -43,7 +43,6 @@
     <ClInclude Include="src\jumpman.h" />
     <ClInclude Include="src\magic_enum.h" />
     <ClInclude Include="src\mates.h" />
-    <ClInclude Include="src\richtext.h" />
     <ClInclude Include="src\rototext.h" />
     <ClInclude Include="src\simplexnoise.h" />
     <ClInclude Include="src\singleinstance.h" />
@@ -78,7 +77,6 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\partsys.cpp" />
     <ClCompile Include="src\rand.cpp" />
-    <ClCompile Include="src\richtext.cpp" />
     <ClCompile Include="src\scene_jumpman.cpp" />
     <ClCompile Include="src\simplexnoise.cpp" />
     <ClCompile Include="src\stats_tracker.cpp" />
@@ -151,6 +149,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)\imgui_sfml;$(SolutionDir)\imgui;$(SolutionDir)\SFML-2.5.1\include;$(SolutionDir)\SDL2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <DisableSpecificWarnings>4244</DisableSpecificWarnings>
+      <PreprocessorDefinitions>_IMGUI;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)\SFML-2.5.1\lib;$(SolutionDir)\SDL2\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
