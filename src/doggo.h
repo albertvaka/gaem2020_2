@@ -8,7 +8,9 @@
 #include "mates.h"
 #include "debug.h"
 #include "assets.h"
+#ifdef _IMGUI
 #include "imgui.h"
+#endif
 #include "stats_tracker.h"
 
 const float kVel = 50;
@@ -126,7 +128,7 @@ struct Doggo : BoxEntity, EntS<Doggo>
 				pos += diff.Normalized() * kVel * dt;
 			}
 		}
-#ifdef _DEBUG
+#ifdef _IMGUI
       ImGui::Begin((std::string("doggo") + ::std::to_string(id)).c_str());
 	  ImGui::SliderFloat("menjar", &menjar, 0.f, kMaxMenjar);
 	  ImGui::End();

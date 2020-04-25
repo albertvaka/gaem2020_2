@@ -1,9 +1,12 @@
 #include "plant.h"
 #include "assets.h"
-#include "imgui.h"
 #include "debug.h"
 #include "input.h"
 #include "stats_tracker.h"
+
+#ifdef _IMGUI
+#include "imgui.h"
+#endif
 
 const float kSecondsToGrow = 10.0f;
 const int kMaxHeight = 4;
@@ -104,7 +107,7 @@ void Plant::Update(float dt) {
           }
       }
           
-#ifdef _DEBUG
+#ifdef _IMGUI
       ImGui::Begin((std::string("plant") + ::std::to_string(id)).c_str());
       ImGui::SliderFloat("water", &water, 0.f, kMaxStats);
       ImGui::SliderFloat("light", &light, 0.f, kMaxStats);

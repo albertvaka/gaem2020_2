@@ -189,7 +189,7 @@ namespace Input
 	{
         Mouse::scrollWheel = 0.f;
 
-#ifdef _DEBUG
+#ifdef _IMGUI
         ImGuiIO& io = ImGui::GetIO();
         if (!io.WantCaptureKeyboard)
 #endif
@@ -197,7 +197,7 @@ namespace Input
             Keyboard::_UpdateInputState(dt);
 
         }
-#ifdef _DEBUG
+#ifdef _IMGUI
         if (!io.WantCaptureMouse)
 #endif
         {

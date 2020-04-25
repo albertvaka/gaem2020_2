@@ -13,7 +13,7 @@
 #include "scene_jumpman.h"
 #include "intro_scene.h"
 
-#ifdef _DEBUG
+#ifdef _IMGUI
 #include "imgui.h"
 #include "imgui_sdl.h"
 #include "imgui_impl_sdl.h"
@@ -38,7 +38,7 @@ int main(int argc, char* argv[])
 
 	Input::Init();
 
-#ifdef _DEBUG
+#ifdef _IMGUI
 	ImGui::CreateContext();
 	ImGui_ImplSDL2_InitForOpenGL(Window::window, nullptr);
 	ImGuiSDL::Initialize(Window::renderer, Window::WINDOW_WIDTH, Window::WINDOW_HEIGHT);
@@ -70,7 +70,7 @@ int main(int argc, char* argv[])
 			currentScene->EnterScene();
 		}
 
-#ifdef _DEBUG
+#ifdef _IMGUI
 		ImGui_ImplSDL2_NewFrame(Window::window);
 		ImGui::NewFrame();
 #endif
@@ -141,7 +141,7 @@ int main(int argc, char* argv[])
 		Window::Draw(txt_fps, vec(Window::WINDOW_WIDTH - 100, 10));
 #endif
 
-#ifdef _DEBUG
+#ifdef _IMGUI
 		ImGui::Render();
 		ImGuiSDL::Render(ImGui::GetDrawData());
 #endif
@@ -152,7 +152,7 @@ int main(int argc, char* argv[])
 
 	}
 
-#ifdef _DEBUG
+#ifdef _IMGUI
 	ImGui_ImplSDL2_Shutdown();
 #endif
 
