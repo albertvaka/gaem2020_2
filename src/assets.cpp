@@ -21,39 +21,39 @@ SDL_Texture* Assets::doggoTexture;
 TTF_Font* Assets::font_30;
 TTF_Font* Assets::font_30_outline;
 
-sf::SoundBuffer Assets::soundBufferBucketTomatoes;
-sf::Sound Assets::soundBucketTomatoes;
-sf::SoundBuffer Assets::soundBufferBuy;
-sf::Sound Assets::soundBuy;
-sf::SoundBuffer Assets::soundBufferSell1;
-sf::Sound Assets::soundSell1;
-sf::SoundBuffer Assets::soundBufferSell2;
-sf::Sound Assets::soundSell2;
-sf::SoundBuffer Assets::soundBufferWater;
-sf::Sound Assets::soundWater;
-sf::SoundBuffer Assets::soundBufferBucketWater;
-sf::Sound Assets::soundBucketWater;
-sf::SoundBuffer Assets::soundBufferJump1;
-sf::Sound Assets::soundJump1;
-sf::SoundBuffer Assets::soundBufferJump2;
-sf::Sound Assets::soundJump2;
-sf::SoundBuffer Assets::soundBufferLand;
-sf::Sound Assets::soundLand;
-sf::SoundBuffer Assets::soundBufferPickupDrop;
-sf::Sound Assets::soundPickupDrop;
-sf::SoundBuffer Assets::soundBufferDeath;
-sf::Sound Assets::soundDeath;
+Emyl::Buffer Assets::BufferBucketTomatoes;
+Emyl::Sound Assets::soundBucketTomatoes;
+Emyl::Buffer Assets::BufferBuy;
+Emyl::Sound Assets::soundBuy;
+Emyl::Buffer Assets::BufferSell1;
+Emyl::Sound Assets::soundSell1;
+Emyl::Buffer Assets::BufferSell2;
+Emyl::Sound Assets::soundSell2;
+Emyl::Buffer Assets::BufferWater;
+Emyl::Sound Assets::soundWater;
+Emyl::Buffer Assets::BufferBucketWater;
+Emyl::Sound Assets::soundBucketWater;
+Emyl::Buffer Assets::BufferJump1;
+Emyl::Sound Assets::soundJump1;
+Emyl::Buffer Assets::BufferJump2;
+Emyl::Sound Assets::soundJump2;
+Emyl::Buffer Assets::BufferLand;
+Emyl::Sound Assets::soundLand;
+Emyl::Buffer Assets::BufferPickupDrop;
+Emyl::Sound Assets::soundPickupDrop;
+Emyl::Buffer Assets::BufferDeath;
+Emyl::Sound Assets::soundDeath;
 
-sf::SoundBuffer Assets::soundBufferDoggo1;
-sf::Sound Assets::soundDoggo1;
+Emyl::Buffer Assets::BufferDoggo1;
+Emyl::Sound Assets::soundDoggo1;
 
-sf::SoundBuffer Assets::soundBufferDoggo2;
-sf::Sound Assets::soundDoggo2;
+Emyl::Buffer Assets::BufferDoggo2;
+Emyl::Sound Assets::soundDoggo2;
 
-sf::SoundBuffer Assets::soundBufferDoggo3;
-sf::Sound Assets::soundDoggo3;
+Emyl::Buffer Assets::BufferDoggo3;
+Emyl::Sound Assets::soundDoggo3;
 
-sf::Music Assets::sceneMusic[2];
+Emyl::Music Assets::sceneMusic[2];
 
 SDL_Texture* loadImage(const std::string& path) {
 
@@ -94,49 +94,49 @@ void Assets::LoadAll() {
     TTF_SetFontOutline(font_30_outline, 3);
 
 
-    soundBufferBucketTomatoes.loadFromFile("data/bucket_tomatoes.ogg");
-    soundBucketTomatoes.setBuffer(soundBufferBucketTomatoes);
+    BufferBucketTomatoes.loadFromFile("data/bucket_tomatoes.ogg");
+    soundBucketTomatoes.setBuffer(BufferBucketTomatoes);
 
-    soundBufferDoggo1.loadFromFile("data/doggo1.ogg");
-    soundDoggo1.setBuffer(soundBufferDoggo1);
+    BufferDoggo1.loadFromFile("data/doggo1.ogg");
+    soundDoggo1.setBuffer(BufferDoggo1);
 
-    soundBufferDoggo2.loadFromFile("data/doggo2.ogg");
-    soundDoggo2.setBuffer(soundBufferDoggo2);
+    BufferDoggo2.loadFromFile("data/doggo2.ogg");
+    soundDoggo2.setBuffer(BufferDoggo2);
 
-    soundBufferDoggo3.loadFromFile("data/doggo3.ogg");
-    soundDoggo3.setBuffer(soundBufferDoggo3);
+    BufferDoggo3.loadFromFile("data/doggo3.ogg");
+    soundDoggo3.setBuffer(BufferDoggo3);
 
-    soundBufferBuy.loadFromFile("data/buy.ogg");
-    soundBuy.setBuffer(soundBufferBuy);
+    BufferBuy.loadFromFile("data/buy.ogg");
+    soundBuy.setBuffer(BufferBuy);
 
-    soundBufferSell1.loadFromFile("data/sell1.ogg");
-    soundSell1.setBuffer(soundBufferSell1);
+    BufferSell1.loadFromFile("data/sell1.ogg");
+    soundSell1.setBuffer(BufferSell1);
 
-    soundBufferSell2.loadFromFile("data/sell2.ogg");
-    soundSell2.setBuffer(soundBufferSell2);
+    BufferSell2.loadFromFile("data/sell2.ogg");
+    soundSell2.setBuffer(BufferSell2);
 
-    soundBufferWater.loadFromFile("data/water.ogg");
-    soundWater.setBuffer(soundBufferWater);
+    BufferWater.loadFromFile("data/water.ogg");
+    soundWater.setBuffer(BufferWater);
 
-    soundBufferBucketWater.loadFromFile("data/bucket_water.ogg");
-    soundBucketWater.setBuffer(soundBufferBucketWater);
+    BufferBucketWater.loadFromFile("data/bucket_water.ogg");
+    soundBucketWater.setBuffer(BufferBucketWater);
 
-    soundBufferJump1.loadFromFile("data/jump1.ogg");
-    soundJump1.setBuffer(soundBufferJump1);
+    BufferJump1.loadFromFile("data/jump1.ogg");
+    soundJump1.setBuffer(BufferJump1);
     soundJump1.setVolume(50);
 
-    soundBufferJump2.loadFromFile("data/jump2.ogg");
-    soundJump2.setBuffer(soundBufferJump2);
+    BufferJump2.loadFromFile("data/jump2.ogg");
+    soundJump2.setBuffer(BufferJump2);
     soundJump2.setVolume(50);
 
-    soundBufferLand.loadFromFile("data/land.ogg");
-    soundLand.setBuffer(soundBufferLand);
+    BufferLand.loadFromFile("data/land.ogg");
+    soundLand.setBuffer(BufferLand);
 
-    soundBufferPickupDrop.loadFromFile("data/pickup_drop.ogg");
-    soundPickupDrop.setBuffer(soundBufferPickupDrop);
+    BufferPickupDrop.loadFromFile("data/pickup_drop.ogg");
+    soundPickupDrop.setBuffer(BufferPickupDrop);
 
-    soundBufferDeath.loadFromFile("data/death.ogg");
-    soundDeath.setBuffer(soundBufferDeath);
+    BufferDeath.loadFromFile("data/death.ogg");
+    soundDeath.setBuffer(BufferDeath);
 
     sceneMusic[0].openFromFile("data/plantetes_gameplay.ogg");
     sceneMusic[0].setVolume(60);

@@ -141,6 +141,9 @@
     <ClInclude Include="src\text.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="emyl\include\emyl.h">
+      <Filter>Bundled Dependencies</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\rand.cpp">
@@ -213,6 +216,9 @@
       <Filter>Bundled Dependencies</Filter>
     </ClCompile>
     <ClCompile Include="SDL2\include\imgui_sdl.cpp">
+      <Filter>Bundled Dependencies</Filter>
+    </ClCompile>
+    <ClCompile Include="emyl\emyl.cpp">
       <Filter>Bundled Dependencies</Filter>
     </ClCompile>
   </ItemGroup>

@@ -2,7 +2,7 @@
 
 #include <SDL.h>
 #include <SDL_ttf.h>
-#include <SFML/Audio.hpp>
+#include <emyl.h>
 #include <array>
 
 struct Assets
@@ -27,39 +27,39 @@ struct Assets
 	static TTF_Font* font_30;
 	static TTF_Font* font_30_outline;
 
-	static sf::SoundBuffer soundBufferBucketTomatoes;
-	static sf::Sound soundBucketTomatoes;
-	static sf::SoundBuffer soundBufferBuy;
-	static sf::Sound soundBuy;
-	static sf::SoundBuffer soundBufferSell1;
-	static sf::Sound soundSell1;
-	static sf::SoundBuffer soundBufferSell2;
-	static sf::Sound soundSell2;
-	static sf::SoundBuffer soundBufferWater;
-	static sf::Sound soundWater;
-	static sf::SoundBuffer soundBufferBucketWater;
-	static sf::Sound soundBucketWater;
-	static sf::SoundBuffer soundBufferJump1;
-	static sf::Sound soundJump1;
-	static sf::SoundBuffer soundBufferJump2;
-	static sf::Sound soundJump2;
-	static sf::SoundBuffer soundBufferLand;
-	static sf::Sound soundLand;
-	static sf::SoundBuffer soundBufferPickupDrop;
-	static sf::Sound soundPickupDrop;
-	static sf::SoundBuffer soundBufferDeath;
-	static sf::Sound soundDeath;
+	static Emyl::Buffer BufferBucketTomatoes;
+	static Emyl::Sound soundBucketTomatoes;
+	static Emyl::Buffer BufferBuy;
+	static Emyl::Sound soundBuy;
+	static Emyl::Buffer BufferSell1;
+	static Emyl::Sound soundSell1;
+	static Emyl::Buffer BufferSell2;
+	static Emyl::Sound soundSell2;
+	static Emyl::Buffer BufferWater;
+	static Emyl::Sound soundWater;
+	static Emyl::Buffer BufferBucketWater;
+	static Emyl::Sound soundBucketWater;
+	static Emyl::Buffer BufferJump1;
+	static Emyl::Sound soundJump1;
+	static Emyl::Buffer BufferJump2;
+	static Emyl::Sound soundJump2;
+	static Emyl::Buffer BufferLand;
+	static Emyl::Sound soundLand;
+	static Emyl::Buffer BufferPickupDrop;
+	static Emyl::Sound soundPickupDrop;
+	static Emyl::Buffer BufferDeath;
+	static Emyl::Sound soundDeath;
 
-	static sf::SoundBuffer soundBufferDoggo1;
-	static sf::Sound soundDoggo1;
+	static Emyl::Buffer BufferDoggo1;
+	static Emyl::Sound soundDoggo1;
 
-	static sf::SoundBuffer soundBufferDoggo2;
-	static sf::Sound soundDoggo2;
+	static Emyl::Buffer BufferDoggo2;
+	static Emyl::Sound soundDoggo2;
 
-	static sf::SoundBuffer soundBufferDoggo3;
-	static sf::Sound soundDoggo3;
+	static Emyl::Buffer BufferDoggo3;
+	static Emyl::Sound soundDoggo3;
 
 
-	static sf::Music sceneMusic[2];
+	static Emyl::Music sceneMusic[2];
 };
 
