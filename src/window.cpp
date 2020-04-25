@@ -129,11 +129,11 @@ namespace Window
 
         inline int fastfloor(const float x) { return x > 0 ? (int)x : (int)x - 1; }
 
-        void Pixel(float x, float y, short r, short g, short b, short a) {
+        void Pixel(float x, float y, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
             pixelRGBA(Window::renderer, x - Camera::pos.x, y - Camera::pos.y, r, g, b, a);
         }
 
-        void Rectangle(float _x1, float _y1, float _x2, float _y2, int thickness, short r, short g, short b, short a) {
+        void Rectangle(float _x1, float _y1, float _x2, float _y2, int thickness, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
             int x1 = _x1 - Camera::pos.x;
             int y1 = _y1 - Camera::pos.y;
             int x2 = _x2 - Camera::pos.x;
@@ -142,7 +142,11 @@ namespace Window
             {
                 boxRGBA(Window::renderer, x1, y1, x2, y2, r, g, b, a);
             }
-            else 
+            else if (thickness == 1)
+            {
+                rectangleRGBA(Window::renderer, x1, y1, x2, y2, r, g, b, a);
+            } 
+            else
             {
                 int e = thickness/2;
                 thickLineRGBA(Window::renderer, x1 - e, y1, x2 - e, y1, thickness, r, g, b, a); // top
@@ -152,8 +156,34 @@ namespace Window
             }
         }
 
-        void Line(float x1, float x2, float y1, float y2, int thickness, short r, short g, short b, short a) {
+        void Line(float x1, float y1, float x2, float y2, int thickness, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
             thickLineRGBA(Window::renderer, x1 - Camera::pos.x, y1 - Camera::pos.y, x2 - Camera::pos.x, y2 - Camera::pos.y, thickness, r, g, b, a);
+        }
+
+        vec CirclePoint(int index, int m_pointCount, int m_radius) {
+            static const float pi = 3.141592654f;
+
+            float angle = index * 2 * pi / m_pointCount - pi / 2;
+            float x = std::cos(angle) * m_radius;
+            float y = std::sin(angle) * m_radius;
+
+            return vec(x, y);
+        }
+
+        void Circle(float _x, float _y, int radius, int thickness, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
+            int x = _x - Camera::pos.x;
+            int y = _y - Camera::pos.y;
+            if (thickness < 0) {
+                filledCircleRGBA(Window::renderer, x, y, radius, r, g, b, a);
+            }
+            else {
+                //Hack: Use the renderer scale to increase the thickness
+                float scalex, scaley;
+                SDL_RenderGetScale(Window::renderer, &scalex, &scaley);
+                SDL_RenderSetScale(Window::renderer, thickness*scalex, thickness*scalex);
+                circleRGBA(Window::renderer, x/thickness, y/thickness, radius/thickness, r, g, b, a);
+                SDL_RenderSetScale(Window::renderer, scalex, scaley);
+            }
         }
     }
 }

@@ -153,7 +153,7 @@ struct vec
       return vec(-x, -y);
   }
 
-  void Debuggerino(short r = 255, short g = 255, short b = 255) const
+  void Debuggerino(uint8_t r = 255, uint8_t g = 255, uint8_t b = 255) const
 #ifdef _DEBUG
       ;
 #else

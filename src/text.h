@@ -70,7 +70,7 @@ public:
 		return *this;
 	}
 
-	Text& setFillColor(short r, short g, short b) {
+	Text& setFillColor(uint8_t r, uint8_t g, uint8_t b) {
 		if (r != color.r || g != color.g || b != color.b) {
 			color.r = r;
 			color.g = g;
@@ -80,7 +80,7 @@ public:
 		return *this;
 	}
 
-	Text& setOutlineColor(short r, short g, short b) {
+	Text& setOutlineColor(uint8_t r, uint8_t g, uint8_t b) {
 		if (r != outline_color.r || g != outline_color.g || b != outline_color.b) {
 			outline_color.r = r;
 			outline_color.g = g;
