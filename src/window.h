@@ -27,26 +27,43 @@ namespace Window
 namespace Camera
 {
 
+	inline void SetTopLeft(const vec& center)
+	{
+		pos = center;
+	}
+
+	inline void SetTopLeft(float x, float y)
+	{
+		pos.x = x;
+		pos.y = y;
+	}
+
+	inline vec GetTopLeft()
+	{
+		return pos;
+	}
+
 	inline void SetCenter(const vec& center)
 	{
-		pos = center*zoom-vec(Window::WINDOW_WIDTH/2, Window::WINDOW_HEIGHT/2);
+		pos = center - vec(Window::WINDOW_WIDTH/(2*zoom), Window::WINDOW_HEIGHT/(2*zoom));
 	}
 
 	inline void SetCenter(float x, float y) { SetCenter(vec(x, y)); }
 
 	inline vec GetCenter()
 	{
-		return pos * zoom +vec(Window::WINDOW_WIDTH/2, Window::WINDOW_HEIGHT/2);
+		return pos + vec(Window::WINDOW_WIDTH/(2*zoom), Window::WINDOW_HEIGHT/(2*zoom));
 	}
 
 	inline vec GetSize()
 	{
-		return vec(Window::WINDOW_WIDTH, Window::WINDOW_HEIGHT);
+		return vec(Window::WINDOW_WIDTH/zoom, Window::WINDOW_HEIGHT/zoom);
 	}
 
 	inline Bounds GetBounds()
 	{
-		return Bounds(GetCenter(), GetSize());
+		//return Bounds::fromCenter(GetCenter(), GetSize());
+		return Bounds(pos, GetSize());
 	}
 
 	inline void ClampCameraTo(const Bounds& limit)
@@ -67,12 +84,15 @@ namespace Camera
 		SetCenter(c);
 	}
 
-	inline void SetZoom(float z)
+	// if preserve_center is false, we will zoom from the top-left corner
+	inline void SetZoom(float z, bool preserve_center = true)
 	{
 		vec c = GetCenter();
 		zoom = z;
 		SDL_RenderSetScale(Window::renderer, z, z);
-		SetCenter(c);
+		if (preserve_center) {
+			SetCenter(c);
+		}
 	}
 
 	inline float GetZoom()

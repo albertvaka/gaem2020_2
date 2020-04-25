@@ -95,7 +95,8 @@ int main(int argc, char* argv[])
 			frameByFrame = !frameByFrame;
 		}
 		if (frameByFrame && Debug::Draw) {
-			Camera::MoveCameraWithArrows(100.f, dt);
+			Camera::MoveCameraWithArrows(50.f, dt);
+			Camera::ChangeZoomWithPlusAndMinus(1.f, dt);
 		}
 
 		if (!frameByFrame || Keyboard::IsKeyJustPressed(DEBUG_FRAME_BY_FRAME_NEXT) || Keyboard::IsKeyJustPressed(RESTART))
@@ -126,6 +127,7 @@ int main(int argc, char* argv[])
 		//Draw debug GUI
 
 		vec saved_pos = Camera::pos;
+		Camera::pos = vec(0,0);
 		SDL_RenderSetScale(Window::renderer, 1, 1);
 		
 #ifdef _FPS_COUNTER

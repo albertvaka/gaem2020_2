@@ -30,8 +30,7 @@ JumpScene::JumpScene()
 {
 	map.LoadFromTiled();
 
-	Camera::SetZoom(Window::GAME_ZOOM);
-	Camera::SetCenter(vec(Window::WINDOW_WIDTH / 4, Window::WINDOW_HEIGHT / 4));
+	Camera::SetZoom(Window::GAME_ZOOM, false);
 }
 
 void JumpScene::EnterScene() 
@@ -71,14 +70,6 @@ void JumpScene::ExitScene()
 void JumpScene::Update(float dt)
 {
 	StatsTracker::Update(dt);
-
-	//float f = Camera::GetZoom();
-	//f -= 0.2*dt;
-	//Camera::SetZoom(f);
-
-	//vec a = Camera::GetCenter();
-	//a.x += 100*dt;
-	//Camera::SetCenter(a);
 
 	if (Keyboard::IsKeyJustPressed(GameKeys::NEXT_TRACK)) {
 		Assets::sceneMusic[current_music].stop();
@@ -137,7 +128,6 @@ void JumpScene::Update(float dt)
 		}
 	}
 
-	//Camera::ChangeZoomWithPlusAndMinus(20.f, dt);
 	//Debug::out << Camera::GetCameraCenter();
 
 	contextActionButton = GameKeys::NONE;
