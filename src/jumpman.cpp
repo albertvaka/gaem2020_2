@@ -71,8 +71,9 @@ inline vec posOnLeftSlope(vec pos) {
 	return pos;
 }
 
-JumpMan::JumpMan()
-	: polvito(Assets::hospitalTexture)
+JumpMan::JumpMan(int id)
+	: id(id)
+	, polvito(Assets::hospitalTexture)
 {
 	polvito.AddSprite(IntRect(69, 50, 2, 2));
 
@@ -117,7 +118,7 @@ void JumpMan::Update(float dt)
 	}
 grounded_exit:
 
-	crouched = ((crouched || grounded) && Keyboard::IsKeyPressed(GameKeys::DOWN)) || (crouched && !grounded);
+	crouched = ((crouched || grounded) && PlayerInput::IsActionPressed(id, GameKeys::DOWN)) || (crouched && !grounded);
 	if (crouched) {
 		crouchedTime += dt;
 	}
@@ -125,10 +126,10 @@ grounded_exit:
 		crouchedTime = 0.f;
 	}
 
-	if (Keyboard::IsKeyJustPressed(GameKeys::UP, 0.15f) && (grounded || (onWall && !crouched)))
+	if (PlayerInput::IsActionJustPressed(id, GameKeys::UP, 0.15f) && (grounded || (onWall && !crouched)))
 	{
-		//if (!Keyboard::IsKeyJustPressed(GameKeys::UP)) Debug::out << "cheats";
-		Keyboard::ConsumeJustPressed(GameKeys::UP);
+		//if (!PlayerInput::IsActionJustPressed(id, GameKeys::UP)) Debug::out << "cheats";
+		PlayerInput::ConsumeJustPressed(id, GameKeys::UP);
 
 		jumpTimeLeft = jump_time; // the jump upwards velocity can last up to this duration
 		if (onWall && !grounded && !crouched) {
@@ -161,7 +162,7 @@ grounded_exit:
 	}
 
 	vec acc = vec(0, 0);
-	if (Keyboard::IsKeyPressed(GameKeys::LEFT)) {
+	if (PlayerInput::IsActionPressed(id, GameKeys::LEFT)) {
 		lookingLeft = true;
 		if (grounded) {
 			if (!crouched) acc.x -= run_acc;
@@ -170,7 +171,7 @@ grounded_exit:
 			acc.x -= run_acc_onair;
 		}
 	}
-	if (Keyboard::IsKeyPressed(GameKeys::RIGHT)) {
+	if (PlayerInput::IsActionPressed(id, GameKeys::RIGHT)) {
 		lookingLeft = false;
 		if (grounded) {
 			if (!crouched) acc.x += run_acc;
@@ -180,7 +181,7 @@ grounded_exit:
 		}
 	}
 
-	if (Keyboard::IsKeyPressed(GameKeys::UP) && jumpTimeLeft > 0)
+	if (PlayerInput::IsActionPressed(id, GameKeys::UP) && jumpTimeLeft > 0)
 	{
 		vel.y = vel_jump;
 	}
@@ -439,18 +440,18 @@ vert_exit:
 		size = standing_size;
 		if (grounded)
 		{
-			if (Keyboard::IsKeyPressed(GameKeys::LEFT) && !Keyboard::IsKeyPressed(GameKeys::RIGHT))
-			{
-				isWalking = true;
-				if (vel.x > 0) {
-					animation.Ensure(MARIO_TURN);
-					isTurning = true;
-				}
-				else {
-					animation.Ensure(MARIO_WALK);
-				}
-			}
-			else if (Keyboard::IsKeyPressed(GameKeys::RIGHT) && !Keyboard::IsKeyPressed(GameKeys::LEFT))
+      if (PlayerInput::IsActionPressed(id, GameKeys::LEFT) && !PlayerInput::IsActionPressed(id, GameKeys::RIGHT))
+      {
+        isWalking = true;
+        if (vel.x > 0) {
+          animation.Ensure(MARIO_TURN);
+          isTurning = true;
+        }
+        else {
+          animation.Ensure(MARIO_WALK);
+        }
+      }
+      else if (PlayerInput::IsActionPressed(id, GameKeys::RIGHT) && !PlayerInput::IsActionPressed(id, GameKeys::LEFT))
 			{
 				isWalking = true;
 				if (vel.x < 0) {

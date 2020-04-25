@@ -59,9 +59,12 @@ struct IntroScene : Scene {
 				doggo->wantFood = false;
 			}
 		}
-		if (Keyboard::IsKeyJustPressed(GameKeys::START)) {
-			SceneManager::SetScene(new JumpScene());
-			//Change scene
+
+		for (int player = 0; player < PlayerInput::kMaxPlayers; ++player) {
+			if (PlayerInput::IsActionJustPressed(player, GameKeys::START)) {
+        SceneManager::SetScene(new JumpScene(player));
+        //Change scene
+			}
 		}
 	}
 

@@ -24,10 +24,11 @@ struct JumpScene : Scene {
 	float moneyTextTimer = 0;
 	int current_music = 0;
 	float timerDoggo = 0;
+	int first_player = 0;
+	JumpMan* players[PlayerInput::kMaxPlayers];
+	GameKeys contextActionButton[PlayerInput::kMaxPlayers];
 
-	GameKeys contextActionButton = GameKeys::NONE;
-
-	JumpScene();
+	JumpScene(int first_player);
 	void EnterScene() override;
 	void ExitScene() override;
 	void Update(float dt) override;

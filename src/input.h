@@ -5,6 +5,7 @@
 #include "bounds.h"
 #include "window.h"
 
+#include <functional>
 #include <SDL.h>
 
 // Static stuff here:
@@ -78,6 +79,7 @@ private:
 
 public:
 	enum Button {
+		None = -1,
 		A = 0,
 		B = 1,
 		X = 2,
@@ -144,10 +146,10 @@ public:
 		sf::Joystick::Axis x, y;
 	};
 
-	static bool IsButtonPressed(int player, GamePad::Button b) { return (button_states[player][b] == PRESSED || button_states[player][b] == JUST_PRESSED); }
-	static bool IsButtonJustPressed(int player, GamePad::Button b) { return (button_states[player][b] == JUST_PRESSED); }
-	static bool IsButtonReleased(int player, GamePad::Button b) { return (button_states[player][b] == RELEASED || button_states[player][b] == JUST_RELEASED); }
-	static bool IsButtonJustReleased(int player, GamePad::Button b) { return (button_states[player][b] == JUST_RELEASED); }
+	static bool IsButtonPressed(int player, GamePad::Button b) { return b==Button::None?false:(button_states[player][b] == PRESSED || button_states[player][b] == JUST_PRESSED); }
+	static bool IsButtonJustPressed(int player, GamePad::Button b) { return b==Button::None?false:(button_states[player][b] == JUST_PRESSED); }
+	static bool IsButtonReleased(int player, GamePad::Button b) { return b==Button::None?false:(button_states[player][b] == RELEASED || button_states[player][b] == JUST_RELEASED); }
+	static bool IsButtonJustReleased(int player, GamePad::Button b) { return b==Button::None?false:(button_states[player][b] == JUST_RELEASED); }
 
 	static void _UpdateInputState__XboxNormal(int joy, int player);
 	static void _UpdateInputState();
@@ -198,6 +200,115 @@ struct Keyboard
 
 	static KeyStates key_states[magic_enum::enum_count<GameKeys>()];
 	static float key_times[magic_enum::enum_count<GameKeys>()];
+};
+
+
+using GamePadInput = std::function<bool(int player)>;
+extern GamePadInput gp_map[magic_enum::enum_count<GameKeys>()];
+
+inline void RemapGamePadInput()
+{
+/*  auto kEmpty = [](int){ return false; };
+	gp_map[GameKeys::NONE] = kEmpty;
+  gp_map[GameKeys::UP] = [](int p) { 
+		return GamePad::IsButtonPressed(p, GamePad::Button::B) || 
+          GamePad::AnalogStick::Left.get(p, 20.f).y < -50.0f; };
+	gp_map[GameKeys::DOWN] = [](int p) { return GamePad::AnalogStick::Left.get(p, 20.f).y > 0.0f; };
+	gp_map[GameKeys::LEFT] = [](int p) { return GamePad::AnalogStick::Left.get(p, 20.f).x < 0.0f; };
+	gp_map[GameKeys::RIGHT] = [](int p) { return GamePad::AnalogStick::Left.get(p, 20.f).x > 0.0f; };
+	gp_map[GameKeys::ACTIVATE] = [](int p){ return GamePad::IsButtonPressed(p, GamePad::Button::A); };
+	gp_map[GameKeys::ACTION] = kEmpty;
+	gp_map[GameKeys::SHOOT] = kEmpty;
+	gp_map[GameKeys::START] = [](int p) { return GamePad::IsButtonPressed(p, GamePad::Button::Start); };
+	gp_map[GameKeys::DEBUG_ZOOM_IN] = kEmpty;
+	gp_map[GameKeys::DEBUG_ZOOM_OUT] = kEmpty;
+	gp_map[GameKeys::RESTART] = [](int p) { return GamePad::IsButtonPressed(p, GamePad::Button::Select); };
+	gp_map[GameKeys::DEBUG_FRAME_BY_FRAME] = kEmpty;
+	gp_map[GameKeys::DEBUG_FRAME_BY_FRAME_NEXT] = kEmpty;
+	gp_map[GameKeys::DEBUG_MODE] = kEmpty;
+	gp_map[GameKeys::DEBUG_KILLALL] = kEmpty;
+	gp_map[GameKeys::DEBUG_DOGGO] = kEmpty;
+	gp_map[GameKeys::DEBUG_SET_PLANTS_AT_MAX_STATS] = kEmpty;
+	gp_map[GameKeys::DEBUG_GET_MONEY] = kEmpty;
+	gp_map[GameKeys::DEBUG_ADD_PLAYER] = kEmpty;
+	gp_map[GameKeys::MUTE] = kEmpty;
+	gp_map[GameKeys::NEXT_TRACK] = kEmpty;
+	*/
+}
+
+// Multi Player Input.
+//====================
+struct PlayerInput {
+	static const int kMaxPlayers = 4;
+
+	static bool IsActionPressed(int player, GameKeys k) {
+		return (action_states[player][k] == PRESSED || action_states[player][k] == JUST_PRESSED);
+	}
+
+	static bool IsActionJustPressed(int player, GameKeys k) {
+		return (action_states[player][k] == JUST_PRESSED);
+	}
+
+	static bool IsActionJustPressed(int player, GameKeys k, float interval) {
+		return action_states[player][k] == JUST_PRESSED || (action_states[player][k] == PRESSED && action_times[player][k] < interval);
+	}
+
+	static bool IsActionReleased(int player, GameKeys k) {
+		return (action_states[player][k] == RELEASED || action_states[player][k] == JUST_RELEASED);
+	}
+
+	static bool IsActionJustReleased(int player, GameKeys k) {
+		return (action_states[player][k] == JUST_RELEASED);
+	}
+
+	static bool IsActionJustReleased(int player, GameKeys k, float interval) {
+		return action_states[player][k] == JUST_RELEASED || (action_states[player][k] == RELEASED && action_times[player][k] < interval);
+	}
+
+	static void ConsumeJustPressed(int player, GameKeys k) {
+		action_states[player][k] = PRESSED;
+		action_times[player][k] += 1000.f;
+	}
+
+	static void ConsumeJustReleased(int player, GameKeys k) {
+		action_states[player][k] = RELEASED;
+		action_times[player][k] += 1000.f;
+	}
+
+	static void _UpdateAllPlayerInput(float dt) {
+		/*
+		for (int player = 0; player < kMaxPlayers; ++player) {
+			int gamepad_id = player_id_to_gamepad_id[player];
+      for (size_t k = 1; k < magic_enum::enum_count<GameKeys>(); k++) {  //Skip GameKeys::NONE
+        bool pressed_now = player == keyboard_player_id ? Keyboard::IsKeyPressed(GameKeys(k)) : gp_map[k](gamepad_id);
+        if (pressed_now) {
+          if (action_states[player][k] == JUST_PRESSED || action_states[player][k] == PRESSED) {
+            action_states[player][k] = PRESSED;
+            if (action_times[player][k] < 1000.f) action_times[player][k] += dt;
+          } else {
+            action_states[player][k] = JUST_PRESSED;
+            action_times[player][k] = dt;
+          }
+        } else {
+          if (action_states[player][k] == JUST_RELEASED || action_states[player][k] == RELEASED) {
+            action_states[player][k] = RELEASED;
+            if (action_times[player][k] < 1000.f) action_times[player][k] += dt;
+          } else {
+            action_states[player][k] = JUST_RELEASED;
+            action_times[player][k] = dt;
+          }
+        }
+      }
+		}*/
+	}
+
+	// Assumes one player max on keyboard.
+	static int keyboard_player_id;
+	static int player_id_to_gamepad_id[kMaxPlayers];
+	// A bit redundant with the other classes, but GamePad doesn't support Consume,
+	// and makes it a bit easier.
+	static KeyStates action_states[kMaxPlayers][magic_enum::enum_count<GameKeys>()];
+	static float action_times[kMaxPlayers][magic_enum::enum_count<GameKeys>()];
 };
 
 

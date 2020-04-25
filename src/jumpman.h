@@ -14,7 +14,7 @@ struct Plant;
 
 struct JumpMan : Entity, EntS<JumpMan>
 {
-    JumpMan();
+    JumpMan(int id);
     void Update(float GameTime);
     void Draw() const;
     void Reset() {
@@ -42,6 +42,7 @@ struct JumpMan : Entity, EntS<JumpMan>
     Animation animation;
 
     vec size;
+    int id;
     
     enum { ONWALL_LEFT = -1, ONWALL_NO = 0, ONWALL_RIGHT = 1 };
 

@@ -23,6 +23,13 @@ KeyStates Keyboard::key_states[magic_enum::enum_count<GameKeys>()];
 float Keyboard::key_times[magic_enum::enum_count<GameKeys>()];
 int key_map[magic_enum::enum_count<GameKeys>()];
 
+// Assumes first player is on Keyboard.
+int PlayerInput::keyboard_player_id = 0;
+int PlayerInput::player_id_to_gamepad_id[PlayerInput::kMaxPlayers] = {-1, 0, 1, 2};
+KeyStates PlayerInput::action_states[PlayerInput::kMaxPlayers][magic_enum::enum_count<GameKeys>()];
+float PlayerInput::action_times[PlayerInput::kMaxPlayers][magic_enum::enum_count<GameKeys>()];
+GamePadInput gp_map[magic_enum::enum_count<GameKeys>()];
+
 /*
 KeyStates GamePad::calculateJustPressed(bool pressed, KeyStates state)
 {
@@ -206,14 +213,17 @@ namespace Input
         /*
         GamePad::_UpdateInputState();
         */
-
+        PlayerInput::_UpdateAllPlayerInput(dt);
     }
     void Init()
 	{
         RemapInput();
         for (size_t i = 0; i < magic_enum::enum_count<GameKeys>(); i++) Keyboard::key_states[i] = RELEASED;
         for (size_t i = 0; i < magic_enum::enum_count<Mouse::Button>(); i++) Mouse::button_states[i] = RELEASED;
-        
+        RemapGamePadInput();
+        for (int p = 0; p < PlayerInput::kMaxPlayers; ++p) {
+          for (size_t i = 0; i < magic_enum::enum_count<GameKeys>(); i++) PlayerInput::action_states[p][i] = RELEASED;
+        }
     }
     
 }
