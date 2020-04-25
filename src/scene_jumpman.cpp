@@ -55,7 +55,7 @@ void JumpScene::EnterScene()
 
 	npc.Reset();
 
-	//Assets::sceneMusic[current_music].play();
+	Assets::sceneMusic[current_music].play();
 }
 
 void JumpScene::ExitScene()
