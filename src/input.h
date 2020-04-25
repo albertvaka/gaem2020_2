@@ -128,17 +128,6 @@ private:
 	static KeyStates calculateJustPressed(bool pressed, KeyStates state);
 
 public:
-	enum Button {
-		None = -1,
-		A = 0,
-		B = 1,
-		X = 2,
-		Y = 3,
-		LB = 4,
-		RB = 5,
-		Select = 6,
-		Start = 7
-	};
 
 	struct Trigger
 	{
@@ -158,7 +147,7 @@ public:
 			{ //Pos between 0 and 100
 				SDL_GameController* joystick = player_to_joystick[player];
 				if (!joystick) return 0;
-				float a = SDL_GameControllerGetAxis(joystick, SDL_CONTROLLER_AXIS_TRIGGERLEFT) / 32767.f;
+				float a = SDL_GameControllerGetAxis(joystick, SDL_CONTROLLER_AXIS_TRIGGERLEFT) / 327.67f;
 				return a > 0.1 ? a : 0;
 			}
 		};
@@ -168,7 +157,7 @@ public:
 			{ //Pos between 0 and 100
 				SDL_GameController* joystick = player_to_joystick[player];
 				if (!joystick) return 0;
-				float a = SDL_GameControllerGetAxis(joystick, SDL_CONTROLLER_AXIS_TRIGGERRIGHT)/32767.f;
+				float a = SDL_GameControllerGetAxis(joystick, SDL_CONTROLLER_AXIS_TRIGGERRIGHT) / 327.67f;
 				return a > 0.1 ? a : 0;
 			}
 		};
@@ -187,8 +176,8 @@ public:
 			}
 			SDL_GameController* joystick = player_to_joystick[player];
 			if (!joystick) return vec();
-			float a = SDL_GameControllerGetAxis(joystick, x) / 32767.f;
-			float b = SDL_GameControllerGetAxis(joystick, y) / 32767.f;
+			float a = SDL_GameControllerGetAxis(joystick, x) / 327.67f;
+			float b = SDL_GameControllerGetAxis(joystick, y) / 327.67f;
 			return vec(abs(a) > dead_area ? a : 0, abs(b) > dead_area ? b : 0);
 		}
 	private:
@@ -196,10 +185,10 @@ public:
 		SDL_GameControllerAxis x, y;
 	};
 
-	static bool IsButtonPressed(int player, GamePad::Button b) { return b==Button::None?false:(button_states[player][b] == PRESSED || button_states[player][b] == JUST_PRESSED); }
-	static bool IsButtonJustPressed(int player, GamePad::Button b) { return b==Button::None?false:(button_states[player][b] == JUST_PRESSED); }
-	static bool IsButtonReleased(int player, GamePad::Button b) { return b==Button::None?false:(button_states[player][b] == RELEASED || button_states[player][b] == JUST_RELEASED); }
-	static bool IsButtonJustReleased(int player, GamePad::Button b) { return b==Button::None?false:(button_states[player][b] == JUST_RELEASED); }
+	static bool IsButtonPressed(int player, SDL_GameControllerButton b) { return (button_states[player][b] == PRESSED || button_states[player][b] == JUST_PRESSED); }
+	static bool IsButtonJustPressed(int player, SDL_GameControllerButton b) { return (button_states[player][b] == JUST_PRESSED); }
+	static bool IsButtonReleased(int player, SDL_GameControllerButton b) { return (button_states[player][b] == RELEASED || button_states[player][b] == JUST_RELEASED); }
+	static bool IsButtonJustReleased(int player, SDL_GameControllerButton b) { return (button_states[player][b] == JUST_RELEASED); }
 
 	static void _UpdateInputState__XboxNormal(SDL_GameController* joy, int player);
 	static void _UpdateInputState();
@@ -259,19 +248,30 @@ inline void RemapGamePadInput()
 {
   auto kEmpty = [](int){ return false; };
 	gp_map[GameKeys::NONE] = kEmpty;
-  gp_map[GameKeys::UP] = [](int p) { 
-		return GamePad::IsButtonPressed(p, GamePad::Button::B) || 
-          GamePad::AnalogStick::Left.get(p, 20.f).y < -50.0f; };
-	gp_map[GameKeys::DOWN] = [](int p) { return GamePad::AnalogStick::Left.get(p, 20.f).y > 0.0f; };
-	gp_map[GameKeys::LEFT] = [](int p) { return GamePad::AnalogStick::Left.get(p, 20.f).x < 0.0f; };
-	gp_map[GameKeys::RIGHT] = [](int p) { return GamePad::AnalogStick::Left.get(p, 20.f).x > 0.0f; };
-	gp_map[GameKeys::ACTIVATE] = [](int p){ return GamePad::IsButtonPressed(p, GamePad::Button::A); };
+	gp_map[GameKeys::UP] = [](int p) { 
+		return GamePad::IsButtonPressed(p, SDL_CONTROLLER_BUTTON_B) ||
+          GamePad::AnalogStick::Left.get(p, 20.f).y < -50.0f ||
+			GamePad::IsButtonPressed(p, SDL_CONTROLLER_BUTTON_DPAD_UP); 
+	};
+	gp_map[GameKeys::DOWN] = [](int p) { 
+		return GamePad::AnalogStick::Left.get(p, 20.f).y > 0.0f ||
+			GamePad::IsButtonPressed(p, SDL_CONTROLLER_BUTTON_DPAD_DOWN);
+	};
+	gp_map[GameKeys::LEFT] = [](int p) {
+		return GamePad::AnalogStick::Left.get(p, 20.f).x < 0.0f ||
+			GamePad::IsButtonPressed(p, SDL_CONTROLLER_BUTTON_DPAD_LEFT);
+	};
+	gp_map[GameKeys::RIGHT] = [](int p) { 
+		return GamePad::AnalogStick::Left.get(p, 20.f).x > 0.0f ||
+			GamePad::IsButtonPressed(p, SDL_CONTROLLER_BUTTON_DPAD_RIGHT);
+	};
+	gp_map[GameKeys::ACTIVATE] = [](int p) { return GamePad::IsButtonPressed(p, SDL_CONTROLLER_BUTTON_A); };
 	gp_map[GameKeys::ACTION] = kEmpty;
 	gp_map[GameKeys::SHOOT] = kEmpty;
-	gp_map[GameKeys::START] = [](int p) { return GamePad::IsButtonPressed(p, GamePad::Button::Start); };
+	gp_map[GameKeys::START] = [](int p) { return GamePad::IsButtonPressed(p, SDL_CONTROLLER_BUTTON_START); };
 	gp_map[GameKeys::DEBUG_ZOOM_IN] = kEmpty;
 	gp_map[GameKeys::DEBUG_ZOOM_OUT] = kEmpty;
-	gp_map[GameKeys::RESTART] = [](int p) { return GamePad::IsButtonPressed(p, GamePad::Button::Select); };
+	gp_map[GameKeys::RESTART] = [](int p) { return GamePad::IsButtonPressed(p, SDL_CONTROLLER_BUTTON_BACK); };
 	gp_map[GameKeys::DEBUG_FRAME_BY_FRAME] = kEmpty;
 	gp_map[GameKeys::DEBUG_FRAME_BY_FRAME_NEXT] = kEmpty;
 	gp_map[GameKeys::DEBUG_MODE] = kEmpty;
