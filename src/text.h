@@ -32,24 +32,30 @@ struct Text
 	};
 
 	Text& setString(const std::string& text) {
-		Invalidate();
-		str = text;
+		if (text != str) {
+			str = text;
+			Invalidate();
+		}
 		return *this;
 	}
 
 	Text& setFillColor(int r, int g, int b) {
-		Invalidate();
-		color.r = r;
-		color.g = g;
-		color.b = b;
+		if (r != color.r || g != color.g || b != color.b) {
+			color.r = r;
+			color.g = g;
+			color.b = b;
+			Invalidate();
+		}
 		return *this;
 	}
 
 	Text& setOutlineColor(int r, int g, int b) {
-		Invalidate();
-		outline_color.r = r;
-		outline_color.g = g;
-		outline_color.b = b;
+		if (r != outline_color.r || g != outline_color.g || b != outline_color.b) {
+			outline_color.r = r;
+			outline_color.g = g;
+			outline_color.b = b;
+			Invalidate();
+		}
 		return *this;
 	}
 
