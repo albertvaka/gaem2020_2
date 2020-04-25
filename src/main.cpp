@@ -36,6 +36,8 @@ int main(int argc, char* argv[])
 
 	Window::Init();
 
+	SDL_InitSubSystem(SDL_INIT_JOYSTICK);
+
 	Input::Init();
 
 #ifdef _IMGUI
