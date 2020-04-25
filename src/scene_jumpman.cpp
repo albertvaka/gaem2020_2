@@ -94,6 +94,7 @@ void JumpScene::Update(float dt)
     if (PlayerInput::IsActionJustPressed(player->id, GameKeys::RESTART)) {
       ExitScene();
       EnterScene();
+		  return; //stop this loop, since the players we were iterating no longer exist
 		}
 	}
 
