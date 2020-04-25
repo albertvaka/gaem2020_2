@@ -1,10 +1,11 @@
 #include "window.h"
 #include "input.h"
+#include "SDL2_gfxPrimitives.h"
 #include "imgui_impl_sdl.h"
 
 namespace Camera {
     float zoom = 1.f;
-    vec pos(Window::WINDOW_WIDTH / 2, Window::WINDOW_HEIGHT / 2);
+    vec pos(0, 0);
 }
 
 namespace Window
@@ -111,18 +112,42 @@ namespace Window
             //    Camera::gameView.setCenter(currentCenter);
             //    Camera::gameView.zoom(1.f / Camera::zoom);
             }
-            {
-                // GuiView: scale from top-left corner
-                vec oldSize = Camera::guiView.getSize() * (Window::GUI_ZOOM);
-                vec newSize = sf::Vector2f(Window::window->getSize());
-            //    Camera::guiView.setSize(newSize);
-            //    Camera::guiView.zoom(1.f / Window::GUI_ZOOM);
-            //    Camera::guiView.setCenter(vec(Camera::guiView.getCenter()) + (newSize-oldSize)/(2*Window::GUI_ZOOM));
-            }
                 break;
             }
         }
         */
     }
 
+    
+    namespace DrawPrimitive {
+
+        inline int fastfloor(const float x) { return x > 0 ? (int)x : (int)x - 1; }
+
+        void Pixel(float x, float y, short r, short g, short b, short a) {
+            pixelRGBA(Window::renderer, x - Camera::pos.x, y - Camera::pos.y, r, g, b, a);
+        }
+
+        void Rectangle(float _x1, float _y1, float _x2, float _y2, int thickness, short r, short g, short b, short a) {
+            int x1 = _x1 - Camera::pos.x;
+            int y1 = _y1 - Camera::pos.y;
+            int x2 = _x2 - Camera::pos.x;
+            int y2 = _y2 - Camera::pos.y;
+            if (thickness < 0)
+            {
+                boxRGBA(Window::renderer, x1, y1, x2, y2, r, g, b, a);
+            }
+            else 
+            {
+                int e = thickness/2;
+                thickLineRGBA(Window::renderer, x1 - e, y1, x2 - e, y1, thickness, r, g, b, a); // top
+                thickLineRGBA(Window::renderer, x2 + 1, y1 - e, x2 + 1, y2 - e, thickness, r, g, b, a); // right
+                thickLineRGBA(Window::renderer, x1 + e, y2 + 1, x2 + e, y2 + 1, thickness, r, g, b, a); // bottom
+                thickLineRGBA(Window::renderer, x1, y1 + e, x1, y2 + e, thickness, r, g, b, a); // left
+            }
+        }
+
+        void Line(float x1, float x2, float y1, float y2, int thickness, short r, short g, short b, short a) {
+            thickLineRGBA(Window::renderer, x1 - Camera::pos.x, y1 - Camera::pos.y, x2 - Camera::pos.x, y2 - Camera::pos.y, thickness, r, g, b, a);
+        }
+    }
 }

@@ -25,18 +25,21 @@ struct StatsTracker {
     time_played = 0;
   }
   
-  static void DrawStats() {
+  static void Draw() {
 
     vec pos = vec(0.33f * Window::WINDOW_WIDTH, 0.5f * Window::WINDOW_HEIGHT) / (Window::GAME_ZOOM);
 
-    //TODO: Better way to draw this
     const float margin = 10.0f;
-    vec rect = statsText.getSize();
-    Bounds({ pos.x - margin, pos.y - margin }, { rect.x + 2 * margin, rect.y + 2 * margin }).Draw(0,0,0);
-    //statsRect.setFillColor(sf::Color(255, 255, 200, 128));
-      
+    
+    float scale = 0.4f;
+    vec textSize = statsText.getSize() * scale;
+    Bounds b(vec(pos.x - margin, pos.y - margin), vec(textSize.x + 2 * margin, textSize.y + 2 * margin));
+    
+    Window::DrawPrimitive::Rectangle(b, -1, 255, 255, 200, 128); //fill
+    Window::DrawPrimitive::Rectangle(b, 4, 0, 0, 0, 255); //border
+
     Window::Draw(statsText, pos)
-        .withScale(0.4f);
+        .withScale(scale);
   }
   static void Update(float dt) {
       time_played += dt;

@@ -4,6 +4,7 @@
 #include <SDL_ttf.h>
 #include <string>
 #include <vector>
+#include "vector.h"
 
 class Text
 {
@@ -69,7 +70,7 @@ public:
 		return *this;
 	}
 
-	Text& setFillColor(int r, int g, int b) {
+	Text& setFillColor(short r, short g, short b) {
 		if (r != color.r || g != color.g || b != color.b) {
 			color.r = r;
 			color.g = g;
@@ -79,7 +80,7 @@ public:
 		return *this;
 	}
 
-	Text& setOutlineColor(int r, int g, int b) {
+	Text& setOutlineColor(short r, short g, short b) {
 		if (r != outline_color.r || g != outline_color.g || b != outline_color.b) {
 			outline_color.r = r;
 			outline_color.g = g;
@@ -107,6 +108,7 @@ private:
 		SDL_Surface* fg_surface = TTF_RenderUTF8_Blended(font, str.c_str(), color);
 		if (!fg_surface) {
 			printf("Unable to create text surface. SDL Error: %s\n", TTF_GetError());
+			return nullptr;
 		}
 		if (!font_outline) {
 			return fg_surface;

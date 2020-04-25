@@ -8,14 +8,14 @@ const vec vec::Zero(0.f, 0.f);
 
 #ifdef _DEBUG
 struct debugvec {
-    debugvec(const vec& v, int r, int g, int b) : v(v), r(r), g(g), b(b) {}
+    debugvec(const vec& v, short r, short g, short b) : v(v), r(r), g(g), b(b) {}
     vec v; 
     int r,g,b;
 };
 
 std::vector<debugvec> debugvecs;
 
-void vec::Debuggerino(int r, int g, int b) const {
+void vec::Debuggerino(short r, short g, short b) const {
     debugvecs.emplace_back(*this, r, g, b);
 }
 

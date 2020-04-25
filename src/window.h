@@ -18,7 +18,6 @@ namespace Window
 	extern SDL_Renderer* renderer;
 	extern bool focus;
 
-	const int GUI_ZOOM = 1;
 	const int GAME_ZOOM = 2;
 	const int WINDOW_HEIGHT = 420 * GAME_ZOOM;
 	const int WINDOW_WIDTH = 828 * GAME_ZOOM;
@@ -105,12 +104,53 @@ namespace Window
 	inline Bounds GetWindowBounds() { return Bounds(vec::Zero, GetWindowSize()); }
 
 	//inline PartialDraw Draw(SDL_Texture* t, const vec& pos) { return PartialDraw(t, pos); }
-	inline void Clear(int r, int g, int b) {
-		SDL_SetRenderDrawColor(Window::renderer, r, g, b, 0xFF);
-		SDL_RenderClear(renderer); 
+	inline void Clear(short r, short g, short b) {
+		SDL_SetRenderDrawColor(Window::renderer, r, g, b, 255);
+		SDL_RenderClear(Window::renderer);
 	}
 
+	namespace DrawPrimitive {
 
+		void Pixel(float x, float y, short r, short g, short b, short a);
+		inline void Pixel(vec v, short r, short g, short b, short a) { Pixel(v.x, v.y, r, g, b, a); }
+
+		// pass thickness = -1 to draw a filled rectangle
+		void Rectangle(float x1, float y1, float x2, float y2, int thickness, short r, short g, short b, short a = 255);
+		inline void Rectangle(const Bounds& box, int thickness, short r, short g, short b, short a = 255) {
+			Rectangle(box.Left() - Camera::pos.x, box.Top() - Camera::pos.y, box.Right() - Camera::pos.x, box.Bottom() - Camera::pos.y, thickness, r, g, b, a);
+		}
+
+		void Line(float x1, float x2, float y1, float y2, int thickness, short r, short g, short b, short  a = 255);
+		inline void Line(const vec& v1, const vec& v2, int thickness, short r, short g, short b, short a = 255) {
+			Line(v1.x, v1.y, v2.x, v2.y, thickness, r, g, b, a);
+		}
+
+		/*
+		TODO: Wrap these:
+
+		SDL2_GFXPRIMITIVES_SCOPE int aacircleRGBA(SDL_Renderer* renderer, int x, int y,
+			int rad, short r, short g, short b, short a);
+
+		SDL2_GFXPRIMITIVES_SCOPE int filledCircleRGBA(SDL_Renderer* renderer, int x, int y,
+			int rad, short r, short g, short b, short a);
+
+		SDL2_GFXPRIMITIVES_SCOPE int aaellipseRGBA(SDL_Renderer* renderer, int x, int y,
+			int rx, int ry, short r, short g, short b, short a);
+
+		SDL2_GFXPRIMITIVES_SCOPE int filledEllipseRGBA(SDL_Renderer* renderer, int x, int y,
+			int rx, int ry, short r, short g, short b, short a);
+
+		SDL2_GFXPRIMITIVES_SCOPE int aapolygonRGBA(SDL_Renderer* renderer, const int* vx, const int* vy,
+			int n, short r, short g, short b, short a);
+
+		SDL2_GFXPRIMITIVES_SCOPE int filledPolygonRGBA(SDL_Renderer* renderer, const int* vx,
+			const int* vy, int n, short r, short g, short b, short a);
+
+		SDL2_GFXPRIMITIVES_SCOPE int bezierRGBA(SDL_Renderer* renderer, const int* vx, const int* vy,
+			int n, int s, short r, short g, short b, short a);
+		*/
+
+	}
 
 	struct Draw {
 		SDL_Texture* t;
@@ -136,7 +176,7 @@ namespace Window
 			return *this;
 		}
 
-		Draw& withColor(int r, int g, int b) {
+		Draw& withColor(short r, short g, short b) {
 			SDL_SetTextureColorMod(t, r, g, b);
 			return *this;
 		}

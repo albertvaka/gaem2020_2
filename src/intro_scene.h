@@ -72,6 +72,7 @@ struct IntroScene : Scene {
 		Window::Clear(34, 32, 52);
 
 		Window::Draw(Assets::casaTexture, vec(0,0));
+
 		for (Doggo* doggo : Doggo::getAll()) {
 			doggo->Draw();
 		}
@@ -79,7 +80,9 @@ struct IntroScene : Scene {
 		rototext.Draw();
 		
 		if ((int(mainClock*1000)/350)%2) {
-			Window::Draw(text, vec(Window::WINDOW_WIDTH / 4, Window::WINDOW_HEIGHT / 3 + 55)).withScale(0.65f).withOrigin(text.getSize().x/2,0);
+			Window::Draw(text, vec(Window::WINDOW_WIDTH / 4, Window::WINDOW_HEIGHT / 3 + 55))
+				.withScale(0.65f)
+				.withOrigin(text.getSize().x/2,0);
 		}
 
 		Window::Draw(credits, vec(15, 300)).withScale(0.39f, 0.45f);

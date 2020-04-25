@@ -21,7 +21,7 @@ struct veci {
 struct vec
 {
     float x, y;
-    vec() {}
+    vec() : x(0.f), y(0.f) {}
     vec(float a, float b) : x(a), y(b) {}
     vec(const veci& v) : x(v.x), y(v.y) {}
 
@@ -153,7 +153,7 @@ struct vec
       return vec(-x, -y);
   }
 
-  void Debuggerino(int r = 255, int g = 255, int b = 255) const
+  void Debuggerino(short r = 255, short g = 255, short b = 255) const
 #ifdef _DEBUG
       ;
 #else

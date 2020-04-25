@@ -442,7 +442,7 @@ void JumpScene::Draw()
 	}
 
 	if (lost) {
-		StatsTracker::DrawStats();
+		StatsTracker::Draw();
 		rototext.Draw();
 	}
 	//player.polvito.DrawImGUI("Polvito");

@@ -55,7 +55,7 @@ struct Bounds
         SetCenter(center.x, center.y);
     }
 
-    void Draw(int r = 255, int g = 0, int b = 0) const;
+    void Draw(short r = 255, short g = 0, short b = 0) const;
 
     [[nodiscard]] float Top() const
 	{
@@ -128,7 +128,7 @@ struct CircleBounds
     vec pos;
     float radius;
 
-    void Draw(int r = 255, int g = 0, int b = 0) const;
+    void Draw(short r = 255, short g = 0, short b = 0) const;
 
     float DistanceSq(const Bounds& a) const { return a.DistanceSq(*this); };
     float Distance(const Bounds& a) const { return a.Distance(*this); }

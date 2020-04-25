@@ -22,7 +22,7 @@ struct BoxEntity : Entity {
 		return Bounds::fromCenter(pos, size);
 	}
 
-	void drawBounds(int r, int g, int b) const {
+	void drawBounds(short r, short g, short b) const {
 		bounds().Draw(r,g,b);
 	}
 };
@@ -37,7 +37,7 @@ struct CircleEntity : Entity {
 		return CircleBounds(pos, radius);
 	}
 
-	void drawBounds(int r, int g, int b) const {
+	void drawBounds(short r, short g, short b) const {
 		bounds().Draw(r,g,b);
 	}
 };

@@ -4,7 +4,7 @@
 
 #include <SDL.h>
 
-void Bounds::Draw(int r, int g, int b) const 
+void Bounds::Draw(short r, short g, short b) const 
 {
     SDL_SetRenderDrawColor(Window::renderer, r, g, b, 255);
 
@@ -14,7 +14,7 @@ void Bounds::Draw(int r, int g, int b) const
 }
 
 
-void CircleBounds::Draw(int r, int g, int b) const
+void CircleBounds::Draw(short r, short g, short b) const
 {
     SDL_SetRenderDrawColor(Window::renderer, r, g, b, 255);
     const int32_t diameter = (radius * 2);
