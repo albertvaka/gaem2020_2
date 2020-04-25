@@ -150,7 +150,7 @@ namespace Window
 			Circle(v.x, v.y, radius, thickness, r, g, b, a);
 		}
 		inline void Circle(const CircleBounds& bounds, int thickness, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255) {
-			Circle(bounds.pos, bounds.radius, r, g, b, a);
+			Circle(bounds.pos, bounds.radius, thickness, r, g, b, a);
 		}
 
 	}
