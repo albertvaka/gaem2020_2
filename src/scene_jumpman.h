@@ -26,6 +26,7 @@ struct JumpScene : Scene {
 	float moneyTextTimer = 0;
 	int current_music = 0;
 	float timerDoggo = 0;
+	JumpMan* players[PlayerInput::kMaxPlayers];
 
 	GameKeys contextActionButton = GameKeys::NONE;
 
