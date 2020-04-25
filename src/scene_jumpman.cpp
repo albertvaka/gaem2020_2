@@ -104,6 +104,7 @@ void JumpScene::Update(float dt)
 
 	for (int i = 0; i < 4; ++i) {
     if (players[i] == nullptr && PlayerInput::IsActionJustPressed(i, GameKeys::ACTIVATE)) {
+			PlayerInput::ConsumeJustPressed(i, GameKeys::ACTIVATE);
       players[i] = AddPlayer(i);
     }
 	}
