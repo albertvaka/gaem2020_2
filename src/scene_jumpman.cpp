@@ -98,7 +98,7 @@ void JumpScene::Update(float dt)
 	}
 
 	if (lost) {
-		//rototext.Update(dt);
+		rototext.Update(dt);
 		return;
 	}
 
@@ -132,7 +132,7 @@ void JumpScene::Update(float dt)
 			doggo->menjar = 1;
 			lost = true;
 			//StatsTracker::Stop();
-			//rototext.ShowMessage("A DOGGO STARVED");
+			rototext.ShowMessage("A DOGGO STARVED");
 		}
 	}
 
@@ -444,7 +444,7 @@ void JumpScene::Draw()
 
 	if (lost) {
 		//StatsTracker::DrawStats();
-		//rototext.Draw(window);
+		rototext.Draw();
 	}
 	//player.polvito.DrawImGUI("Polvito");
 }

@@ -15,7 +15,7 @@ struct JumpScene : Scene {
 
 	TileMap map;
 	Npc npc;
-	//RotoText rototext;
+	RotoText rototext;
 
 	bool lost = false;
 	int moneys = 150;
