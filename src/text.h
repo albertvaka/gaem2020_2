@@ -159,9 +159,9 @@ private:
 				continue;
 			}
 			SDL_Rect dest = { 0,totalHeight,surface->w,surface->h };
+			totalHeight += surface->h + spacing;
 			SDL_BlitSurface(surface, NULL, final, &dest);
 			SDL_FreeSurface(surface);
-			totalHeight += surface->h + spacing;
 		}
 
 		return final;
