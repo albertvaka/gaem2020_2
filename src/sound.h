@@ -1,13 +1,11 @@
 ﻿#pragma once
 
-#include <string>
-
 struct Mix_Chunk;
 typedef struct _Mix_Music Mix_Music;
 
 struct Sound
 {
-	void load(const std::string& file);
+	void load(const char* path);
 	~Sound();
 
 	void setVolume(float v); //from 0 to 100

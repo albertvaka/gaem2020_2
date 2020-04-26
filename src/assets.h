@@ -2,8 +2,7 @@
 
 #include <array>
 
-#include "Sound.h"
-
+#include "sound.h"
 
 struct SDL_Texture;
 typedef struct _TTF_Font TTF_Font;

@@ -15,11 +15,11 @@ PROFILE	= 0
 SHELL = bash
 
 #NOTE: Dynamic casts are disabled by fno-rtti
-CFLAGS	= -pipe -std=c++17 -fno-rtti -fno-exceptions $(shell sdl2-config --cflags) $(EMSCRIPTEN_FLAGS) -I emyl -I SDL2_ext -I imgui -std=c++17 -Wall -Wno-unused-parameter -Wno-reorder $(PROFILEFLAGS) $(DEBUGFLAGS) -O$(strip $(OPTIM))
+CFLAGS	= -pipe -std=c++17 -fno-rtti -fno-exceptions $(shell sdl2-config --cflags) $(EMSCRIPTEN_FLAGS) -I SDL2_ext -I imgui -std=c++17 -Wall -Wno-unused-parameter -Wno-reorder $(PROFILEFLAGS) $(DEBUGFLAGS) -O$(strip $(OPTIM))
 LDFLAGS	= $(CFLAGS) $(shell sdl2-config --libs) -lSDL2_ttf -lSDL2_image -lopenal -lvorbis $(LINKER_FLAGS)
 
 ifdef EMSCRIPTEN
-	EMSCRIPTEN_FLAGS=-s USE_SDL_TTF=2 -s USE_SDL_IMAGE=2 USE_SDL_MIXER=2 -s USE_OGG -s USE_VORBIS -s ALLOW_MEMORY_GROWTH=1 --preload-file bin/data@/data --use-preload-plugins -s SDL2_IMAGE_FORMATS='["png"]'
+	EMSCRIPTEN_FLAGS=-s USE_SDL_TTF=2 -s USE_SDL_IMAGE=2 -s USE_SDL_MIXER=2 -s USE_OGG -s USE_VORBIS -s ALLOW_MEMORY_GROWTH=1 --preload-file bin/data@/data --use-preload-plugins -s SDL2_IMAGE_FORMATS='["png"]'
 	OUT_FILE=$(EXEC).js
 	LINKER_FLAGS=
 else

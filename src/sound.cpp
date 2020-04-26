@@ -5,9 +5,9 @@
 
 #include "debug.h"
 
-void Sound::load(const std::string& path) {
+void Sound::load(const char* path) {
 	if (sound) Mix_FreeChunk(sound);
-	sound = Mix_LoadWAV(path.c_str());
+	sound = Mix_LoadWAV(path);
 	if (!sound) {
 		Debug::out << "Unable to load sound '" << path << "': " << Mix_GetError();
 	}
