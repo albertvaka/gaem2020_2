@@ -22,6 +22,7 @@ void Sound::setVolume(float v) { //from 0 to 100
 }
 
 void Sound::play() {
+	if (Mix_VolumeChunk(sound, -1) == 0) return;
 	Mix_PlayChannel(-1, sound, 0);
 }
 
@@ -43,6 +44,7 @@ namespace MusicPlayer
 	void Pause() {
 		Mix_PauseMusic();
 	}
+
 	void Resume() {
 		Mix_ResumeMusic();
 	}
