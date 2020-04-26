@@ -2,6 +2,8 @@
 
 #include "assets.h"
 
+#include <SDL.h>
+#include <SDL_ttf.h>
 #include <SDL_image.h>
 
 SDL_Texture* Assets::hospitalTexture;
@@ -74,6 +76,19 @@ SDL_Texture* loadImage(const std::string& path) {
     return texture;
 }
 
+TTF_Font* loadFont(const std::string& path, int size) {
+    TTF_Font* font = TTF_OpenFont(path.c_str(), size);
+    if (!font) {
+        printf("Unable to load font %s! SDL_ttf Error: %s\n", path.c_str(), TTF_GetError());
+    }
+    return font;
+}
+TTF_Font* loadFontOutline(const std::string& path, int size, int outline) {
+    TTF_Font* font = loadFont(path, size);
+    TTF_SetFontOutline(font, outline);
+    return font;
+}
+
 void Assets::LoadAll() {
 
     hospitalTexture = loadImage("data/spritesheet.png");
@@ -89,10 +104,8 @@ void Assets::LoadAll() {
     doggoTexture = loadImage("data/doggo.png");
     plantTexture = loadImage("data/plant.png");
 
-    font_30 = TTF_OpenFont("data/PressStart2P.ttf", 30);
-    font_30_outline = TTF_OpenFont("data/PressStart2P.ttf", 30);
-    TTF_SetFontOutline(font_30_outline, 3);
-
+    font_30 = loadFont("data/PressStart2P.ttf", 30);
+    font_30_outline = loadFontOutline("data/PressStart2P.ttf", 30, 3);
 
     BufferBucketTomatoes.loadFromFile("data/bucket_tomatoes.ogg");
     soundBucketTomatoes.setBuffer(BufferBucketTomatoes);

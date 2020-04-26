@@ -1,9 +1,11 @@
 #pragma once
 
-#include <SDL.h>
-#include <SDL_ttf.h>
 #include <emyl.h>
 #include <array>
+
+
+struct SDL_Texture;
+struct TTF_Font;
 
 struct Assets
 {
