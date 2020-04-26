@@ -109,7 +109,7 @@ namespace Camera
 struct IntRect : SDL_Rect {
 	IntRect() {}
 	IntRect(int _x, int _y, int width, int height) { x = _x; y = _y; w = width; h = height; }
-	IntRect(int _x, int _y, int size) : IntRect(x,y,size,size) { }
+	IntRect(int x, int y, int size) : IntRect(x,y,size,size) { }
 };
 
 namespace Window

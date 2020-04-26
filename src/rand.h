@@ -107,7 +107,7 @@ namespace GoodRandom
 
 namespace Random
 {
-	inline float rollf(float min, float max) { return min + (rand() / (RAND_MAX / (max - min))); } // Range [min, max) most of the time (except when rand() == RAND_MAX, then its [min, max])
+	inline float rollf(float min, float max) { return min + (rand() / (float(RAND_MAX) / (max - min))); } // Range [min, max) most of the time (except when rand() == RAND_MAX, then its [min, max])
 	inline float rollf(float max = 1.f) { return rollf(0.f, max); } // Range [0, max)
 
 	inline int roll(int min, int max) { return min + (rand() % (max - min)); } // Range [min, max)
