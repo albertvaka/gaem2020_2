@@ -110,6 +110,7 @@ struct IntRect : SDL_Rect {
 	IntRect() {}
 	IntRect(int _x, int _y, int width, int height) { x = _x; y = _y; w = width; h = height; }
 	IntRect(int x, int y, int size) : IntRect(x,y,size,size) { }
+	explicit IntRect(const Bounds& b) : IntRect(b.top,b.left,b.width,b.height) {}
 };
 
 namespace Window
