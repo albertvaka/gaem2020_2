@@ -36,11 +36,6 @@ const vec vel_max_plant(110, 80);
 const vec vel_max_water(150, 140);
 const vec vel_max_tomato(180, 170);
 
-// bfg
-const float bulletVel = 400.f;
-const float bfgCooldown = 0.6f;
-const float bfgPushBack = 150.f;
-
 // damage
 const vec vel_hit(180.f, -150.f);
 const float invencibleTimeAfterHit = 0.5f;
