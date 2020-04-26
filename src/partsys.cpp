@@ -6,7 +6,7 @@
 void PartSys::Spawn(float dt) {
 	time += dt;
 	while (time > 0) {
-		Particle& p = AddParticle();
+		AddParticle();
 		//p.Update(time, *this);
 		time -= Random::rollf(min_interval, max_interval);
 	}

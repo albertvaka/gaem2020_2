@@ -1100,7 +1100,7 @@ bool FileInputStream::open(const std::string& filename)
 	if (m_file)
 		std::fclose(m_file);
 
-	fopen_s(&m_file, filename.c_str(), "rb");
+	m_file = fopen(filename.c_str(), "rb");
 
 	return m_file != NULL;
 }

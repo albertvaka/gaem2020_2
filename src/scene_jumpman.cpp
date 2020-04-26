@@ -327,7 +327,6 @@ static void DrawSun()
 	float time = mainClock;
 	time -= int(time / 13) * 13;
 
-	const float max_alpha = 128.0f;
 	for (int i = 0; i < 4; ++i) {
 		if (time >= SunLimits[i][0] && time <= SunLimits[i][1]) {
 			const float mid = (SunLimits[i][0] + SunLimits[i][1]) / 2.0f;
