@@ -2,6 +2,7 @@
 #include "input.h"
 #include "SDL2_gfxPrimitives.h"
 #include "imgui_impl_sdl.h"
+#include "debug.h"
 
 namespace Camera {
     float zoom = 1.f;
@@ -61,11 +62,11 @@ namespace Window
     void Init() {
         window = SDL_CreateWindow(WINDOW_TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, 0);
         if (window == NULL) {
-            printf("Window Creation Error: %s\n", SDL_GetError());
+            Debug::out << "Window Creation Error: " << SDL_GetError();
         }
         renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
         if (renderer == NULL) {
-            printf("Renderer Creation Error: %s\n", SDL_GetError());
+            Debug::out << "Renderer Creation Error: " << SDL_GetError();
         }
     }
 
@@ -90,10 +91,10 @@ namespace Window
             case SDL_WINDOWEVENT_FOCUS_GAINED:
                 focus = true;
                 break;
-            case SDL_JOYDEVICEADDED :
+            case SDL_CONTROLLERDEVICEADDED:
                 GamePad::_Added(SDL_GameControllerOpen(event.jdevice.which));
                 break;
-            case SDL_JOYDEVICEREMOVED:
+            case SDL_CONTROLLERDEVICEREMOVED:
                 GamePad::_Removed(SDL_GameControllerFromInstanceID(event.jdevice.which));
                 break;
             case SDL_MOUSEWHEEL:

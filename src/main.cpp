@@ -58,13 +58,19 @@ int main(int argc, char* argv[])
 
 
 void init() {
-	SDL_Init(SDL_INIT_VIDEO);
-	IMG_Init(IMG_INIT_PNG);
-	TTF_Init();
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER)) {
+		Debug::out << IMG_GetError();
+	}
+
+	if (IMG_Init(IMG_INIT_PNG)) {
+		Debug::out << IMG_GetError();
+	}
+
+	if (TTF_Init()) {
+		Debug::out << TTF_GetError();
+	}
 
 	Window::Init();
-
-	SDL_InitSubSystem(SDL_INIT_JOYSTICK);
 
 	Input::Init();
 
