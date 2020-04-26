@@ -123,4 +123,5 @@ void Assets::LoadAll() {
 
     sceneMusic[0] = loadMusic("data/plantetes_gameplay.ogg");
     sceneMusic[1] = loadMusic("data/plantetes_menu.ogg");
+    MusicPlayer::SetVolume(60);
 }
