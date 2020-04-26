@@ -158,15 +158,15 @@ namespace Window
 
 	struct Draw {
 		SDL_Texture* t;
-		SDL_FRect dest;
 		SDL_Rect src;
-		SDL_FPoint center;
-		SDL_FPoint* centerp = nullptr;
-		SDL_RendererFlip flip = SDL_FLIP_NONE;
-		float rotation = 0;
+		vec dest;
+		vec center;
 		vec scale = vec(1.f, 1.f);
+		float rotation = 0;
+		SDL_RendererFlip flip = SDL_FLIP_NONE;
+		bool useCenter = false;
 
-		Draw(SDL_Texture* t, const vec& pos) : t(t), dest({ pos.x, pos.y, 0, 0 }), src({ 0,0,0,0 }) {
+		Draw(SDL_Texture* t, const vec& pos) : t(t), dest(pos), src({ 0,0,0,0 }) {
 			SDL_QueryTexture(t, NULL, NULL, &src.w, &src.h); 
 		}
 
@@ -193,14 +193,13 @@ namespace Window
 		Draw& withOrigin(float x, float y) {
 			center.x = x;
 			center.y = y;
-			centerp = &center;
+			useCenter = true;
 			return *this;
 		}
 
 		Draw& withOrigin(const vec& o) {
-			center.x = o.x;
-			center.y = o.y;
-			centerp = &center;
+			center = o;
+			useCenter = true;
 			return *this;
 		}
 
@@ -235,17 +234,19 @@ namespace Window
 		}
 
 		~Draw() {
-			if (centerp) {
+			SDL_Point* centerp = nullptr;
+			SDL_Point icenter;
+			if (useCenter) {
 				center.x *= scale.x;
 				center.y *= scale.y;
+				icenter.x = center.x;
+				icenter.y = center.y;
 				dest.x -= center.x;
 				dest.y -= center.y;
+				centerp = &icenter;
 			}
-			dest.x -= Camera::pos.x;
-			dest.y -= Camera::pos.y;
-			dest.w = src.w * scale.x;
-			dest.h = src.h * scale.y;
-			SDL_RenderCopyExF(Window::renderer, t, &src, &dest, rotation, centerp, flip);
+			SDL_Rect idest = {int(dest.x - Camera::pos.x), int(dest.y - Camera::pos.y), int(src.w * scale.x), int(src.h * scale.y)};
+			SDL_RenderCopyEx(Window::renderer, t, &src, &idest, rotation, centerp, flip);
 			SDL_SetTextureColorMod(t, 255, 255, 255);
 			SDL_SetTextureAlphaMod(t, 255);
 		};
