@@ -13,7 +13,6 @@ PROFILE	= 0
 
 # Bash so we can use curly braces expansion
 SHELL = bash
-CXX	= g++
 
 CFLAGS	= -pipe $(shell sdl2-config --cflags) -I emyl -I SDL2_ext -I imgui -std=c++17 -Wall -Wno-unused-parameter -Wno-reorder $(PROFILEFLAGS) $(DEBUGFLAGS) -O$(strip $(OPTIM))
 LDFLAGS	= -pipe -std=c++17 $(shell sdl2-config --libs) -lSDL2_ttf -lSDL2_image -lopenal -lvorbis -lvorbisfile $(OPENGLFLAGS) $(PROFILEFLAGS) $(DEBUGFLAGS) -O$(strip $(OPTIM))
