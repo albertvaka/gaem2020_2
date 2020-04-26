@@ -7,6 +7,7 @@
 #include "collider.h"
 #include "mates.h"
 #include "debug.h"
+#include <set>
 #include "assets.h"
 #ifdef _IMGUI
 #include "imgui.h"

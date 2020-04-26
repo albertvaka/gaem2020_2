@@ -19,9 +19,6 @@
     <Filter Include="Bundled Dependencies\Imgui">
       <UniqueIdentifier>{f04c1d6a-03a0-4b9a-9a0b-c44f562282ab}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Bundled Dependencies\emyl">
-      <UniqueIdentifier>{c4a39f93-328d-46f7-a91d-a36b48a55b10}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Bundled Dependencies\imgui_sdl">
       <UniqueIdentifier>{169eeddb-58a8-452d-afef-d879d039e84a}</UniqueIdentifier>
     </Filter>
@@ -141,14 +138,17 @@
     <ClInclude Include="src\text.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="emyl\include\emyl.h">
-      <Filter>Bundled Dependencies\emyl</Filter>
+    <ClInclude Include="SDL2_ext\SDL2_gfxPrimitives.h">
+      <Filter>Bundled Dependencies</Filter>
     </ClInclude>
-    <ClInclude Include="SDL2\include\imgui_impl_sdl.h">
+    <ClInclude Include="SDL2_ext\imgui_sdl.h">
       <Filter>Bundled Dependencies\imgui_sdl</Filter>
     </ClInclude>
-    <ClInclude Include="SDL2\include\imgui_sdl.h">
+    <ClInclude Include="SDL2_ext\imgui_impl_sdl.h">
       <Filter>Bundled Dependencies\imgui_sdl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sound.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -218,17 +218,17 @@
     <ClCompile Include="src\bounds.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="emyl\emyl.cpp">
-      <Filter>Bundled Dependencies\emyl</Filter>
-    </ClCompile>
-    <ClCompile Include="SDL2\include\imgui_impl_sdl.cpp">
-      <Filter>Bundled Dependencies\imgui_sdl</Filter>
-    </ClCompile>
-    <ClCompile Include="SDL2\include\imgui_sdl.cpp">
-      <Filter>Bundled Dependencies\imgui_sdl</Filter>
-    </ClCompile>
-    <ClCompile Include="SDL2\SDL2_gfxPrimitives.c">
+    <ClCompile Include="SDL2_ext\SDL2_gfxPrimitives.cpp">
       <Filter>Bundled Dependencies</Filter>
+    </ClCompile>
+    <ClCompile Include="SDL2_ext\imgui_sdl.cpp">
+      <Filter>Bundled Dependencies\imgui_sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="SDL2_ext\imgui_impl_sdl.cpp">
+      <Filter>Bundled Dependencies\imgui_sdl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sound.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

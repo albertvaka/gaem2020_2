@@ -1,11 +1,13 @@
 #pragma once
 
-#include <emyl.h>
 #include <array>
+
+#include "Sound.h"
 
 
 struct SDL_Texture;
-struct TTF_Font;
+typedef struct _TTF_Font TTF_Font;
+typedef struct _Mix_Music Mix_Music;
 
 struct Assets
 {
@@ -29,39 +31,22 @@ struct Assets
 	static TTF_Font* font_30;
 	static TTF_Font* font_30_outline;
 
-	static Emyl::Buffer BufferBucketTomatoes;
-	static Emyl::Sound soundBucketTomatoes;
-	static Emyl::Buffer BufferBuy;
-	static Emyl::Sound soundBuy;
-	static Emyl::Buffer BufferSell1;
-	static Emyl::Sound soundSell1;
-	static Emyl::Buffer BufferSell2;
-	static Emyl::Sound soundSell2;
-	static Emyl::Buffer BufferWater;
-	static Emyl::Sound soundWater;
-	static Emyl::Buffer BufferBucketWater;
-	static Emyl::Sound soundBucketWater;
-	static Emyl::Buffer BufferJump1;
-	static Emyl::Sound soundJump1;
-	static Emyl::Buffer BufferJump2;
-	static Emyl::Sound soundJump2;
-	static Emyl::Buffer BufferLand;
-	static Emyl::Sound soundLand;
-	static Emyl::Buffer BufferPickupDrop;
-	static Emyl::Sound soundPickupDrop;
-	static Emyl::Buffer BufferDeath;
-	static Emyl::Sound soundDeath;
+	static Sound soundBucketTomatoes;
+	static Sound soundBuy;
+	static Sound soundSell1;
+	static Sound soundSell2;
+	static Sound soundWater;
+	static Sound soundBucketWater;
+	static Sound soundJump1;
+	static Sound soundJump2;
+	static Sound soundLand;
+	static Sound soundPickupDrop;
+	static Sound soundDeath;
 
-	static Emyl::Buffer BufferDoggo1;
-	static Emyl::Sound soundDoggo1;
+	static Sound soundDoggo1;
+	static Sound soundDoggo2;
+	static Sound soundDoggo3;
 
-	static Emyl::Buffer BufferDoggo2;
-	static Emyl::Sound soundDoggo2;
-
-	static Emyl::Buffer BufferDoggo3;
-	static Emyl::Sound soundDoggo3;
-
-
-	static Emyl::Music sceneMusic[2];
+	static Mix_Music* sceneMusic[2];
 };
 

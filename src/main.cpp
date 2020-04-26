@@ -22,8 +22,10 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
+#include <SDL_mixer.h>
 
 Scene* SceneManager::currentScene = nullptr;
+
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
 #endif
@@ -68,6 +70,14 @@ void init() {
 
 	if (TTF_Init()) {
 		Debug::out << TTF_GetError();
+	}
+
+	if (Mix_Init(MIX_INIT_OGG)) {
+		Debug::out << Mix_GetError();
+	}
+	
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024)) {
+		Debug::out << Mix_GetError();
 	}
 
 	Window::Init();

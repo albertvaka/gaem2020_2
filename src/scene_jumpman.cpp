@@ -8,6 +8,7 @@
 #include "doggo.h"
 #include "stats_tracker.h"
 #include "cistell.h"
+#include "sound.h"
 
 extern float mainClock;
 
@@ -61,7 +62,7 @@ void JumpScene::EnterScene()
 
 	npc.Reset();
 
-	//Assets::sceneMusic[current_music].play();
+	MusicPlayer::Play(Assets::sceneMusic[current_music]);
 }
 
 void JumpScene::ExitScene()
@@ -78,15 +79,14 @@ void JumpScene::Update(float dt)
 	StatsTracker::Update(dt);
 
 	if (Keyboard::IsKeyJustPressed(GameKeys::NEXT_TRACK)) {
-		Assets::sceneMusic[current_music].stop();
 		current_music = 1-current_music;
-		Assets::sceneMusic[current_music].play();
+		MusicPlayer::Play(Assets::sceneMusic[current_music]);
 	}
 	if (Keyboard::IsKeyJustPressed(GameKeys::MUTE)) {
 		bool static muted = false;
 		muted = !muted;
-		if (muted) Assets::sceneMusic[current_music].pause();
-		else Assets::sceneMusic[current_music].play();
+		if (muted) MusicPlayer::Pause();
+		else MusicPlayer::Resume();
 	}
 
 	//Camera::MoveCameraWithArrows(50, dt);

@@ -4,8 +4,8 @@ EXEC	= bin/gaem2020
 SRC	= $(wildcard src/*.cpp)
 OBJ	= $(patsubst src/%, obj/%.o, $(SRC))
 
-DEP_SRC = $(wildcard emyl/*.cpp) $(wildcard imgui/*.cpp) $(wildcard SDL2_ext/*.cpp)
-DEP_OBJ = $(patsubst SDL2_ext/%, obj/SDL2_ext/%.o, $(patsubst imgui/%, obj/imgui/%.o, $(patsubst emyl/%, obj/emyl/%.o, $(DEP_SRC))))
+DEP_SRC = $(wildcard imgui/*.cpp) $(wildcard SDL2_ext/*.cpp)
+DEP_OBJ = $(patsubst SDL2_ext/%, obj/SDL2_ext/%.o, $(patsubst imgui/%, obj/imgui/%.o, $(DEP_SRC)))
 
 OPTIM	= z
 DEBUG	= 0
@@ -19,8 +19,9 @@ CFLAGS	= -pipe -std=c++17 -fno-rtti -fno-exceptions $(shell sdl2-config --cflags
 LDFLAGS	= $(CFLAGS) $(shell sdl2-config --libs) -lSDL2_ttf -lSDL2_image -lopenal -lvorbis $(LINKER_FLAGS)
 
 ifdef EMSCRIPTEN
-	EMSCRIPTEN_FLAGS=-s USE_SDL_TTF=2 -s USE_SDL_IMAGE=2 -s USE_OGG -s USE_VORBIS -s ALLOW_MEMORY_GROWTH=1 --preload-file bin/data@/data --use-preload-plugins -s SDL2_IMAGE_FORMATS='["png"]'
+	EMSCRIPTEN_FLAGS=-s USE_SDL_TTF=2 -s USE_SDL_IMAGE=2 USE_SDL_MIXER=2 -s USE_OGG -s USE_VORBIS -s ALLOW_MEMORY_GROWTH=1 --preload-file bin/data@/data --use-preload-plugins -s SDL2_IMAGE_FORMATS='["png"]'
 	OUT_FILE=$(EXEC).js
+	LINKER_FLAGS=
 else
 	EMSCRIPTEN_FLAGS=
 	OUT_FILE=$(EXEC)

@@ -43,11 +43,8 @@ struct IntroScene : Scene {
 	void ExitScene() override {
 		Doggo::deleteAll();
 		Assets::soundDoggo1.setVolume(100.f);
-		Assets::soundDoggo1.stop();
 		Assets::soundDoggo2.setVolume(100.f);
-		Assets::soundDoggo2.stop();
 		Assets::soundDoggo3.setVolume(100.f);
-		Assets::soundDoggo3.stop();
 	}
 
 	void Update(float dt) override {
