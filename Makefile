@@ -52,7 +52,6 @@ obj/imgui/%.cpp.o: imgui/%.cpp imgui/*.h Makefile
 
 obj/SDL2_ext/%.cpp.o: SDL2_ext/%.cpp SDL2_ext/*.h Makefile
 	@mkdir -p obj/SDL2_ext
-	$(CXX) $(CFLAGS) -Wno-unused-but-set-variable -c $< -o $@
 
 clean:
 	$(RM) $(OBJ) $(IMGUI_OBJ) $(EXEC)
