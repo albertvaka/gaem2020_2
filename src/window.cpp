@@ -86,10 +86,19 @@ namespace Window
             switch (event.type)
             {
             case SDL_WINDOWEVENT_FOCUS_LOST:
+
+#ifdef __EMSCRIPTEN__
+                Debug::out << "Ignoring focus lost";
+#else
                 focus = false;
+#endif
                 break;
             case SDL_WINDOWEVENT_FOCUS_GAINED:
+#ifdef __EMSCRIPTEN__
+                Debug::out << "Ignoring focus gained";
+#else
                 focus = true;
+#endif
                 break;
             case SDL_CONTROLLERDEVICEADDED:
                 GamePad::_Added(SDL_GameControllerOpen(event.jdevice.which));
