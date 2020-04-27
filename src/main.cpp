@@ -1,9 +1,5 @@
 #include <string>
 
-#ifdef _DEBUG
-#define SDL_MAIN_HANDLED
-#endif
-
 #include "scene_manager.h"
 #include "input.h"
 #include "mates.h"

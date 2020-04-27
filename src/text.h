@@ -114,7 +114,7 @@ private:
 			return fg_surface;
 		}
 
-		SDL_Surface* bg_surface = TTF_RenderText_Blended(font_outline, str.c_str(), outline_color);
+		SDL_Surface* bg_surface = TTF_RenderUTF8_Blended(font_outline, str.c_str(), outline_color);
 		if (!bg_surface) {
 			printf("Unable to create text surface. SDL Error: %s\n", TTF_GetError());
 		}

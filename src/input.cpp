@@ -1,7 +1,7 @@
 #include "input.h"
 #include <SDL.h>
 
-#ifdef _DEBUG
+#ifdef _IMGUI
 #include "imgui.h"
 #include "imgui_impl_sdl.h"
 #endif
