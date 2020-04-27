@@ -98,6 +98,7 @@ void Plant::Update(float dt) {
 
       if (light < 0 || water < 0) {
           alive = false;
+          has_tomato = false;
           ++StatsTracker::plants_died;
           Assets::soundDeath.play();
           if (height >= kMaxHeight) {
@@ -128,7 +129,7 @@ void Plant::PickTomato() {
 
 void Plant::Draw() const {
   // Draw tomato
-  if (alive && has_tomato) {
+  if (has_tomato) {
     for (int i = 0; i < kNumTomatoes; ++i) {
       Window::Draw(Assets::plantTexture, pos + tomato_offset[i])
           .withOrigin(5, 5)
@@ -136,7 +137,7 @@ void Plant::Draw() const {
     }
   }
 
-  int color = alive? 255 : 128;
+  uint8_t color = alive? 255 : 128;
   Window::Draw(Assets::plantTexture, pos)
       .withRect(0, 64 - 16 * height, 16, 16 * height)
       .withColor(color, color, color)
