@@ -40,6 +40,6 @@ struct Plant : public BoxEntity, EntS<Plant> {
 	vec tomato_offset[kNumTomatoes];
 
 	float time_left_water_bubble = 0;
-	float growClock;
+	float growClock = 0;
 
 };
