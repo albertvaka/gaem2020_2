@@ -35,11 +35,12 @@
   </head>
   <body>
     <div id="status">Downloading...</div>
-    
-    <canvas id="canvas" oncontextmenu="event.preventDefault()"></canvas>
-    
+
+    <canvas id="canvas" oncontextmenu="event.preventDefault()" tabindex=-1 onmouseenter="window.focus()" onclick="window.focus()"></canvas>
+
     <script type='text/javascript'>
       var Module = {
+          // List of all callbacks here: https://emscripten.org/docs/api_reference/module.html
           print: console.log,
           printErr: console.error,
           setStatus: (function(text) {
