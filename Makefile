@@ -15,8 +15,8 @@ PROFILE	= 0
 SHELL = bash
 
 #NOTE: Dynamic casts are disabled by fno-rtti
-CFLAGS	= -pipe -std=c++17 -fno-rtti -fno-exceptions $(shell sdl2-config --cflags) $(EMSCRIPTEN_FLAGS) -I SDL2_ext -I imgui -std=c++17 -Wall -Wno-unused-parameter -Wno-reorder $(PROFILEFLAGS) $(DEBUGFLAGS) -O$(strip $(OPTIM))
-LDFLAGS	= $(CFLAGS) $(shell sdl2-config --libs) -lSDL2_ttf -lSDL2_image -lopenal -lvorbis $(LINKER_FLAGS)
+CFLAGS	= -pipe -std=c++17 -fno-rtti -fno-exceptions $(shell sdl2-config --cflags) $(EMSCRIPTEN_FLAGS) -I SDL2_ext -I imgui -Wall -Wno-unused-parameter -Wno-reorder $(PROFILEFLAGS) $(DEBUGFLAGS) -O$(strip $(OPTIM))
+LDFLAGS	= $(CFLAGS) $(shell sdl2-config --libs) -lSDL2_ttf -lSDL2_image -lSDL2_mixer $(LINKER_FLAGS)
 
 ifdef EMSCRIPTEN
 	EMSCRIPTEN_FLAGS=-s USE_SDL_TTF=2 -s USE_SDL_IMAGE=2 -s USE_SDL_MIXER=2 -s USE_OGG -s USE_VORBIS -s ALLOW_MEMORY_GROWTH=1 --preload-file bin/data@/data --use-preload-plugins -s SDL2_IMAGE_FORMATS='["png"]'
@@ -27,9 +27,9 @@ else
 	OUT_FILE=$(EXEC)
 
 	ifeq ($(shell uname),Linux)
-		LINKER_FLAGS=-lGL -lvorbisfile
+		LINKER_FLAGS=-lGL
 	else
-		LINKER_FLAGS=-framework OpenGL -lvorbisfile
+		LINKER_FLAGS=-framework OpenGL
 	endif
 endif
 
@@ -50,10 +50,6 @@ obj/main.cpp.o: src/main.cpp src/*.h Makefile
 
 obj/%.cpp.o: src/%.cpp src/*.h Makefile
 	@mkdir -p obj/
-	$(CXX) $(CFLAGS) -c $< -o $@
-
-obj/emyl/%.cpp.o: emyl/%.cpp emyl/*.h Makefile
-	@mkdir -p obj/emyl
 	$(CXX) $(CFLAGS) -c $< -o $@
 
 obj/imgui/%.cpp.o: imgui/%.cpp imgui/*.h Makefile
