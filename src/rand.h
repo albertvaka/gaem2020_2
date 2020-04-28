@@ -111,7 +111,7 @@ namespace Random
 	inline float rollf(float max = 1.f) { return rollf(0.f, max); } // Range [0, max)
 
 	inline int roll(int min, int max) { return min + (rand() % (max - min)); } // Range [min, max)
-	inline uint roll(uint max) { return roll(0, max); } // Range [0, max)
+	inline int roll(int max) { return roll(0, max); } // Range [0, max)
 
 	inline void CircularRoll(float radius, float& x, float& y)
 	{
