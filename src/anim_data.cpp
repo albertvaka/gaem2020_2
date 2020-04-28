@@ -1,5 +1,7 @@
 #include "anim_data.h"
 
+#include "animation.h"
+
 AnimationData anim_lib[] =
 {
 	//PLAYER_WALKING_DOWN

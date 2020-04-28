@@ -1,13 +1,6 @@
 #pragma once
 #include "window.h"
 
-struct AnimationData
-{
-	int frames;
-	IntRect rect[16];
-	int timer[16];
-};
-
 enum AnimationType
 {
 	PLAYER_WALKING_DOWN,
@@ -76,5 +69,3 @@ enum AnimationType
 	DOGGO_EAT,
 };
 
-
-extern AnimationData anim_lib[];

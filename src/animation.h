@@ -2,6 +2,15 @@
 
 #include "anim_data.h"
 
+struct AnimationData
+{
+	int frames;
+	IntRect rect[16];
+	int timer[16];
+};
+
+extern AnimationData anim_lib[];
+
 struct Animation
 {
 	AnimationType anim_type = AnimationType::NADA;
