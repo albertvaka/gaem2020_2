@@ -11,17 +11,17 @@ namespace Mates
 {
 
 	//a few useful constants
-	const int     MaxInt = (std::numeric_limits<int>::max)();
-	const int     MinInt = (std::numeric_limits<int>::min)();
-	const double  MaxDouble = (std::numeric_limits<double>::max)();
-	const double  MinDouble = (std::numeric_limits<double>::min)();
-	const float   MaxFloat = (std::numeric_limits<float>::max)();
-	const float   MinFloat = (std::numeric_limits<float>::min)();
+	const constexpr int     MaxInt = (std::numeric_limits<int>::max)();
+	const constexpr int     MinInt = (std::numeric_limits<int>::min)();
+	const constexpr double  MaxDouble = (std::numeric_limits<double>::max)();
+	const constexpr double  MinDouble = (std::numeric_limits<double>::min)();
+	const constexpr float   MaxFloat = (std::numeric_limits<float>::max)();
+	const constexpr float   MinFloat = (std::numeric_limits<float>::min)();
 
-	const float   Pi = 3.141592653589793238462643383279502884f;
-	const float   TwoPi = Pi * 2;
-	const float   HalfPi = Pi / 2;
-	const float   QuarterPi = Pi / 4;
+	const constexpr float   Pi = 3.141592653589793238462643383279502884f;
+	const constexpr float   TwoPi = Pi * 2;
+	const constexpr float   HalfPi = Pi / 2;
+	const constexpr float   QuarterPi = Pi / 4;
 
 	inline float DegsToRads(float degs)
 	{

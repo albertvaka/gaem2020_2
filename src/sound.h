@@ -10,7 +10,6 @@ struct Sound
 
 	void setVolume(float v); //from 0 to 100
 	void play();
-	void stop();
 
 private:
 	Mix_Chunk* sound = nullptr;

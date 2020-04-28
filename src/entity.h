@@ -5,20 +5,20 @@
 
 struct Entity
 {
-	Entity() : pos (0.f,0.f) {}
-	Entity(const vec& pos) : pos(pos) {}
+	constexpr Entity() : pos (0.f,0.f) {}
+	constexpr Entity(const vec& pos) : pos(pos) {}
 	vec pos;
 	vec vel = vec(0.f,0.f);
 	bool alive = true;
 };
 
 struct BoxEntity : Entity {
-	BoxEntity(const vec& pos, const vec& size) : Entity(pos), size(size) {}
-	BoxEntity(const Bounds& b) : Entity(b.Center()), size(b.Size()) {} //note that entities position is on their center
+	constexpr BoxEntity(const vec& pos, const vec& size) : Entity(pos), size(size) {}
+	constexpr BoxEntity(const Bounds& b) : Entity(b.Center()), size(b.Size()) {} //note that entities position is on their center
 
 	vec size;
 
-	Bounds bounds() const {
+	constexpr Bounds bounds() const {
 		return Bounds::fromCenter(pos, size);
 	}
 
@@ -28,12 +28,12 @@ struct BoxEntity : Entity {
 };
 
 struct CircleEntity : Entity {
-	CircleEntity() : radius(8.f) {}
-	CircleEntity(const vec& pos, float radius) : Entity(pos), radius(radius) {}
+	constexpr CircleEntity() : radius(8.f) {}
+	constexpr CircleEntity(const vec& pos, float radius) : Entity(pos), radius(radius) {}
 
 	float radius;
 	
-	CircleBounds bounds() const {
+	constexpr CircleBounds bounds() const {
 		return CircleBounds(pos, radius);
 	}
 

@@ -15,15 +15,15 @@
 
 struct veci {
     int x, y;
-    veci(int a, int b) : x(a), y(b) {}
+    constexpr veci(int a, int b) : x(a), y(b) {}
 };
 
 struct vec
 {
     float x, y;
-    vec() : x(0.f), y(0.f) {}
-    vec(float a, float b) : x(a), y(b) {}
-    vec(const veci& v) : x(v.x), y(v.y) {}
+    constexpr vec() : x(0.f), y(0.f) {}
+    constexpr vec(float a, float b) : x(a), y(b) {}
+    constexpr vec(const veci& v) : x(v.x), y(v.y) {}
 
     static const vec Zero;
 
@@ -35,9 +35,9 @@ struct vec
       return vec(Random::rollf(min.x, max.x), Random::rollf(min.y, max.y));
   }
 
-  [[nodiscard]] bool Equals(float px, float py)
+  [[nodiscard]] bool isNearlyEqual(const vec& p)
   {
-      return x == px && y == py;
+      return (Mates::isNearlyEqual(x, p.x) && Mates::isNearlyEqual(y, p.y));
   }
 
   //returns true if both x and y are zero
@@ -138,9 +138,9 @@ struct vec
     return *this;
   }
 
-  bool operator==(const vec& rhs) const
+  constexpr bool operator==(const vec& rhs) const
   {
-    return (Mates::isNearlyEqual(x, rhs.x) && Mates::isNearlyEqual(y,rhs.y) );
+    return (x == rhs.x) && (y == rhs.y);
   }
 
   bool operator!=(const vec& rhs) const

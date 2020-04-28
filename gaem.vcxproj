@@ -48,7 +48,6 @@
     <ClInclude Include="src\simplexnoise.h" />
     <ClInclude Include="src\singleinstance.h" />
     <ClInclude Include="src\partsys.h" />
-    <ClInclude Include="src\player.h" />
     <ClInclude Include="src\rand.h" />
     <ClInclude Include="src\scene_jumpman.h" />
     <ClInclude Include="src\scene_manager.h" />

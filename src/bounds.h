@@ -12,16 +12,16 @@ struct Bounds
     float left, top;
     float width, height;
 
-    Bounds(float x, float y, float w, float h) : left(x), top(y), width(w), height(h) { }
-    Bounds() : Bounds(-1,-1,-1,-1) { }
-    Bounds(const vec& topleft, const vec& size) : Bounds(topleft.x, topleft.y, size.x, size.y) {}
-    explicit Bounds(const vec& size) : Bounds(0,0,size.x,size.y) { }
-    explicit Bounds(const vec& pos, const vec& size, const vec& origin) : Bounds(pos.x, pos.y, size.x, size.y) {
+    constexpr Bounds(float x, float y, float w, float h) : left(x), top(y), width(w), height(h) { }
+    constexpr Bounds() : Bounds(-1,-1,-1,-1) { }
+    constexpr Bounds(const vec& topleft, const vec& size) : Bounds(topleft.x, topleft.y, size.x, size.y) {}
+    constexpr explicit Bounds(const vec& size) : Bounds(0,0,size.x,size.y) { }
+    constexpr explicit Bounds(const vec& pos, const vec& size, const vec& origin) : Bounds(pos.x, pos.y, size.x, size.y) {
         left -= origin.x;
         top -= origin.y;
     }
 
-    static Bounds fromCenter(const vec& center, const vec& size) { return Bounds(center - size/2, size); }
+    static constexpr Bounds fromCenter(const vec& center, const vec& size) { return Bounds(center - size/2, size); }
 
     //Expands arround the center by a factor
     Bounds operator*(float f)
@@ -34,12 +34,12 @@ struct Bounds
         return ret;
     }
 
-    [[nodiscard]] vec Center() const
+    [[nodiscard]] constexpr vec Center() const
 	{
 		return vec(left + width/2, top + height/2);
 	}
 
-    [[nodiscard]] float Area() const
+    [[nodiscard]] constexpr float Area() const
     {
         return width * height;
     }
@@ -57,35 +57,35 @@ struct Bounds
 
     void Draw(uint8_t r = 255, uint8_t g = 0, uint8_t b = 0) const;
 
-    [[nodiscard]] float Top() const
+    [[nodiscard]] constexpr float Top() const
 	{
         return top;
     }
 
-    [[nodiscard]] float Bottom() const
+    [[nodiscard]] constexpr float Bottom() const
 	{
         return top + height;
     }
 
-    [[nodiscard]] float Left() const
+    [[nodiscard]] constexpr float Left() const
 	{
         return left;
     }
 
-    [[nodiscard]] float Right() const
+    [[nodiscard]] constexpr float Right() const
 	{
         return left + width;
     }
 
-    [[nodiscard]] vec TopLeft() const {
+    [[nodiscard]] constexpr vec TopLeft() const {
         return vec(Left(), Top());
     }
 
-    [[nodiscard]] vec TopRight() const {
+    [[nodiscard]] constexpr vec TopRight() const {
         return vec(Right(), Top());
     }
 
-    [[nodiscard]] vec BottomRight() const {
+    [[nodiscard]] constexpr vec BottomRight() const {
         return vec(Right(), Bottom());
     }
 
@@ -107,7 +107,7 @@ struct Bounds
         return true;
     }
 
-    [[nodiscard]] vec Size() const {
+    [[nodiscard]] constexpr vec Size() const {
         return vec(width, height);
     }
 
@@ -124,7 +124,7 @@ struct Bounds
 
 struct CircleBounds
 {
-    CircleBounds(const vec& pos, float radius) : pos(pos), radius(radius) {}
+    constexpr CircleBounds(const vec& pos, float radius) : pos(pos), radius(radius) {}
     vec pos;
     float radius;
 
