@@ -161,22 +161,24 @@ namespace Window
 		SDL_FRect dest;
 		SDL_Rect src;
 		SDL_FPoint center;
+		SDL_Rect* srcp = nullptr;
 		SDL_FPoint* centerp = nullptr;
 		SDL_RendererFlip flip = SDL_FLIP_NONE;
 		float rotation = 0;
 		vec scale = vec(1.f, 1.f);
 
-		Draw(SDL_Texture* t, const vec& pos) : t(t), dest({ pos.x, pos.y, 0, 0 }), src({ 0,0,0,0 }) {
-			SDL_QueryTexture(t, NULL, NULL, &src.w, &src.h); 
+		constexpr Draw(SDL_Texture* t, const vec& pos) : t(t), dest({ pos.x, pos.y, 0, 0 }), src({ 0,0,0,0 }) {
 		}
 
-		Draw& withRect(int x, int y, int w, int h) {
+		constexpr Draw& withRect(int x, int y, int w, int h) {
 			src = { x, y, w, h };
+			srcp = &src;
 			return *this;
 		}
 
-		Draw& withRect(IntRect r) {
+		constexpr Draw& withRect(IntRect r) {
 			src = r;
+			srcp = &src;
 			return *this;
 		}
 
@@ -190,41 +192,41 @@ namespace Window
 			return *this;
 		}
 
-		Draw& withOrigin(float x, float y) {
+		constexpr Draw& withOrigin(float x, float y) {
 			center.x = x;
 			center.y = y;
 			centerp = &center;
 			return *this;
 		}
 
-		Draw& withOrigin(const vec& o) {
+		constexpr Draw& withOrigin(const vec& o) {
 			center.x = o.x;
 			center.y = o.y;
 			centerp = &center;
 			return *this;
 		}
 
-		Draw& withRotation(float r) {
+		constexpr Draw& withRotation(float r) {
 			rotation = r;
 			return *this;
 		}
 
-		Draw& withScale(float s) {
+		constexpr Draw& withScale(float s) {
 			scale = vec(s, s);
 			return *this;
 		}
 
-		Draw& withScale(float x, float y) {
+		constexpr Draw& withScale(float x, float y) {
 			scale = vec(x, y);
 			return *this;
 		}
 
-		Draw& withScale(const vec& v) {
+		constexpr Draw& withScale(const vec& v) {
 			scale = v;
 			return *this;
 		}
 
-		Draw& withFlip(bool h, bool v = false) {
+		constexpr Draw& withFlip(bool h, bool v = false) {
 			if (v) {
 				flip = SDL_RendererFlip(flip | SDL_FLIP_VERTICAL);
 			}
@@ -243,9 +245,12 @@ namespace Window
 			}
 			dest.x -= Camera::pos.x;
 			dest.y -= Camera::pos.y;
+			if (!srcp) {
+				SDL_QueryTexture(t, NULL, NULL, &src.w, &src.h);
+			}
 			dest.w = src.w * scale.x;
 			dest.h = src.h * scale.y;
-			SDL_RenderCopyExF(Window::renderer, t, &src, &dest, rotation, centerp, flip);
+			SDL_RenderCopyExF(Window::renderer, t, srcp, &dest, rotation, centerp, flip);
 			SDL_SetTextureColorMod(t, 255, 255, 255);
 			SDL_SetTextureAlphaMod(t, 255);
 		};
