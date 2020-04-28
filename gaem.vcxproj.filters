@@ -147,6 +147,18 @@
     <ClInclude Include="src\sound.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\steering_entity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bat.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\steering_behavior.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\steering_behavior_applier.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\rand.cpp">
@@ -225,6 +237,12 @@
       <Filter>Bundled Dependencies\imgui_sdl</Filter>
     </ClCompile>
     <ClCompile Include="src\sound.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\steering_behavior.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

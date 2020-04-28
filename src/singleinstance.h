@@ -14,14 +14,7 @@ public:
 protected:
 		SingleInstance()
 		{
-#ifdef _DEBUG
-			assert(instance() == nullptr); //Creating a second instance of a singleton
-#endif
 			instance() = (T*)this;
-		}
-		~SingleInstance()
-		{
-			instance() = nullptr;
 		}
 private:
 		SingleInstance(const SingleInstance& other) { }

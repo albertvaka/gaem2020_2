@@ -28,6 +28,7 @@
     <ClInclude Include="SDL2_ext\imgui_impl_sdl.h" />
     <ClInclude Include="SDL2_ext\imgui_sdl.h" />
     <ClInclude Include="SDL2_ext\SDL2_gfxPrimitives.h" />
+    <ClInclude Include="src\bat.h" />
     <ClInclude Include="src\cistell.h" />
     <ClInclude Include="src\doggo.h" />
     <ClInclude Include="src\intro_scene.h" />
@@ -54,6 +55,9 @@
     <ClInclude Include="src\selfregister.h" />
     <ClInclude Include="src\sound.h" />
     <ClInclude Include="src\stats_tracker.h" />
+    <ClInclude Include="src\steering_behavior.h" />
+    <ClInclude Include="src\steering_behavior_applier.h" />
+    <ClInclude Include="src\steering_entity.h" />
     <ClInclude Include="src\text.h" />
     <ClInclude Include="src\tiledexport.h" />
     <ClInclude Include="src\tilemap.h" />
@@ -69,6 +73,7 @@
     <ClCompile Include="SDL2_ext\imgui_impl_sdl.cpp" />
     <ClCompile Include="SDL2_ext\imgui_sdl.cpp" />
     <ClCompile Include="SDL2_ext\SDL2_gfxPrimitives.cpp" />
+    <ClCompile Include="src\bat.cpp" />
     <ClCompile Include="src\bounds.cpp" />
     <ClCompile Include="src\plant.cpp" />
     <ClCompile Include="src\anim_data.cpp" />
@@ -83,6 +88,7 @@
     <ClCompile Include="src\simplexnoise.cpp" />
     <ClCompile Include="src\sound.cpp" />
     <ClCompile Include="src\stats_tracker.cpp" />
+    <ClCompile Include="src\steering_behavior.cpp" />
     <ClCompile Include="src\tiledexport.cpp" />
     <ClCompile Include="src\tilemap.cpp" />
     <ClCompile Include="src\transition.cpp" />
