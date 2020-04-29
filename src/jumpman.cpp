@@ -34,7 +34,7 @@ const float timeCrouchedToJumpDownOneWayTile = 0.2f;
 const vec vel_max(220, 200);
 const vec vel_max_plant(110, 80);
 const vec vel_max_water(150, 140);
-const vec vel_max_tomato(180, 170);
+const vec vel_max_tomato(150, 140);
 
 // damage
 const vec vel_hit(180.f, -150.f);
@@ -255,7 +255,7 @@ grounded_exit:
 	if (holding == Holdable::Plant) limit = vel_max_plant;
 	if (holding == Holdable::Basket) {
 		if (cistell->contents == Cistell::WATER) limit = vel_max_water;
-		if (cistell->contents == Cistell::TOMATOES) limit = vel_max_water;
+		if (cistell->contents == Cistell::TOMATOES) limit = vel_max_tomato;
 	}
 	if (vel.x > limit.x) vel.x = limit.x;
 	if (vel.x < -limit.x) vel.x = -limit.x;
