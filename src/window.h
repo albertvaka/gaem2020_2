@@ -107,8 +107,8 @@ namespace Camera
 
 
 struct IntRect : SDL_Rect {
-	constexpr IntRect() {}
-	constexpr IntRect(int _x, int _y, int width, int height) { x = _x; y = _y; w = width; h = height; }
+	IntRect() {}
+	constexpr IntRect(int x, int y, int width, int height) : SDL_Rect({x, y, width, height }) {}
 	constexpr IntRect(int x, int y, int size) : IntRect(x,y,size,size) { }
 	constexpr explicit IntRect(const Bounds& b) : IntRect(b.top,b.left,b.width,b.height) {}
 };
@@ -167,7 +167,7 @@ namespace Window
 		float rotation = 0;
 		vec scale = vec(1.f, 1.f);
 
-		constexpr Draw(SDL_Texture* t, const vec& pos) : t(t), dest({ pos.x, pos.y, 0, 0 }), src({ 0,0,0,0 }) {
+		constexpr Draw(SDL_Texture* t, const vec& pos) : t(t), dest({ pos.x, pos.y, 0, 0 }), src({ 0,0,0,0 }), center({0,0}) {
 		}
 
 		constexpr Draw& withRect(int x, int y, int w, int h) {

@@ -106,7 +106,7 @@ struct vec
   [[nodiscard]] inline float    DistanceSq(const vec &v2) const;
 
   //we need some overloaded operators
-  const vec& operator+=(const vec &rhs)
+  constexpr const vec& operator+=(const vec &rhs)
   {
     x += rhs.x;
     y += rhs.y;
@@ -114,7 +114,7 @@ struct vec
     return *this;
   }
 
-  const vec& operator-=(const vec &rhs)
+  constexpr const vec& operator-=(const vec &rhs)
   {
     x -= rhs.x;
     y -= rhs.y;
@@ -122,7 +122,7 @@ struct vec
     return *this;
   }
 
-  const vec& operator*=(const float& rhs)
+  constexpr const vec& operator*=(const float& rhs)
   {
     x *= rhs;
     y *= rhs;
@@ -130,7 +130,7 @@ struct vec
     return *this;
   }
 
-  const vec& operator/=(const float& rhs)
+  constexpr const vec& operator/=(const float& rhs)
   {
     x /= rhs;
     y /= rhs;
@@ -143,12 +143,12 @@ struct vec
     return (x == rhs.x) && (y == rhs.y);
   }
 
-  bool operator!=(const vec& rhs) const
+  constexpr bool operator!=(const vec& rhs) const
   {
     return (x != rhs.x) || (y != rhs.y);
   }
 
-  const vec operator-() const
+  constexpr const vec operator-() const
   {
       return vec(-x, -y);
   }
@@ -323,21 +323,21 @@ inline float LengthSq(const vec& v)
 
 
 //------------------------------------------------------------------------operator overloads
-inline vec operator*(const vec &lhs, float rhs)
+inline constexpr vec operator*(const vec &lhs, float rhs)
 {
   vec result(lhs);
   result *= rhs;
   return result;
 }
 
-inline vec operator*(float lhs, const vec &rhs)
+inline constexpr vec operator*(float lhs, const vec &rhs)
 {
   vec result(rhs);
   result *= lhs;
   return result;
 }
 
-inline vec operator*(const vec &lhs, const vec &rhs)
+inline constexpr vec operator*(const vec &lhs, const vec &rhs)
 {
 	vec result(rhs);
 	result.x = lhs.x * rhs.x;
@@ -345,7 +345,7 @@ inline vec operator*(const vec &lhs, const vec &rhs)
 	return result;
 }
 
-inline vec operator-(const vec &lhs, const vec &rhs)
+inline constexpr vec operator-(const vec &lhs, const vec &rhs)
 {
   vec result(lhs);
   result.x -= rhs.x;
@@ -354,7 +354,7 @@ inline vec operator-(const vec &lhs, const vec &rhs)
   return result;
 }
 
-inline vec operator+(const vec &lhs, const vec &rhs)
+inline constexpr vec operator+(const vec &lhs, const vec &rhs)
 {
   vec result(lhs);
   result.x += rhs.x;
@@ -363,7 +363,7 @@ inline vec operator+(const vec &lhs, const vec &rhs)
   return result;
 }
 
-inline vec operator/(const vec &lhs, float val)
+inline constexpr vec operator/(const vec &lhs, float val)
 {
   vec result(lhs);
   result.x /= val;
@@ -387,29 +387,6 @@ inline void WrapAround(vec &pos, int MaxX, int MaxY)
   if (pos.y > MaxY) {pos.y = 0.0;}
 }
 
-//returns true if the point p is not inside the region defined by top_left
-//and bot_rgt
-inline bool NotInsideRegion(const vec& p,
-                            const vec& top_left,
-                            const vec& bot_rgt)
-{
-  return (p.x < top_left.x) || (p.x > bot_rgt.x) || 
-         (p.y < top_left.y) || (p.y > bot_rgt.y);
-}
-
-inline bool InsideRegion(const vec& p,
-                         const vec& top_left,
-                         const vec& bot_rgt)
-{
-  return !((p.x < top_left.x) || (p.x > bot_rgt.x) || 
-         (p.y < top_left.y) || (p.y > bot_rgt.y));
-}
-
-inline bool InsideRegion(const vec& p, int left, int top, int right, int bottom)
-{
-  return !( (p.x < left) || (p.x > right) || (p.y < top) || (p.y > bottom) );
-}
-
 //  returns true if the target position is in the field of view of the entity
 //  positioned at posFirst facing in facingFirst
 inline bool isSecondInFOVOfFirst(const vec& posFirst,
@@ -421,9 +398,6 @@ inline bool isSecondInFOVOfFirst(const vec& posFirst,
 
   return facingFirst.Dot(toTarget) >= cos(fov/2.0);
 }
-
-
-
 
 //-------------------- LineIntersection2D-------------------------
 //

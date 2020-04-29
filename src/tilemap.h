@@ -46,10 +46,10 @@ struct Tile : TiledTiles
 	Tile() = default;
 	constexpr Tile(Value t) : value(t) { }
 
-	operator Value() const { return value; }  // Allow switch and comparisons.
-	explicit operator bool() = delete;        // Prevent if(tile)
+	constexpr operator Value() const { return value; }  // Allow switch and comparisons.
+	explicit constexpr operator bool() = delete;        // Prevent if(tile)
 
-	const IntRect& textureRect() const { return tileToTextureRect[int(value)]; }
+	constexpr const IntRect& textureRect() const { return tileToTextureRect[int(value)]; }
 
 private:
 	Value value;
