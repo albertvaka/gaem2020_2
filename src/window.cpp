@@ -99,6 +99,7 @@ namespace Window
                 break;
             case SDL_MOUSEWHEEL:
                 Mouse::scrollWheel += event.wheel.y;
+                break;
             case SDL_QUIT:
                 exit(0);
                 break;
