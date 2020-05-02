@@ -72,6 +72,7 @@ namespace Window
         SDL_DisplayMode dm;
         SDL_GetDesktopDisplayMode(0, &dm);
         int scale = Mates::MinOf(dm.w / GAME_WIDTH, dm.h / GAME_HEIGHT);
+        Debug::out << "Scaling to x" << scale;
 
         window = SDL_CreateWindow(WINDOW_TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, GAME_WIDTH*scale, GAME_HEIGHT*scale, SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
         if (window == NULL) {
