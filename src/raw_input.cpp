@@ -14,7 +14,7 @@ KeyStates Mouse::button_states[magic_enum::enum_count<Button>()] = { RELEASED };
 float Mouse::scrollWheel = 0;
 veci Mouse::pos(0,0);
 
-Uint8 Keyboard::state_buffers[2][SDL_NUM_SCANCODES] = { 0 };
+Uint8 Keyboard::state_buffers[2][SDL_NUM_SCANCODES] = { { 0 } };
 Uint8* Keyboard::state = state_buffers[0];
 Uint8* Keyboard::prev_state = state_buffers[1];
 
@@ -140,6 +140,6 @@ void Keyboard::_UpdateInputState()
     auto aux = prev_state;
     prev_state = state;
     state = aux;
-    std::memcpy(state, SDL_GetKeyboardState(NULL), SDL_NUM_SCANCODES);
+    memcpy(state, SDL_GetKeyboardState(NULL), SDL_NUM_SCANCODES);
 
 }
