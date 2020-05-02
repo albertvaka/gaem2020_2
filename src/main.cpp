@@ -183,7 +183,8 @@ void main_loop() {
 
 	currentScene->Draw();
 
-	(Camera::GetBounds() * 0.99f).Draw();
+	//(Camera::GetBounds() * 0.99f).Draw();
+
 #ifdef _DEBUG
 	if (Debug::Draw) {
 		DrawDebugVecs();

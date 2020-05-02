@@ -56,12 +56,24 @@ namespace Camera {
     }
 
 }
+#if __WIN32__
+#pragma comment(lib, "Shcore.lib")
+#include <ShellScalingAPI.h>
+#endif
 
 namespace Window
 {
     void Init() {
-        int scale = 2; //TODO: Auto-detect
-        window = SDL_CreateWindow(WINDOW_TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, GAME_WIDTH*scale, GAME_HEIGHT*scale, SDL_WINDOW_RESIZABLE);
+
+#if __WIN32__
+        SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE);
+#endif
+
+        SDL_DisplayMode dm;
+        SDL_GetDesktopDisplayMode(0, &dm);
+        int scale = Mates::MinOf(dm.w / GAME_WIDTH, dm.h / GAME_HEIGHT);
+
+        window = SDL_CreateWindow(WINDOW_TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, GAME_WIDTH*scale, GAME_HEIGHT*scale, SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
         if (window == NULL) {
             Debug::out << "Window Creation Error: " << SDL_GetError();
         }
@@ -69,7 +81,7 @@ namespace Window
         if (renderer == NULL) {
             Debug::out << "Renderer Creation Error: " << SDL_GetError();
         }
-        SDL_RenderSetLogicalSize(Window::renderer, Window::GAME_WIDTH, Window::GAME_HEIGHT);
+        ResetViewport();
     }
 
     bool IsMouseInsideWindow()
