@@ -138,7 +138,7 @@ namespace Window
 		// pass thickness = -1 to draw a filled rectangle
 		void Rectangle(float x1, float y1, float x2, float y2, int thickness, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
 		inline void Rectangle(const Bounds& box, int thickness, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255) {
-			Rectangle(box.Left() - Camera::pos.x, box.Top() - Camera::pos.y, box.Right() - Camera::pos.x, box.Bottom() - Camera::pos.y, thickness, r, g, b, a);
+			Rectangle(box.Left(), box.Top(), box.Right(), box.Bottom(), thickness, r, g, b, a);
 		}
 
 		void Line(float x1, float y1, float x2, float y2, int thickness, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
@@ -187,7 +187,7 @@ namespace Window
 			return *this;
 		}
 
-		Draw& withAlpha(int a) {
+		Draw& withAlpha(uint8_t a) {
 			SDL_SetTextureAlphaMod(t, a);
 			return *this;
 		}
