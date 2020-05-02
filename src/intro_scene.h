@@ -19,9 +19,7 @@ struct IntroScene : Scene {
 	Text text;
 	RotoText rototext;
 
-	IntroScene() : text(Assets::font_30, Assets::font_30_outline), credits(Assets::font_30, Assets::font_30_outline) {
-		Camera::SetZoom(Window::GAME_ZOOM, false);
-	}
+	IntroScene() : text(Assets::font_30, Assets::font_30_outline), credits(Assets::font_30, Assets::font_30_outline) { }
 
 	void EnterScene() override
 	{

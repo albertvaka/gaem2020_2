@@ -32,8 +32,6 @@ JumpScene::JumpScene(int first_player)
 	, first_player(first_player)
 {
 	map.LoadFromTiled();
-
-	Camera::SetZoom(Window::GAME_ZOOM, false);
 }
 
 void JumpScene::EnterScene() 

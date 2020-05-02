@@ -18,14 +18,19 @@ namespace Window
 	extern SDL_Renderer* renderer;
 	extern bool focus;
 
-	const int GAME_ZOOM = 2;
-	const int WINDOW_HEIGHT = 420 * GAME_ZOOM;
-	const int WINDOW_WIDTH = 828 * GAME_ZOOM;
+	constexpr const int GAME_HEIGHT = 420;
+	constexpr const int GAME_WIDTH = 828;
 	constexpr const char* WINDOW_TITLE = "LD46";
+
+	void ResetViewport();
 }
 
 namespace Camera
 {
+	inline vec GetSize()
+	{
+		return vec(Window::GAME_WIDTH / zoom, Window::GAME_HEIGHT / zoom);
+	}
 
 	inline void SetTopLeft(const vec& center)
 	{
@@ -45,19 +50,14 @@ namespace Camera
 
 	inline void SetCenter(const vec& center)
 	{
-		pos = center - vec(Window::WINDOW_WIDTH/(2*zoom), Window::WINDOW_HEIGHT/(2*zoom));
+		pos = center - GetSize()/2.f;
 	}
 
 	inline void SetCenter(float x, float y) { SetCenter(vec(x, y)); }
 
 	inline vec GetCenter()
 	{
-		return pos + vec(Window::WINDOW_WIDTH/(2*zoom), Window::WINDOW_HEIGHT/(2*zoom));
-	}
-
-	inline vec GetSize()
-	{
-		return vec(Window::WINDOW_WIDTH/zoom, Window::WINDOW_HEIGHT/zoom);
+		return pos + GetSize()/2.f;
 	}
 
 	inline Bounds GetBounds()
@@ -70,7 +70,7 @@ namespace Camera
 	{
 		vec c = GetCenter();
 
-		vec screenSize(Window::WINDOW_WIDTH, Window::WINDOW_HEIGHT);
+		vec screenSize(Window::GAME_HEIGHT, Window::GAME_HEIGHT);
 		screenSize /= zoom;
 		float halfScreenWidth = screenSize.x / 2.f;
 		float halfScreenHeight = screenSize.y / 2.f;
@@ -89,7 +89,7 @@ namespace Camera
 	{
 		vec c = GetCenter();
 		zoom = z;
-		SDL_RenderSetScale(Window::renderer, z, z);
+		Window::ResetViewport();
 		if (preserve_center) {
 			SetCenter(c);
 		}
@@ -117,14 +117,23 @@ namespace Window
 {
 	void Init();
 	void ProcessEvents();
+	inline void ResetViewport() {
+		SDL_RenderSetLogicalSize(Window::renderer, Window::GAME_WIDTH, Window::GAME_HEIGHT);
+		float x, y;
+		SDL_RenderGetScale(Window::renderer, &x, &y);
+		SDL_RenderSetScale(Window::renderer, x*Camera::zoom, y*Camera::zoom);
+	}
 
 	inline bool HasFocus() { return focus; }
 	bool IsMouseInsideWindow();
 
-	inline vec GetWindowSize() { return vec(WINDOW_WIDTH, WINDOW_HEIGHT); }
-	inline Bounds GetWindowBounds() { return Bounds(vec::Zero, GetWindowSize()); }
+	inline vec GetSize() {
+		int w, h;
+		SDL_GetWindowSize(window, &w, &h);
+		return vec(w,h);
+	}
+	inline Bounds GetBounds() { return Bounds(vec::Zero, GetSize()); }
 
-	//inline PartialDraw Draw(SDL_Texture* t, const vec& pos) { return PartialDraw(t, pos); }
 	inline void Clear(uint8_t r, uint8_t g, uint8_t b) {
 		SDL_SetRenderDrawColor(Window::renderer, r, g, b, 255);
 		SDL_RenderClear(Window::renderer);

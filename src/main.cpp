@@ -84,7 +84,7 @@ void init() {
 #ifdef _IMGUI
 	ImGui::CreateContext();
 	ImGui_ImplSDL2_InitForOpenGL(Window::window, nullptr);
-	ImGuiSDL::Initialize(Window::renderer, Window::WINDOW_WIDTH, Window::WINDOW_HEIGHT);
+	ImGuiSDL::Initialize(Window::renderer, Window::GAME_WIDTH, Window::GAME_HEIGHT);
 #endif
 
 	Assets::LoadAll();
@@ -183,18 +183,15 @@ void main_loop() {
 
 	currentScene->Draw();
 
+	(Camera::GetBounds() * 0.99f).Draw();
 #ifdef _DEBUG
 	if (Debug::Draw) {
 		DrawDebugVecs();
 	}
 #endif
 
-	//Draw debug GUI
+	//Draw GUI
 
-	vec saved_pos = Camera::pos;
-	Camera::pos = vec(0,0);
-	SDL_RenderSetScale(Window::renderer, 1, 1);
-	
 #ifdef _FPS_COUNTER
 	fps_counter++;
 	fpsClock += dt;
@@ -205,15 +202,19 @@ void main_loop() {
 		fps_counter = 0;
 		fpsClock = 0;
 	}
-	Window::Draw(*txt_fps, vec(Window::WINDOW_WIDTH - 100, 10));
+	Window::Draw(*txt_fps, Camera::GetBounds().TopRight() + vec(-10, 10))
+		.withOrigin(txt_fps->getSize().x, 0)
+		.withScale(0.5f);
 #endif
 
 #ifdef _IMGUI
+	// If we don't reset the viewport and scale, imgui mouse input gets messed up
+	SDL_RenderSetViewport(Window::renderer, NULL);
+	SDL_RenderSetScale(Window::renderer, 1, 1);
 	ImGui::Render();
 	ImGuiSDL::Render(ImGui::GetDrawData());
+	Window::ResetViewport();
 #endif
-	Camera::pos = saved_pos;
-	SDL_RenderSetScale(Window::renderer, Camera::zoom, Camera::zoom);
 
 	SDL_RenderPresent(Window::renderer);
 }
