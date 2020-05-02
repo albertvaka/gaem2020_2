@@ -29,20 +29,10 @@ struct Cistell : BoxEntity, EntS<Cistell>
 
 	void Update(float dt)
 	{
-    if (carrier != nullptr) {
-      pos = carrier->pos;
-      pos.x += (carrier->lookingLeft ? -1 : 1) * kCarryPositionOffset.x;
-      pos.y += kCarryPositionOffset.y - size.y/2.0f;
-    }
-		if (Keyboard::IsKeyJustPressed(GameKeys::DEBUG_KILLALL)) {
-			if (contents == EMPTY) {
-				contents = TOMATOES;
-			} else if (contents == TOMATOES) {
-				contents = WATER;
-			}
-			else if (contents == WATER) {
-				contents = EMPTY;
-			}
+		if (carrier != nullptr) {
+		  pos = carrier->pos;
+		  pos.x += (carrier->lookingLeft ? -1 : 1) * kCarryPositionOffset.x;
+		  pos.y += kCarryPositionOffset.y - size.y/2.0f;
 		}
 	}
 

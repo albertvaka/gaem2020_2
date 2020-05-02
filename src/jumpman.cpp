@@ -113,7 +113,7 @@ void JumpMan::Update(float dt)
 	}
 grounded_exit:
 
-	crouched = ((crouched || grounded) && PlayerInput::IsActionPressed(id, GameKeys::DOWN)) || (crouched && !grounded);
+	crouched = ((crouched || grounded) && Input::IsPressed(id, GameKeys::DOWN)) || (crouched && !grounded);
 	if (crouched) {
 		crouchedTime += dt;
 	}
@@ -121,10 +121,10 @@ grounded_exit:
 		crouchedTime = 0.f;
 	}
 
-	if (PlayerInput::IsActionJustPressed(id, GameKeys::UP, 0.15f) && (grounded || (onWall && !crouched)))
+	if (Input::IsJustPressed(id, GameKeys::UP, 0.15f) && (grounded || (onWall && !crouched)))
 	{
-		//if (!PlayerInput::IsActionJustPressed(id, GameKeys::UP)) Debug::out << "cheats";
-		PlayerInput::ConsumeJustPressed(id, GameKeys::UP);
+		//if (!Input::IsJustPressed(id, GameKeys::UP)) Debug::out << "cheats";
+		Input::ConsumeJustPressed(id, GameKeys::UP);
 
 		jumpTimeLeft = jump_time; // the jump upwards velocity can last up to this duration
 		if (onWall && !grounded && !crouched) {
@@ -157,7 +157,7 @@ grounded_exit:
 	}
 
 	vec acc = vec(0, 0);
-	if (PlayerInput::IsActionPressed(id, GameKeys::LEFT)) {
+	if (Input::IsPressed(id, GameKeys::LEFT)) {
 		lookingLeft = true;
 		if (grounded) {
 			if (!crouched) acc.x -= run_acc;
@@ -166,7 +166,7 @@ grounded_exit:
 			acc.x -= run_acc_onair;
 		}
 	}
-	if (PlayerInput::IsActionPressed(id, GameKeys::RIGHT)) {
+	if (Input::IsPressed(id, GameKeys::RIGHT)) {
 		lookingLeft = false;
 		if (grounded) {
 			if (!crouched) acc.x += run_acc;
@@ -176,7 +176,7 @@ grounded_exit:
 		}
 	}
 
-	if (PlayerInput::IsActionPressed(id, GameKeys::UP) && jumpTimeLeft > 0)
+	if (Input::IsPressed(id, GameKeys::UP) && jumpTimeLeft > 0)
 	{
 		vel.y = vel_jump;
 	}
@@ -435,7 +435,7 @@ vert_exit:
 		size = standing_size;
 		if (grounded)
 		{
-      if (PlayerInput::IsActionPressed(id, GameKeys::LEFT) && !PlayerInput::IsActionPressed(id, GameKeys::RIGHT))
+      if (Input::IsPressed(id, GameKeys::LEFT) && !Input::IsPressed(id, GameKeys::RIGHT))
       {
         isWalking = true;
         if (vel.x > 0) {
@@ -446,7 +446,7 @@ vert_exit:
           animation.Ensure(MARIO_WALK);
         }
       }
-      else if (PlayerInput::IsActionPressed(id, GameKeys::RIGHT) && !PlayerInput::IsActionPressed(id, GameKeys::LEFT))
+      else if (Input::IsPressed(id, GameKeys::RIGHT) && !Input::IsPressed(id, GameKeys::LEFT))
 			{
 				isWalking = true;
 				if (vel.x < 0) {

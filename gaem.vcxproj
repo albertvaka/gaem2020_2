@@ -44,6 +44,7 @@
     <ClInclude Include="src\jumpman.h" />
     <ClInclude Include="src\magic_enum.h" />
     <ClInclude Include="src\mates.h" />
+    <ClInclude Include="src\raw_input.h" />
     <ClInclude Include="src\rototext.h" />
     <ClInclude Include="src\simplexnoise.h" />
     <ClInclude Include="src\singleinstance.h" />
@@ -79,6 +80,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\partsys.cpp" />
     <ClCompile Include="src\rand.cpp" />
+    <ClCompile Include="src\raw_input.cpp" />
     <ClCompile Include="src\scene_jumpman.cpp" />
     <ClCompile Include="src\simplexnoise.cpp" />
     <ClCompile Include="src\sound.cpp" />

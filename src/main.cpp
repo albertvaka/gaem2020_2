@@ -8,6 +8,7 @@
 
 #include "scene_jumpman.h"
 #include "intro_scene.h"
+#include "raw_input.h"
 
 #ifdef _IMGUI
 #include "imgui.h"
@@ -121,10 +122,32 @@ void main_loop() {
 	float dt = (ticks - last_ticks) / 1000.f;
 	last_ticks = ticks;
 
+	//Input
+	Mouse::scrollWheel = 0.f;
 	Window::ProcessEvents();
+#ifdef _IMGUI
+	ImGuiIO& io = ImGui::GetIO();
+	if (!io.WantCaptureKeyboard)
+#endif
+	{
+		Keyboard::_UpdateInputState();
+
+	}
+#ifdef _IMGUI
+	if (!io.WantCaptureMouse)
+#endif
+	{
+		Mouse::_UpdateInputState();
+	}
+	GamePad::_UpdateInputState();
 	Input::Update(dt);
 
+
 #ifdef _DEBUG
+	const SDL_Scancode DEBUG_FRAME_BY_FRAME = SDL_SCANCODE_F1;
+	const SDL_Scancode DEBUG_FRAME_BY_FRAME_NEXT = SDL_SCANCODE_E;
+	const SDL_Scancode DEBUG_MODE = SDL_SCANCODE_F2;
+
 	if (Keyboard::IsKeyJustPressed(DEBUG_MODE)) {
 		Debug::Draw = !Debug::Draw;
 	}
@@ -141,7 +164,7 @@ void main_loop() {
 		Camera::ChangeZoomWithPlusAndMinus(1.f, dt);
 	}
 
-	if (!frameByFrame || Keyboard::IsKeyJustPressed(DEBUG_FRAME_BY_FRAME_NEXT) || Keyboard::IsKeyJustPressed(RESTART))
+	if (!frameByFrame || Keyboard::IsKeyJustPressed(DEBUG_FRAME_BY_FRAME_NEXT) || Input::IsJustPressedAnyPlayer(RESTART))
 #endif
 	{
 #ifdef _DEBUG

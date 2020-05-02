@@ -22,19 +22,19 @@ namespace Camera {
     void MoveCameraWithArrows(float velocity, float dt) {
         vec c = GetCenter();
         float zoom = GetZoom();
-        if (Keyboard::IsKeyPressed(GameKeys::RIGHT))
+        if (Keyboard::IsKeyPressed(SDL_SCANCODE_RIGHT))
         {
             c.x += velocity * dt * 10 / zoom;
         }
-        if (Keyboard::IsKeyPressed(GameKeys::LEFT))
+        if (Keyboard::IsKeyPressed(SDL_SCANCODE_LEFT))
         {
             c.x -= velocity * dt * 10 / zoom;
         }
-        if (Keyboard::IsKeyPressed(GameKeys::DOWN))
+        if (Keyboard::IsKeyPressed(SDL_SCANCODE_DOWN))
         {
             c.y += velocity * dt * 10 / zoom;
         }
-        if (Keyboard::IsKeyPressed(GameKeys::UP))
+        if (Keyboard::IsKeyPressed(SDL_SCANCODE_UP))
         {
             c.y -= velocity * dt * 10 / zoom;
         }
@@ -44,11 +44,11 @@ namespace Camera {
     void ChangeZoomWithPlusAndMinus(float zoomVel, float dt)
     {
         float zoom = GetZoom();
-        if (Keyboard::IsKeyPressed(GameKeys::DEBUG_ZOOM_IN))
+        if (Keyboard::IsKeyPressed(SDL_SCANCODE_KP_PLUS))
         {
             zoom += zoomVel * dt;
         }
-        if (Keyboard::IsKeyPressed(GameKeys::DEBUG_ZOOM_OUT))
+        if (Keyboard::IsKeyPressed(SDL_SCANCODE_KP_MINUS))
         {
             zoom -= zoomVel * dt;
         }

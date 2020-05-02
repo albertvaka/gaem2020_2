@@ -57,8 +57,8 @@ struct IntroScene : Scene {
 			}
 		}
 
-		for (int player = 0; player < PlayerInput::kMaxPlayers; ++player) {
-			if (PlayerInput::IsActionJustPressed(player, GameKeys::START)) {
+		for (int player = 0; player < Input::kMaxPlayers; ++player) {
+			if (Input::IsJustPressed(player, GameKeys::START)) {
         SceneManager::SetScene(new JumpScene(player));
         //Change scene
 			}

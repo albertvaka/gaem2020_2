@@ -25,8 +25,8 @@ struct JumpScene : Scene {
 	int current_music = 0;
 	float timerDoggo = 0;
 	int first_player = 0;
-	JumpMan* players[PlayerInput::kMaxPlayers];
-	GameKeys contextActionButton[PlayerInput::kMaxPlayers];
+	JumpMan* players[Input::kMaxPlayers];
+	GameKeys contextActionButton[Input::kMaxPlayers];
 
 	JumpScene(int first_player);
 	void EnterScene() override;

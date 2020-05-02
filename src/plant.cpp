@@ -41,18 +41,6 @@ void Plant::Update(float dt) {
 
     pos.Debuggerino();
 
-    // For Debug
-    if (Keyboard::IsKeyJustPressed(GameKeys::DEBUG_SET_PLANTS_AT_MAX_STATS)) {
-        // Grow to the max.
-        while(height < kMaxHeight){
-            ++height;
-            pos.y -= 8.0f;
-            size.y += 16.0f;
-        }
-        light = 100;
-        water = 100;
-    }
-
     if (carrier != nullptr) {
         pos = carrier->pos;
         pos.x += (carrier->lookingLeft ? -1 : 1) * kCarryPositionOffset.x;
