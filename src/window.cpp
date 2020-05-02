@@ -47,12 +47,12 @@ namespace Camera {
         if (Keyboard::IsKeyPressed(SDL_SCANCODE_KP_PLUS))
         {
             zoom += zoomVel * dt;
+            SetZoom(zoom);
         }
-        if (Keyboard::IsKeyPressed(SDL_SCANCODE_KP_MINUS))
-        {
+        if (Keyboard::IsKeyPressed(SDL_SCANCODE_KP_MINUS)) {
             zoom -= zoomVel * dt;
+            SetZoom(zoom);
         }
-        SetZoom(zoom);
     }
 
 }
