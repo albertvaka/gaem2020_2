@@ -465,9 +465,3 @@ inline std::ostream& operator<<(std::ostream& os, const vec& rhs)
     os << rhs.x << "," << rhs.y;
     return os;
 }
-
-inline std::ifstream& operator>>(std::ifstream& is, vec& lhs)
-{
-    is >> lhs.x >> lhs.y;
-    return is;
-}

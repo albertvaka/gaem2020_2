@@ -258,3 +258,34 @@ namespace Window
 
 
 }
+
+
+inline std::ostream& operator<<(std::ostream& os, const IntRect& rhs)
+{
+	os << rhs.x << "," << rhs.y << "," << rhs.w << "," << rhs.h;
+	return os;
+}
+
+inline std::ostream& operator<<(std::ostream& os, const SDL_Point& rhs)
+{
+	os << rhs.x << "," << rhs.y;
+	return os;
+}
+
+inline std::ostream& operator<<(std::ostream& os, const SDL_FPoint& rhs)
+{
+	os << rhs.x << "," << rhs.y;
+	return os;
+}
+
+inline std::ostream& operator<<(std::ostream& os, const SDL_Rect& rhs)
+{
+	os << rhs.x << "," << rhs.y << "," << rhs.w << "," << rhs.h;
+	return os;
+}
+
+inline std::ostream& operator<<(std::ostream& os, const SDL_FRect& rhs)
+{
+	os << rhs.x << "," << rhs.y << "," << rhs.w << "," << rhs.h;
+	return os;
+}
