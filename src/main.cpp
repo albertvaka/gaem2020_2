@@ -57,23 +57,23 @@ int main(int argc, char* argv[])
 
 
 void init() {
-	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER)) {
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER) != 0) {
 		Debug::out << IMG_GetError();
 	}
 
-	if (IMG_Init(IMG_INIT_PNG)) {
+	if (IMG_Init(IMG_INIT_PNG) == 0) {
 		Debug::out << IMG_GetError();
 	}
 
-	if (TTF_Init()) {
+	if (TTF_Init() != 0) {
 		Debug::out << TTF_GetError();
 	}
 
-	if (Mix_Init(MIX_INIT_OGG)) {
+	if (Mix_Init(MIX_INIT_OGG) == 0) {
 		Debug::out << Mix_GetError();
 	}
 	
-	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024)) {
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024) != 0) {
 		Debug::out << Mix_GetError();
 	}
 
