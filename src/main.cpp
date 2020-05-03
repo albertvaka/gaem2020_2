@@ -12,8 +12,8 @@
 
 #ifdef _IMGUI
 #include "imgui.h"
-#include "imgui_sdl.h"
 #include "imgui_impl_sdl.h"
+#include "imgui_impl_opengl3.h"
 #endif
 
 #include <SDL.h>
@@ -61,10 +61,6 @@ void init() {
 		Debug::out << IMG_GetError();
 	}
 
-	if (IMG_Init(IMG_INIT_PNG) == 0) {
-		Debug::out << IMG_GetError();
-	}
-
 	if (TTF_Init() != 0) {
 		Debug::out << TTF_GetError();
 	}
@@ -84,7 +80,8 @@ void init() {
 #ifdef _IMGUI
 	ImGui::CreateContext();
 	ImGui_ImplSDL2_InitForOpenGL(Window::window, nullptr);
-	ImGuiSDL::Initialize(Window::renderer, Window::GAME_WIDTH, Window::GAME_HEIGHT);
+	const char* glsl_version = "#version 120";
+	ImGui_ImplOpenGL3_Init(glsl_version);
 #endif
 
 	Assets::LoadAll();
@@ -114,6 +111,9 @@ void main_loop() {
 	}
 
 #ifdef _IMGUI
+	//GPU_ActivateShaderProgram(0, NULL);
+	GPU_FlushBlitBuffer(); // IMPORTANT: run GPU_FlushBlitBuffer before ImGui_ImplOpenGL3_NewFrame();
+	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL2_NewFrame(Window::window);
 	ImGui::NewFrame();
 #endif
@@ -209,14 +209,11 @@ void main_loop() {
 #endif
 
 #ifdef _IMGUI
-	// If we don't reset the viewport and scale, imgui mouse input gets messed up
-	SDL_RenderSetViewport(Window::renderer, NULL);
-	SDL_RenderSetScale(Window::renderer, 1, 1);
 	ImGui::Render();
-	ImGuiSDL::Render(ImGui::GetDrawData());
-	Window::ResetViewport();
+	SDL_GL_MakeCurrent(Window::window, Window::target->context->context);
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 #endif
 
-	SDL_RenderPresent(Window::renderer);
+	GPU_Flip(Window::target);
 }
 

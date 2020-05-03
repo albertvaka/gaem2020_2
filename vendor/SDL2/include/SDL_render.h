@@ -100,9 +100,9 @@ typedef enum
  */
 typedef enum
 {
-    SDL_TEXTUREACCESS_STATIC,    /**< Changes rarely, not lockable */
-    SDL_TEXTUREACCESS_STREAMING, /**< Changes frequently, lockable */
-    SDL_TEXTUREACCESS_TARGET     /**< Texture can be used as a render target */
+    SDL_TextureACCESS_STATIC,    /**< Changes rarely, not lockable */
+    SDL_TextureACCESS_STREAMING, /**< Changes frequently, lockable */
+    SDL_TextureACCESS_TARGET     /**< Texture can be used as a render target */
 } SDL_TextureAccess;
 
 /**
@@ -110,9 +110,9 @@ typedef enum
  */
 typedef enum
 {
-    SDL_TEXTUREMODULATE_NONE = 0x00000000,     /**< No modulation */
-    SDL_TEXTUREMODULATE_COLOR = 0x00000001,    /**< srcC = srcC * color */
-    SDL_TEXTUREMODULATE_ALPHA = 0x00000002     /**< srcA = srcA * alpha */
+    SDL_TextureMODULATE_NONE = 0x00000000,     /**< No modulation */
+    SDL_TextureMODULATE_COLOR = 0x00000001,    /**< srcC = srcC * color */
+    SDL_TextureMODULATE_ALPHA = 0x00000002     /**< srcA = srcA * alpha */
 } SDL_TextureModulate;
 
 /**
@@ -454,14 +454,14 @@ extern DECLSPEC int SDLCALL SDL_UpdateYUVTexture(SDL_Texture * texture,
  *  \brief Lock a portion of the texture for write-only pixel access.
  *
  *  \param texture   The texture to lock for access, which was created with
- *                   ::SDL_TEXTUREACCESS_STREAMING.
+ *                   ::SDL_TextureACCESS_STREAMING.
  *  \param rect      A pointer to the rectangle to lock for access. If the rect
  *                   is NULL, the entire texture will be locked.
  *  \param pixels    This is filled in with a pointer to the locked pixels,
  *                   appropriately offset by the locked area.
  *  \param pitch     This is filled in with the pitch of the locked pixels.
  *
- *  \return 0 on success, or -1 if the texture is not valid or was not created with ::SDL_TEXTUREACCESS_STREAMING.
+ *  \return 0 on success, or -1 if the texture is not valid or was not created with ::SDL_TextureACCESS_STREAMING.
  *
  *  \sa SDL_UnlockTexture()
  */
@@ -474,13 +474,13 @@ extern DECLSPEC int SDLCALL SDL_LockTexture(SDL_Texture * texture,
  *         Expose it as a SDL surface.
  *
  *  \param texture   The texture to lock for access, which was created with
- *                   ::SDL_TEXTUREACCESS_STREAMING.
+ *                   ::SDL_TextureACCESS_STREAMING.
  *  \param rect      A pointer to the rectangle to lock for access. If the rect
  *                   is NULL, the entire texture will be locked.
  *  \param surface   This is filled in with a SDL surface representing the locked area
  *                   Surface is freed internally after calling SDL_UnlockTexture or SDL_DestroyTexture.
  *
- *  \return 0 on success, or -1 if the texture is not valid or was not created with ::SDL_TEXTUREACCESS_STREAMING.
+ *  \return 0 on success, or -1 if the texture is not valid or was not created with ::SDL_TextureACCESS_STREAMING.
  *
  *  \sa SDL_UnlockTexture()
  */
@@ -510,7 +510,7 @@ extern DECLSPEC SDL_bool SDLCALL SDL_RenderTargetSupported(SDL_Renderer *rendere
  * \brief Set a texture as the current rendering target.
  *
  * \param renderer The renderer.
- * \param texture The targeted texture, which must be created with the SDL_TEXTUREACCESS_TARGET flag, or NULL for the default render target
+ * \param texture The targeted texture, which must be created with the SDL_TextureACCESS_TARGET flag, or NULL for the default render target
  *
  * \return 0 on success, or -1 on error
  *

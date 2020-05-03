@@ -7,19 +7,19 @@
 #include <SDL_image.h>
 #include <SDL_mixer.h>
 
-SDL_Texture* Assets::hospitalTexture;
+GPU_Image* Assets::hospitalTexture;
 
-std::array<SDL_Texture*, 3> Assets::sunTextures;	
+std::array<GPU_Image*, 3> Assets::sunTextures;	
 
-SDL_Texture* Assets::marioTexture;
+GPU_Image* Assets::marioTexture;
 
-SDL_Texture* Assets::casaTexture;
-SDL_Texture* Assets::plantTexture;
+GPU_Image* Assets::casaTexture;
+GPU_Image* Assets::plantTexture;
 
-SDL_Texture* Assets::spritesTexture;
-SDL_Texture* Assets::npcTexture;
+GPU_Image* Assets::spritesTexture;
+GPU_Image* Assets::npcTexture;
 
-SDL_Texture* Assets::doggoTexture;
+GPU_Image* Assets::doggoTexture;
 
 TTF_Font* Assets::font_30;
 TTF_Font* Assets::font_30_outline;
@@ -44,21 +44,14 @@ Sound Assets::soundDoggo3;
 
 Mix_Music* Assets::sceneMusic[2];
 
-SDL_Texture* loadImage(const std::string& path) {
+GPU_Image* loadImage(const std::string& path) {
 
-    SDL_Surface* surface = IMG_Load(path.c_str());
-    if (!surface) {
+    GPU_Image* texture = GPU_LoadImage(path.c_str());
+    if (!texture) {
         Debug::out << "Unable to load image '" << path.c_str() << "': " << IMG_GetError();
         return nullptr;
     }
-    
-    SDL_Texture* texture = SDL_CreateTextureFromSurface(Window::renderer, surface);
-    if (!texture) {
-        Debug::out << "Unable to create texture for '" << path.c_str() << "': " << SDL_GetError();
-    }
-
-    SDL_FreeSurface(surface);
-
+    GPU_SetImageFilter(texture, GPU_FILTER_NEAREST);
     return texture;
 }
 

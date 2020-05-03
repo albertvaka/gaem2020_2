@@ -38,15 +38,15 @@ struct Cistell : BoxEntity, EntS<Cistell>
 
 	void Draw() const
 	{
-		IntRect rect;
+		GPU_Rect rect;
 		if (contents == TOMATOES) {
-			rect = IntRect(168, 97, 25, 28);
+			rect = { 168, 97, 25, 28 };
 		}
 		else if (contents == WATER) {
-			rect = IntRect(141, 97, 25, 28);
+			rect = { 141, 97, 25, 28 };
 		}
 		else {
-			rect = IntRect(114, 97, 25, 28);
+			rect = { 114, 97, 25, 28 };
 		}
 		pos.Debuggerino();
 		Window::Draw(Assets::spritesTexture, pos)

@@ -70,7 +70,7 @@ JumpMan::JumpMan(int id)
 	: id(id)
 	, polvito(Assets::hospitalTexture)
 {
-	polvito.AddSprite(IntRect(69, 50, 2, 2));
+	polvito.AddSprite({ 69, 50, 2, 2 });
 
 	animation.Ensure(MARIO_IDLE);
 	size = standing_size;

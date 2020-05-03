@@ -1,26 +1,26 @@
 #include "window.h"
 #include "input.h"
-#include "SDL2_gfxPrimitives.h"
 #include "imgui_impl_sdl.h"
 #include "debug.h"
 
-namespace Camera {
-    float zoom = 1.f;
-    vec pos(0, 0);
-}
+#include "SDL_gpu.h"
 
+namespace Camera {
+    GPU_Camera camera;
+}
 namespace Window
 {
     SDL_Window* window;
-    SDL_Renderer* renderer;
+    GPU_Target* target;
     bool focus = true;
+    SDL_GLContext glcontext;
 }
 
 namespace Camera {
 
     //Useful for debug pourposes
     void MoveCameraWithArrows(float velocity, float dt) {
-        vec c = GetCenter();
+        vec c = GetTopLeft();
         float zoom = GetZoom();
         if (Keyboard::IsKeyPressed(SDL_SCANCODE_RIGHT))
         {
@@ -38,7 +38,7 @@ namespace Camera {
         {
             c.y -= velocity * dt * 10 / zoom;
         }
-        SetCenter(c);
+        SetTopLeft(c);
     }
 
     void ChangeZoomWithPlusAndMinus(float zoomVel, float dt)
@@ -51,14 +51,15 @@ namespace Camera {
         }
         if (Keyboard::IsKeyPressed(SDL_SCANCODE_KP_MINUS)) {
             zoom -= zoomVel * dt;
+            if (zoom < 0.01) zoom = 0.01;
             SetZoom(zoom);
         }
     }
-
 }
+
 #if __WIN32__
 #pragma comment(lib, "Shcore.lib")
-#include <ShellScalingAPI.h>
+#include <ShellScalingApi.h>
 #endif
 
 namespace Window
@@ -68,30 +69,53 @@ namespace Window
 #if __WIN32__
         SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE);
 #endif
-
+        
         SDL_DisplayMode dm;
         SDL_GetDesktopDisplayMode(0, &dm);
         int scale = Mates::MinOf(dm.w / GAME_WIDTH, dm.h / GAME_HEIGHT);
         Debug::out << "Scaling to x" << scale;
 
-        window = SDL_CreateWindow(WINDOW_TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, GAME_WIDTH*scale, GAME_HEIGHT*scale, SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
+        window = SDL_CreateWindow(WINDOW_TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, GAME_WIDTH * scale, GAME_HEIGHT * scale, SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI | SDL_WINDOW_OPENGL);
         if (window == NULL) {
             Debug::out << "Window Creation Error: " << SDL_GetError();
         }
-        renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-        if (renderer == NULL) {
-            Debug::out << "Renderer Creation Error: " << SDL_GetError();
-        }
+        GPU_SetInitWindow(SDL_GetWindowID(window));
+        GPU_SetLogCallback([](GPU_LogLevelEnum log_level, const char* format, va_list args) -> int {
+            char buffer[1024];
+            vsprintf(buffer, format, args);
+            Debug::out << std::string(buffer);
+            return 0;
+        });
+
+        target = GPU_Init(GAME_WIDTH, GAME_HEIGHT, GPU_DEFAULT_INIT_FLAGS);
+
+        // SDL-gpu anchors images at the center by default, change it to the top-left corner
+        GPU_SetDefaultAnchor(0, 0);
+
+        //FIXME: Too late for this game, but we have the option to set the Y coordinates the right way
+        //GPU_SetCoordinateMode(false);
+
+        GPU_EnableCamera(target, true);
+        Camera::camera = GPU_GetDefaultCamera();
+        Camera::camera.use_centered_origin = false;
+        Camera::SetTopLeft(0, 0);
+
         ResetViewport();
     }
 
     bool IsMouseInsideWindow()
 	{
-
         //sf::Vector2i vec = sf::Mouse::getPosition(*window);
         //if (vec.x < 0 || vec.x >(int)window->getSize().x) return false;
         //if (vec.y < 0 || vec.y >(int)window->getSize().y) return false;
         return true;
+    }
+
+    Draw::~Draw() {
+            // Pass anchor as rotation pivot, so it rotates around origin. We could change that to a different variable.
+            //GPU_SetAnchor(t, t->texture_w / origin.x, t->texture_h / origin.y);
+            GPU_BlitTransformX(t, srcp, Window::target, dest.x, dest.y, origin.x, origin.y, rotation, scale.x, scale.y);
+            GPU_SetRGBA(t, 255, 255, 255, 255);
     }
 
     void ProcessEvents()
@@ -121,91 +145,49 @@ namespace Window
                 break;
             case SDL_WINDOWEVENT:
                 if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
-                    ResetViewport();
+                    GPU_SetWindowResolution(event.window.data1, event.window.data2);
+                    GPU_SetVirtualResolution(Window::target, Window::GAME_WIDTH, Window::GAME_HEIGHT);
                 }
                 break;
             }
             //ImGui_ImplSDL2_ProcessEvent(&event);
         }
-
-        /*
-        sf::Event sfmlevent;
-        while (Window::window->pollEvent(sfmlevent))
-        {
-            switch (sfmlevent.type) {
-            case sf::Event::Resized: //To disable sfml's automatic scaling
-            {
-                // GameView: scale from center
-                vec currentCenter = Camera::gameView.getCenter();
-            //    Camera::gameView.setSize(sf::Vector2f(Window::window->getSize()));
-            //    Camera::gameView.setCenter(currentCenter);
-            //    Camera::gameView.zoom(1.f / Camera::zoom);
-            }
-                break;
-            }
-        }
-        */
     }
 
     
     namespace DrawPrimitive {
 
-        inline int fastfloor(const float x) { return x > 0 ? (int)x : (int)x - 1; }
-
         void Pixel(float x, float y, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
-            pixelRGBA(Window::renderer, x - Camera::pos.x, y - Camera::pos.y, r, g, b, a);
+            GPU_Pixel(Window::target, x, y, { r,g,b,a });
         }
 
-        void Rectangle(float _x1, float _y1, float _x2, float _y2, int thickness, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
-            int x1 = _x1 - Camera::pos.x;
-            int y1 = _y1 - Camera::pos.y;
-            int x2 = _x2 - Camera::pos.x;
-            int y2 = _y2 - Camera::pos.y;
+        void Rectangle(float x1, float y1, float x2, float y2, float thickness, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
             if (thickness < 0)
             {
-                boxRGBA(Window::renderer, x1, y1, x2, y2, r, g, b, a);
+                GPU_SetLineThickness(0);
+                GPU_RectangleFilled(Window::target, x1, y1, x2, y2, {r,g,b,a});
             }
-            else if (thickness == 1)
-            {
-                rectangleRGBA(Window::renderer, x1, y1, x2, y2, r, g, b, a);
-            } 
             else
             {
-                int e = thickness/2;
-                thickLineRGBA(Window::renderer, x1 - e, y1, x2 - e, y1, thickness, r, g, b, a); // top
-                thickLineRGBA(Window::renderer, x2 + 1, y1 - e, x2 + 1, y2 - e, thickness, r, g, b, a); // right
-                thickLineRGBA(Window::renderer, x1 + e, y2 + 1, x2 + e, y2 + 1, thickness, r, g, b, a); // bottom
-                thickLineRGBA(Window::renderer, x1, y1 + e, x1, y2 + e, thickness, r, g, b, a); // left
+                GPU_SetLineThickness(thickness);
+                GPU_Rectangle(Window::target, x1, y1, x2, y2, { r,g,b,a });
             }
         }
 
-        void Line(float x1, float y1, float x2, float y2, int thickness, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
-            thickLineRGBA(Window::renderer, x1 - Camera::pos.x, y1 - Camera::pos.y, x2 - Camera::pos.x, y2 - Camera::pos.y, thickness, r, g, b, a);
+        void Line(float x1, float y1, float x2, float y2, float thickness, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
+            GPU_SetLineThickness(thickness);
+            GPU_Line(Window::target, x1, y1, x2, y2, { r,g,b,a });
         }
 
-        vec CirclePoint(int index, int m_pointCount, int m_radius) {
-            static const float pi = 3.141592654f;
-
-            float angle = index * 2 * pi / m_pointCount - pi / 2;
-            float x = std::cos(angle) * m_radius;
-            float y = std::sin(angle) * m_radius;
-
-            return vec(x, y);
-        }
-
-        void Circle(float _x, float _y, int radius, int thickness, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
-            int x = _x - Camera::pos.x;
-            int y = _y - Camera::pos.y;
+        void Circle(float x, float y, int radius, float thickness, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
+            GPU_SetLineThickness(thickness);
             if (thickness < 0) {
-                filledCircleRGBA(Window::renderer, x, y, radius, r, g, b, a);
+                GPU_SetLineThickness(0);
+                GPU_CircleFilled(Window::target, x, y, radius, {r,g,b,a});
             }
             else {
-                //Hack: Use the renderer scale to increase the thickness
-                float scalex, scaley;
-                SDL_RenderGetScale(Window::renderer, &scalex, &scaley);
-                SDL_RenderSetScale(Window::renderer, thickness*scalex, thickness*scalex);
-                circleRGBA(Window::renderer, x/thickness, y/thickness, radius/thickness, r, g, b, a);
-                SDL_RenderSetScale(Window::renderer, scalex, scaley);
+                GPU_SetLineThickness(thickness);
+                GPU_Circle(Window::target, x, y, radius, {r,g,b,a});
             }
         }
     }

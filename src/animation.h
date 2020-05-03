@@ -5,7 +5,7 @@
 struct AnimationData
 {
 	const int frames;
-	const IntRect rect[16];
+	const GPU_Rect rect[16];
 	const int timer[16];
 };
 
@@ -89,13 +89,13 @@ struct Animation
 		}
 	}
 
-	const IntRect& CurrentFrame() const
+	const GPU_Rect& CurrentFrame() const
 	{
 		AnimationData* anim_data = &anim_lib[(int)anim_type];
 		return anim_data->rect[current_frame];
 	}
 
-	static const IntRect& AnimFrame(AnimationType type, int timer)
+	static const GPU_Rect& AnimFrame(AnimationType type, int timer)
 	{
 		AnimationData* anim_data = &anim_lib[(int)type];
 

@@ -8,7 +8,7 @@
 
 struct TiledTiles
 {
-	static const IntRect tileToTextureRect[];
+	static const GPU_Rect tileToTextureRect[];
 
 	enum Value : unsigned short
 	{

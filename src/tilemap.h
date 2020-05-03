@@ -49,7 +49,7 @@ struct Tile : TiledTiles
 	constexpr operator Value() const { return value; }  // Allow switch and comparisons.
 	explicit constexpr operator bool() = delete;        // Prevent if(tile)
 
-	constexpr const IntRect& textureRect() const { return tileToTextureRect[int(value)]; }
+	constexpr const GPU_Rect& textureRect() const { return tileToTextureRect[int(value)]; }
 
 private:
 	Value value;

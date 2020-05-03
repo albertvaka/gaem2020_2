@@ -4,7 +4,7 @@
 
 #include "sound.h"
 
-struct SDL_Texture;
+struct GPU_Image;
 typedef struct _TTF_Font TTF_Font;
 typedef struct _Mix_Music Mix_Music;
 
@@ -13,19 +13,19 @@ struct Assets
 	static void LoadAll();
 
 
-	static SDL_Texture* hospitalTexture;
+	static GPU_Image* hospitalTexture;
 
-	static std::array<SDL_Texture*, 3> sunTextures;
+	static std::array<GPU_Image*, 3> sunTextures;
 
-	static SDL_Texture* marioTexture;
+	static GPU_Image* marioTexture;
 
-	static SDL_Texture* spritesTexture;
-	static SDL_Texture* npcTexture;
+	static GPU_Image* spritesTexture;
+	static GPU_Image* npcTexture;
 
-	static SDL_Texture* casaTexture;
-	static SDL_Texture* plantTexture;
+	static GPU_Image* casaTexture;
+	static GPU_Image* plantTexture;
 
-	static SDL_Texture* doggoTexture;
+	static GPU_Image* doggoTexture;
 
 	static TTF_Font* font_30;
 	static TTF_Font* font_30_outline;

@@ -4,19 +4,19 @@
 
 #include "debug.h"
 
-#include <SDL.h>
+#include "SDL_gpu.h"
 
 namespace Camera
 {
-	extern float zoom;
-	extern vec pos;
+	extern GPU_Camera camera;
 }
 
 namespace Window
 {
 	extern SDL_Window* window;
-	extern SDL_Renderer* renderer;
+	extern GPU_Target* target;
 	extern bool focus;
+	extern SDL_GLContext glcontext;
 
 	constexpr const int GAME_HEIGHT = 420;
 	constexpr const int GAME_WIDTH = 828;
@@ -29,49 +29,53 @@ namespace Camera
 {
 	inline vec GetSize()
 	{
-		return vec(Window::GAME_WIDTH / zoom, Window::GAME_HEIGHT / zoom);
-	}
-
-	inline void SetTopLeft(const vec& center)
-	{
-		pos = center;
-	}
-
-	inline void SetTopLeft(float x, float y)
-	{
-		pos.x = x;
-		pos.y = y;
+		return vec(Window::GAME_WIDTH / camera.zoom_x, Window::GAME_HEIGHT / camera.zoom_y);
 	}
 
 	inline vec GetTopLeft()
 	{
-		return pos;
+		return vec(camera.x/camera.zoom_x, camera.y/camera.zoom_y);
 	}
-
-	inline void SetCenter(const vec& center)
-	{
-		pos = center - GetSize()/2.f;
-	}
-
-	inline void SetCenter(float x, float y) { SetCenter(vec(x, y)); }
 
 	inline vec GetCenter()
 	{
-		return pos + GetSize()/2.f;
+		return GetTopLeft() + GetSize() / 2.f;
 	}
+
+	inline void SetTopLeft(float x, float y)
+	{
+		camera.x = x*camera.zoom_x;
+		camera.y = y*camera.zoom_y;
+		GPU_SetCamera(Window::target, &camera);
+	}
+
+	inline void SetTopLeft(const vec& pos)
+	{
+		SetTopLeft(pos.x, pos.y);
+	}
+
+	inline void SetCenter(const vec& pos)
+	{
+		SetTopLeft(pos - GetSize() / 2.f);
+
+	}
+	inline void SetCenter(float x, float y)
+	{
+		SetCenter(vec(x, y));
+	}
+
 
 	inline Bounds GetBounds()
 	{
 		//return Bounds::fromCenter(GetCenter(), GetSize());
-		return Bounds(pos, GetSize());
+		return Bounds(GetTopLeft(), GetSize());
 	}
 
 	inline void ClampCameraTo(const Bounds& limit)
 	{
 		vec c = GetCenter();
 
-		vec screenSize(Window::GAME_HEIGHT, Window::GAME_HEIGHT);
-		screenSize /= zoom;
+		vec screenSize(Window::GAME_HEIGHT/camera.zoom_x, Window::GAME_HEIGHT/camera.zoom_y);
 		float halfScreenWidth = screenSize.x / 2.f;
 		float halfScreenHeight = screenSize.y / 2.f;
 
@@ -83,21 +87,24 @@ namespace Camera
 
 		SetCenter(c);
 	}
-
+	
 	// if preserve_center is false, we will zoom from the top-left corner
-	inline void SetZoom(float z, bool preserve_center = true)
+	inline void SetZoom(float z, bool preserve_center = true) 
 	{
 		vec c = GetCenter();
-		zoom = z;
-		Window::ResetViewport();
+		camera.zoom_x = z;
+		camera.zoom_y = z;
 		if (preserve_center) {
 			SetCenter(c);
+		}
+		else {
+			GPU_SetCamera(Window::target, &camera);
 		}
 	}
 
 	inline float GetZoom()
 	{
-		return zoom;
+		return camera.zoom_x;
 	}
 
 	//Useful for debug pourposes
@@ -105,23 +112,12 @@ namespace Camera
 	void ChangeZoomWithPlusAndMinus(float zoomVel, float dt);
 }
 
-
-struct IntRect : SDL_Rect {
-	IntRect() {}
-	constexpr IntRect(int x, int y, int width, int height) : SDL_Rect({x, y, width, height }) {}
-	constexpr IntRect(int x, int y, int size) : IntRect(x,y,size,size) { }
-	constexpr explicit IntRect(const Bounds& b) : IntRect(b.top,b.left,b.width,b.height) {}
-};
-
 namespace Window
 {
 	void Init();
 	void ProcessEvents();
 	inline void ResetViewport() {
-		SDL_RenderSetLogicalSize(Window::renderer, Window::GAME_WIDTH, Window::GAME_HEIGHT);
-		float x, y;
-		SDL_RenderGetScale(Window::renderer, &x, &y);
-		SDL_RenderSetScale(Window::renderer, x*Camera::zoom, y*Camera::zoom);
+		GPU_SetVirtualResolution(Window::target, Window::GAME_WIDTH, Window::GAME_HEIGHT);
 	}
 
 	inline bool HasFocus() { return focus; }
@@ -135,8 +131,7 @@ namespace Window
 	inline Bounds GetBounds() { return Bounds(vec::Zero, GetSize()); }
 
 	inline void Clear(uint8_t r, uint8_t g, uint8_t b) {
-		SDL_SetRenderDrawColor(Window::renderer, r, g, b, 255);
-		SDL_RenderClear(Window::renderer);
+		GPU_ClearRGBA(Window::target, r, g, b, 255);
 	}
 
 	namespace DrawPrimitive {
@@ -145,83 +140,66 @@ namespace Window
 		inline void Pixel(vec v, uint8_t r, uint8_t g, uint8_t b, uint8_t a) { Pixel(v.x, v.y, r, g, b, a); }
 
 		// pass thickness = -1 to draw a filled rectangle
-		void Rectangle(float x1, float y1, float x2, float y2, int thickness, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
-		inline void Rectangle(const Bounds& box, int thickness, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255) {
+		void Rectangle(float x1, float y1, float x2, float y2, float thickness, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
+		inline void Rectangle(const Bounds& box, float thickness, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255) {
 			Rectangle(box.Left(), box.Top(), box.Right(), box.Bottom(), thickness, r, g, b, a);
 		}
 
-		void Line(float x1, float y1, float x2, float y2, int thickness, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
-		inline void Line(const vec& v1, const vec& v2, int thickness, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255) {
+		void Line(float x1, float y1, float x2, float y2, float thickness, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
+		inline void Line(const vec& v1, const vec& v2, float thickness, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255) {
 			Line(v1.x, v1.y, v2.x, v2.y, thickness, r, g, b, a);
 		}
 
-		void Circle(float x, float y, int radius, int thickness, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
-		inline void Circle(const vec& v, int radius, int thickness, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255) {
+		void Circle(float x, float y, int radius, float thickness, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
+		inline void Circle(const vec& v, int radius, float thickness, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255) {
 			Circle(v.x, v.y, radius, thickness, r, g, b, a);
 		}
-		inline void Circle(const CircleBounds& bounds, int thickness, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255) {
+		inline void Circle(const CircleBounds& bounds, float thickness, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255) {
 			Circle(bounds.pos, bounds.radius, thickness, r, g, b, a);
 		}
 
 	}
 
 	struct Draw {
-		SDL_Texture* t;
-		SDL_FRect dest;
-		SDL_Rect src;
-		SDL_FPoint center;
-		SDL_Rect* srcp = nullptr;
-		SDL_FPoint* centerp = nullptr;
-		SDL_RendererFlip flip = SDL_FLIP_NONE;
+		GPU_Image* t;
+		vec dest;
+		GPU_Rect src = { 0,0,0,0 };
+		GPU_Rect* srcp = nullptr;
 		float rotation = 0;
 		vec scale = vec(1.f, 1.f);
+		vec origin = vec(0.f,0.f);
 
-		constexpr Draw(SDL_Texture* t, const vec& pos) : t(t), dest({ pos.x, pos.y, 0, 0 }), src({ 0,0,0,0 }), center({0,0}) {
+		constexpr Draw(GPU_Image* t, const vec& pos) : t(t), dest(pos) {
+
 		}
 
-		constexpr Draw& withRect(int x, int y, int w, int h) {
-			src = { x, y, w, h };
-			srcp = &src;
-			return *this;
+		constexpr Draw& withRect(float x, float y, float w, float h) {
+			return withRect({ x, y, w, h });
 		}
 
-		constexpr Draw& withRect(IntRect r) {
+		constexpr Draw& withRect(const GPU_Rect& r) {
 			src = r;
 			srcp = &src;
 			return *this;
 		}
 
-		Draw& withColor(uint8_t r, uint8_t g, uint8_t b) {
-			SDL_SetTextureColorMod(t, r, g, b);
-			return *this;
-		}
-
-		Draw& withAlpha(uint8_t a) {
-			SDL_SetTextureAlphaMod(t, a);
+		Draw& withColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
+			GPU_SetRGBA(t, r, g, b, a);
 			return *this;
 		}
 
 		constexpr Draw& withOrigin(float x, float y) {
-			center.x = x;
-			center.y = y;
-			centerp = &center;
+			origin.x = x;
+			origin.y = y;
 			return *this;
 		}
 
 		constexpr Draw& withOrigin(const vec& o) {
-			center.x = o.x;
-			center.y = o.y;
-			centerp = &center;
-			return *this;
+			return withOrigin(o.x, o.y);
 		}
 
 		constexpr Draw& withRotation(float r) {
 			rotation = r;
-			return *this;
-		}
-
-		constexpr Draw& withScale(float s) {
-			scale = vec(s, s);
 			return *this;
 		}
 
@@ -230,50 +208,25 @@ namespace Window
 			return *this;
 		}
 
+		constexpr Draw& withScale(float s) {
+			return withScale(s, s);
+		}
+
 		constexpr Draw& withScale(const vec& v) {
-			scale = v;
-			return *this;
+			return withScale(v.x, v.y);
 		}
 
 		constexpr Draw& withFlip(bool h, bool v = false) {
-			if (v) {
-				flip = SDL_RendererFlip(flip | SDL_FLIP_VERTICAL);
-			}
-			if (h) {
-				flip = SDL_RendererFlip(flip | SDL_FLIP_HORIZONTAL);
-			}
+			//TODO
 			return *this;
 		}
 
-		~Draw() {
-			if (centerp) {
-				center.x *= scale.x;
-				center.y *= scale.y;
-				dest.x -= center.x;
-				dest.y -= center.y;
-			}
-			dest.x -= Camera::pos.x;
-			dest.y -= Camera::pos.y;
-			if (!srcp) {
-				SDL_QueryTexture(t, NULL, NULL, &src.w, &src.h);
-			}
-			dest.w = src.w * scale.x;
-			dest.h = src.h * scale.y;
-			SDL_RenderCopyExF(Window::renderer, t, srcp, &dest, rotation, centerp, flip);
-			SDL_SetTextureColorMod(t, 255, 255, 255);
-			SDL_SetTextureAlphaMod(t, 255);
-		};
+		~Draw();
 	};
 
 
 }
 
-
-inline std::ostream& operator<<(std::ostream& os, const IntRect& rhs)
-{
-	os << rhs.x << "," << rhs.y << "," << rhs.w << "," << rhs.h;
-	return os;
-}
 
 inline std::ostream& operator<<(std::ostream& os, const SDL_Point& rhs)
 {
@@ -294,6 +247,12 @@ inline std::ostream& operator<<(std::ostream& os, const SDL_Rect& rhs)
 }
 
 inline std::ostream& operator<<(std::ostream& os, const SDL_FRect& rhs)
+{
+	os << rhs.x << "," << rhs.y << "," << rhs.w << "," << rhs.h;
+	return os;
+}
+
+inline std::ostream& operator<<(std::ostream& os, const GPU_Rect& rhs)
 {
 	os << rhs.x << "," << rhs.y << "," << rhs.w << "," << rhs.h;
 	return os;

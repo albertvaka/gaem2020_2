@@ -1,6 +1,6 @@
 #include "tiledexport.h"
 
-const IntRect TiledTiles::tileToTextureRect[] = {
+const GPU_Rect TiledTiles::tileToTextureRect[] = {
 	{},	//NONE
 	{ 32 * 16, 19 * 16, 16, 16 }, //=1, ONEWAY_1, gid=1039
 	{ 36 * 16, 11 * 16, 16, 16 }, //=2, RSLOPE_1, gid=619

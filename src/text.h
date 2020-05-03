@@ -2,6 +2,7 @@
 
 #include <SDL.h>
 #include <SDL_ttf.h>
+#include "SDL_gpu.h"
 #include <string>
 #include <vector>
 #include "vector.h"
@@ -15,20 +16,24 @@ class Text
 	SDL_Color outline_color = { 0,0,0 };
 	int spacing = 0;
 	int empty_line_spacing = 12;
-	SDL_Texture* cached = nullptr;
+	GPU_Image* cached = nullptr;
 
 public:
 	Text(TTF_Font* font = nullptr, TTF_Font* font_outline = nullptr) : font(font), font_outline(font_outline) {}
 	~Text() {
 		if (cached) { 
-			SDL_DestroyTexture(cached); 
+			GPU_FreeImage(cached); 
 		}
 	}
 
-	operator SDL_Texture*() {
+	operator GPU_Image* () {
+		return getImage();
+	}
+
+	GPU_Image* getImage() {
 		if (cached == nullptr) {
 			SDL_Surface* surface = MultiLineRender();
-			cached = SDL_CreateTextureFromSurface(Window::renderer, surface);
+			cached = GPU_CopyImageFromSurface(surface);
 			SDL_FreeSurface(surface);
 			if (!cached) {
 				printf("Unable to create text texture. SDL Error: %s\n", SDL_GetError());
@@ -91,15 +96,14 @@ public:
 	}
 
 	vec getSize() {
-		int w, h;
-		SDL_QueryTexture(*this, NULL, NULL, &w, &h);
-		return vec(w, h);
+		GPU_Image* image = getImage();
+		return vec(image->texture_w, image->texture_h);
 	}
 private:
 	
 	void Invalidate() {
 		if (cached) {
-			SDL_DestroyTexture(cached);
+			GPU_FreeImage(cached);
 			cached = nullptr;
 		}
 	}

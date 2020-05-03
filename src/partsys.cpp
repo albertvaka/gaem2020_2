@@ -25,7 +25,7 @@ void PartSys::Draw() const {
 			alpha = 2*bounce_alpha - alpha;
 		}
 		Window::Draw(texture, p.pos)
-			.withAlpha(255 * alpha)
+			.withColor(255,255,255,255 * alpha)
 			.withScale(p.scale)
 			.withRect(sprites[p.sprite])
 			.withRotation(p.rotation);

@@ -7,7 +7,7 @@
 
 struct PartSys {
 
-	SDL_Texture* texture;
+	GPU_Image* texture;
 
 	struct Particle {
 		int sprite;
@@ -82,9 +82,9 @@ struct PartSys {
 
 	float time = 0.f;
 
-	PartSys(SDL_Texture* t) : texture(t) { }
+	PartSys(GPU_Image* t) : texture(t) { }
 
-	void AddSprite(const IntRect& rect) {
+	void AddSprite(const GPU_Rect& rect) {
 		sprites.emplace_back(rect);
 	}
 
@@ -112,6 +112,6 @@ struct PartSys {
 private:
 	//TODO: Turn into static arrays
 	std::vector<Particle> particles;
-	mutable std::vector<IntRect> sprites;
+	mutable std::vector<GPU_Rect> sprites;
 };
 

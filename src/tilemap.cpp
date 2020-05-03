@@ -59,7 +59,7 @@ void TileMap::Draw() const
 	int bottom = (screen.Bottom() / Tile::size) + 1;
 
 	//out of bounds tile
-	IntRect outOfBounds(3 * 16, 2 * 16, 16, 16);
+	GPU_Rect outOfBounds = { 3 * 16, 2 * 16, 16, 16 };
 
 #ifdef USE_VAO
 	size_t maxsize = (right - left) * (bottom - top) * 4;

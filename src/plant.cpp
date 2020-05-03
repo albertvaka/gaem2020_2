@@ -128,7 +128,7 @@ void Plant::Draw() const {
   uint8_t color = alive? 255 : 128;
   Window::Draw(Assets::plantTexture, pos)
       .withRect(0, 64 - 16 * height, 16, 16 * height)
-      .withColor(color, color, color)
+      .withColor(color, color, color, 255)
       .withFlip(mirror)
       .withOrigin(size / 2.0f);
 

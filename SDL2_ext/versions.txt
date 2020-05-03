@@ -1,2 +1,0 @@
-imgui_impl_SDL https://github.com/ocornut/imgui/blob/03453246464cdd414c2f76d4a2569d2d5511870b/examples/imgui_impl_sdl.cpp
-imgui_sdl https://github.com/Tyyppi77/imgui_sdl/tree/0812f5ed05c0eb801fdb8ae71eb0cc75c95a8cff

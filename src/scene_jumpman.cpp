@@ -360,7 +360,7 @@ static void DrawSun()
 			assert(ratio >= 0 && ratio <= 1.0f);
 
 			Window::Draw(Assets::sunTextures[std::min(i, 2)], vec(217.0f, 0.0f))
-				.withAlpha(50 * ratio);
+				.withColor(255,255,255,50 * ratio);
 		}
 	}
 }
