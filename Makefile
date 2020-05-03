@@ -4,14 +4,15 @@ EXEC	= bin/gaem2020
 SRC	= $(wildcard src/*.cpp)
 OBJ	= $(patsubst src/%, obj/%.o, $(SRC))
 
-DEP_SRC = $(shell find vendor/ -type f -name '*.cpp' -o -name '*.c')
+DEP_SRC = $(shell find vendor/ -type f -name '*.cpp' -o -name '*.c' ! -path 'vendor/glew/*')
 DEP_OBJ = $(patsubst vendor/%, obj/vendor/%.o, $(DEP_SRC))
-DEP_INCLUDE = $(patsubst vendor/%, -I vendor/%, $(shell find vendor -maxdepth 2 -path \*\include) $(shell find vendor -mindepth 1 -maxdepth 1 -type d '!' -exec test -e "{}/include" ';' -print))
+DEP_INCLUDE = $(patsubst vendor/%, -I vendor/%, $(shell find vendor -maxdepth 2 -path \*\include ! -path vendor/SDL2/include) $(shell find vendor -mindepth 1 -maxdepth 1 ! -path vendor/glew -type d '!' -exec test -e "{}/include" ';' -print ))
 
-OPTIM	= z
-DEBUG	= 1
-PROFILE	= 0
-IMGUI	= 1
+OPTIM     = z
+DEBUG     = 0
+PROFILE   = 0
+IMGUI     = 0
+WEBGL_VER = 2
 
 # Bash so we can use curly braces expansion
 SHELL = bash
@@ -22,7 +23,12 @@ CXXFLAGS = $(CFLAGS) -std=c++17 -fno-rtti -fno-exceptions
 LDFLAGS	 = $(CXXFLAGS) $(shell sdl2-config --libs) -lSDL2_ttf -lSDL2_mixer $(LINKER_FLAGS)
 
 ifdef EMSCRIPTEN
-	EMSCRIPTEN_FLAGS=-s USE_SDL_TTF=2 -s USE_SDL_MIXER=2 -s USE_OGG -s USE_VORBIS -s ALLOW_MEMORY_GROWTH=1 --preload-file bin/data@/data --use-preload-plugins -s SDL2_IMAGE_FORMATS='["png"]'
+	ifeq ($(strip $(WEBGL_VER)),2)
+		WEBGL_FLAGS=-s MIN_WEBGL_VERSION=2 -s MAX_WEBGL_VERSION=2 -DSDL_GPU_DISABLE_GLES_2
+	else
+		WEBGL_FLAGS=-s MIN_WEBGL_VERSION=1 -s MAX_WEBGL_VERSION=1 -DSDL_GPU_DISABLE_GLES_3
+	endif
+	EMSCRIPTEN_FLAGS=-s USE_SDL_TTF=2 -s USE_SDL_MIXER=2 -s USE_OGG -s USE_VORBIS -s ALLOW_MEMORY_GROWTH=1 --preload-file bin/data@/data --use-preload-plugins $(WEBGL_FLAGS)
 	OUT_FILE=$(EXEC).js
 	LINKER_FLAGS=
 else
@@ -30,9 +36,9 @@ else
 	OUT_FILE=$(EXEC)
 
 	ifeq ($(shell uname),Linux)
-		LINKER_FLAGS=-lGL
+		LINKER_FLAGS=-lGL -lGLEW
 	else
-		LINKER_FLAGS=-framework OpenGL
+		LINKER_FLAGS=-framework OpenGL -lGLEW
 	endif
 endif
 
@@ -71,3 +77,6 @@ clean:
 
 www:
 	emmake $(MAKE)
+
+debug:
+	@echo $(DEP_SRC)
