@@ -69,12 +69,14 @@ namespace Window
 #if __WIN32__
         SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE);
 #endif
-        
+    #ifdef __EMSCRIPTEN__
+        int scale = 1;
+    #else
         SDL_DisplayMode dm;
         SDL_GetDesktopDisplayMode(0, &dm);
         int scale = Mates::MinOf(dm.w / GAME_WIDTH, dm.h / GAME_HEIGHT);
         Debug::out << "Scaling to x" << scale;
-
+    #endif
         window = SDL_CreateWindow(WINDOW_TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, GAME_WIDTH * scale, GAME_HEIGHT * scale, SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI | SDL_WINDOW_OPENGL);
         if (window == NULL) {
             Debug::out << "Window Creation Error: " << SDL_GetError();
