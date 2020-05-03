@@ -12,13 +12,13 @@ See a particular renderer's *.c file for specifics. */
 
 // All shapes start this way for setup and so they can access the blit buffer properly
 #define BEGIN_UNTEXTURED(function_name, shape, num_additional_vertices, num_additional_indices) \
-	GPU_CONTEXT_DATA* cdata; \
-	float* blit_buffer; \
-	unsigned short* index_buffer; \
-	int vert_index; \
-	int color_index; \
-	float r, g, b, a; \
-	unsigned short blit_buffer_starting_index; \
+    GPU_CONTEXT_DATA* cdata; \
+    float* blit_buffer; \
+    unsigned short* index_buffer; \
+    int vert_index; \
+    int color_index; \
+    float r, g, b, a; \
+    unsigned short blit_buffer_starting_index; \
     if(target == NULL) \
     { \
         GPU_PushErrorCode(function_name, GPU_ERROR_NULL_ARGUMENT, "target"); \
@@ -88,20 +88,20 @@ See a particular renderer's *.c file for specifics. */
 
 static float SetLineThickness(GPU_Renderer* renderer, float thickness)
 {
-	float old;
+    float old;
 
     if(renderer->current_context_target == NULL)
         return 1.0f;
     
-	old = renderer->current_context_target->context->line_thickness;
-	if(old != thickness)
+    old = renderer->current_context_target->context->line_thickness;
+    if(old != thickness)
         renderer->impl->FlushBlitBuffer(renderer);
     
-	renderer->current_context_target->context->line_thickness = thickness;
-	#ifndef SDL_GPU_SKIP_LINE_WIDTH
-	glLineWidth(thickness);
-	#endif
-	return old;
+    renderer->current_context_target->context->line_thickness = thickness;
+    #ifndef SDL_GPU_SKIP_LINE_WIDTH
+    glLineWidth(thickness);
+    #endif
+    return old;
 }
 
 static float GetLineThickness(GPU_Renderer* renderer)
@@ -118,7 +118,7 @@ static void Pixel(GPU_Renderer* renderer, GPU_Target* target, float x, float y, 
 
 static void Line(GPU_Renderer* renderer, GPU_Target* target, float x1, float y1, float x2, float y2, SDL_Color color)
 {
-	float thickness = GetLineThickness(renderer);
+    float thickness = GetLineThickness(renderer);
 
     float t = thickness/2;
     float line_angle = atan2f(y2 - y1, x2 - x1);
@@ -190,11 +190,11 @@ static void Arc(GPU_Renderer* renderer, GPU_Target* target, float x, float y, fl
 
     numSegments = (int)((fabs(end_angle - start_angle)*PI/180)/dt);
     if(numSegments == 0)
-		return;
+        return;
     
-	{
-		BEGIN_UNTEXTURED("GPU_Arc", GL_TRIANGLES, 2*(numSegments), 6*(numSegments));
-		
+    {
+        BEGIN_UNTEXTURED("GPU_Arc", GL_TRIANGLES, 2*(numSegments), 6*(numSegments));
+        
         c = cosf(dt);
         s = sinf(dt);
         
@@ -205,20 +205,20 @@ static void Arc(GPU_Renderer* renderer, GPU_Target* target, float x, float y, fl
 
         BEGIN_UNTEXTURED_SEGMENTS(x+inner_radius*dx, y+inner_radius*dy, x+outer_radius*dx, y+outer_radius*dy, r, g, b, a);
 
-		for (i = 1; i < numSegments; i++)
-		{
+        for (i = 1; i < numSegments; i++)
+        {
             tempx = c * dx - s * dy;
             dy = s * dx + c * dy;
             dx = tempx;
             SET_UNTEXTURED_SEGMENTS(x+inner_radius*dx, y+inner_radius*dy, x+outer_radius*dx, y+outer_radius*dy, r, g, b, a);
-		}
+        }
 
-		// Last point
+        // Last point
         end_angle *= RAD_PER_DEG;
         dx = cosf(end_angle);
         dy = sinf(end_angle);
         END_UNTEXTURED_SEGMENTS(x+inner_radius*dx, y+inner_radius*dy, x+outer_radius*dx, y+outer_radius*dy, r, g, b, a);
-	}
+    }
 }
 
 // ArcFilled() might call CircleFilled()
@@ -267,10 +267,10 @@ static void ArcFilled(GPU_Renderer* renderer, GPU_Target* target, float x, float
 
     numSegments = (int)((fabs(end_angle - start_angle)*RAD_PER_DEG)/dt);
     if(numSegments == 0)
-		return;
+        return;
 
-	{
-		BEGIN_UNTEXTURED("GPU_ArcFilled", GL_TRIANGLES, 3 + (numSegments - 1) + 1, 3 + (numSegments - 1) * 3 + 3);
+    {
+        BEGIN_UNTEXTURED("GPU_ArcFilled", GL_TRIANGLES, 3 + (numSegments - 1) + 1, 3 + (numSegments - 1) * 3 + 3);
         
         c = cosf(dt);
         s = sinf(dt);
@@ -280,33 +280,33 @@ static void ArcFilled(GPU_Renderer* renderer, GPU_Target* target, float x, float
         dx = cosf(start_angle);
         dy = sinf(start_angle);
 
-		// First triangle
-		SET_UNTEXTURED_VERTEX(x, y, r, g, b, a);
-		SET_UNTEXTURED_VERTEX(x + radius*dx, y + radius*dy, r, g, b, a); // first point
-		
+        // First triangle
+        SET_UNTEXTURED_VERTEX(x, y, r, g, b, a);
+        SET_UNTEXTURED_VERTEX(x + radius*dx, y + radius*dy, r, g, b, a); // first point
+        
         tempx = c * dx - s * dy;
         dy = s * dx + c * dy;
         dx = tempx;
-		SET_UNTEXTURED_VERTEX(x + radius*dx, y + radius*dy, r, g, b, a); // new point
+        SET_UNTEXTURED_VERTEX(x + radius*dx, y + radius*dy, r, g, b, a); // new point
 
-		for (i = 2; i < numSegments + 1; i++)
-		{
+        for (i = 2; i < numSegments + 1; i++)
+        {
             tempx = c * dx - s * dy;
             dy = s * dx + c * dy;
             dx = tempx;
-			SET_INDEXED_VERTEX(0);  // center
-			SET_INDEXED_VERTEX(i);  // last point
-			SET_UNTEXTURED_VERTEX(x + radius*dx, y + radius*dy, r, g, b, a); // new point
-		}
+            SET_INDEXED_VERTEX(0);  // center
+            SET_INDEXED_VERTEX(i);  // last point
+            SET_UNTEXTURED_VERTEX(x + radius*dx, y + radius*dy, r, g, b, a); // new point
+        }
 
-		// Last triangle
+        // Last triangle
         end_angle *= RAD_PER_DEG;
         dx = cosf(end_angle);
         dy = sinf(end_angle);
-		SET_INDEXED_VERTEX(0);  // center
-		SET_INDEXED_VERTEX(i);  // last point
-		SET_UNTEXTURED_VERTEX(x + radius*dx, y + radius*dy, r, g, b, a); // new point
-	}
+        SET_INDEXED_VERTEX(0);  // center
+        SET_INDEXED_VERTEX(i);  // last point
+        SET_UNTEXTURED_VERTEX(x + radius*dx, y + radius*dy, r, g, b, a); // new point
+    }
 }
 
 
@@ -316,7 +316,7 @@ Incremental rotation circle algorithm
 
 static void Circle(GPU_Renderer* renderer, GPU_Target* target, float x, float y, float radius, SDL_Color color)
 {
-	float thickness = GetLineThickness(renderer);
+    float thickness = GetLineThickness(renderer);
     float dx, dy;
     int i;
     float t = thickness/2;
@@ -393,7 +393,7 @@ static void CircleFilled(GPU_Renderer* renderer, GPU_Target* target, float x, fl
 
 static void Ellipse(GPU_Renderer* renderer, GPU_Target* target, float x, float y, float rx, float ry, float degrees, SDL_Color color)
 {
-	float thickness = GetLineThickness(renderer);
+    float thickness = GetLineThickness(renderer);
     float dx, dy;
     int i;
     float t = thickness/2;
@@ -498,8 +498,8 @@ static void EllipseFilled(GPU_Renderer* renderer, GPU_Target* target, float x, f
 
 static void Sector(GPU_Renderer* renderer, GPU_Target* target, float x, float y, float inner_radius, float outer_radius, float start_angle, float end_angle, SDL_Color color)
 {
-	GPU_bool circled;
-	float dx1, dy1, dx2, dy2, dx3, dy3, dx4, dy4;
+    GPU_bool circled;
+    float dx1, dy1, dx2, dy2, dx3, dy3, dx4, dy4;
 
     if(inner_radius < 0.0f)
         inner_radius = 0.0f;
@@ -555,11 +555,11 @@ static void Sector(GPU_Renderer* renderer, GPU_Target* target, float x, float y,
 
 static void SectorFilled(GPU_Renderer* renderer, GPU_Target* target, float x, float y, float inner_radius, float outer_radius, float start_angle, float end_angle, SDL_Color color)
 {
-	float t;
-	float dt;
-	float dx, dy;
+    float t;
+    float dt;
+    float dx, dy;
 
-	int numSegments;
+    int numSegments;
 
     if(inner_radius < 0.0f)
         inner_radius = 0.0f;
@@ -598,80 +598,80 @@ static void SectorFilled(GPU_Renderer* renderer, GPU_Target* target, float x, fl
 
     numSegments = (int)(fabs(end_angle - start_angle)/dt);
     if(numSegments == 0)
-		return;
+        return;
 
-	{
-		int i;
-		GPU_bool use_inner;
-		BEGIN_UNTEXTURED("GPU_SectorFilled", GL_TRIANGLES, 3 + (numSegments - 1) + 1, 3 + (numSegments - 1) * 3 + 3);
+    {
+        int i;
+        GPU_bool use_inner;
+        BEGIN_UNTEXTURED("GPU_SectorFilled", GL_TRIANGLES, 3 + (numSegments - 1) + 1, 3 + (numSegments - 1) * 3 + 3);
 
-		use_inner = GPU_FALSE;  // Switches between the radii for the next point
+        use_inner = GPU_FALSE;  // Switches between the radii for the next point
 
-		// First triangle
-		dx = inner_radius*cosf(t*RAD_PER_DEG);
-		dy = inner_radius*sinf(t*RAD_PER_DEG);
-		SET_UNTEXTURED_VERTEX(x + dx, y + dy, r, g, b, a);
+        // First triangle
+        dx = inner_radius*cosf(t*RAD_PER_DEG);
+        dy = inner_radius*sinf(t*RAD_PER_DEG);
+        SET_UNTEXTURED_VERTEX(x + dx, y + dy, r, g, b, a);
 
-		dx = outer_radius*cosf(t*RAD_PER_DEG);
-		dy = outer_radius*sinf(t*RAD_PER_DEG);
-		SET_UNTEXTURED_VERTEX(x + dx, y + dy, r, g, b, a);
-		t += dt;
-		dx = inner_radius*cosf(t*RAD_PER_DEG);
-		dy = inner_radius*sinf(t*RAD_PER_DEG);
-		SET_UNTEXTURED_VERTEX(x + dx, y + dy, r, g, b, a);
-		t += dt;
+        dx = outer_radius*cosf(t*RAD_PER_DEG);
+        dy = outer_radius*sinf(t*RAD_PER_DEG);
+        SET_UNTEXTURED_VERTEX(x + dx, y + dy, r, g, b, a);
+        t += dt;
+        dx = inner_radius*cosf(t*RAD_PER_DEG);
+        dy = inner_radius*sinf(t*RAD_PER_DEG);
+        SET_UNTEXTURED_VERTEX(x + dx, y + dy, r, g, b, a);
+        t += dt;
 
-		for (i = 2; i < numSegments + 1; i++)
-		{
-			SET_INDEXED_VERTEX(i - 1);
-			SET_INDEXED_VERTEX(i);
-			if (use_inner)
-			{
-				dx = inner_radius*cosf(t*RAD_PER_DEG);
-				dy = inner_radius*sinf(t*RAD_PER_DEG);
-			}
-			else
-			{
-				dx = outer_radius*cosf(t*RAD_PER_DEG);
-				dy = outer_radius*sinf(t*RAD_PER_DEG);
-			}
-			SET_UNTEXTURED_VERTEX(x + dx, y + dy, r, g, b, a); // new point
-			t += dt;
-			use_inner = !use_inner;
-		}
+        for (i = 2; i < numSegments + 1; i++)
+        {
+            SET_INDEXED_VERTEX(i - 1);
+            SET_INDEXED_VERTEX(i);
+            if (use_inner)
+            {
+                dx = inner_radius*cosf(t*RAD_PER_DEG);
+                dy = inner_radius*sinf(t*RAD_PER_DEG);
+            }
+            else
+            {
+                dx = outer_radius*cosf(t*RAD_PER_DEG);
+                dy = outer_radius*sinf(t*RAD_PER_DEG);
+            }
+            SET_UNTEXTURED_VERTEX(x + dx, y + dy, r, g, b, a); // new point
+            t += dt;
+            use_inner = !use_inner;
+        }
 
-		// Last quad
-		t = end_angle;
-		if (use_inner)
-		{
-			dx = inner_radius*cosf(t*RAD_PER_DEG);
-			dy = inner_radius*sinf(t*RAD_PER_DEG);
-		}
-		else
-		{
-			dx = outer_radius*cosf(t*RAD_PER_DEG);
-			dy = outer_radius*sinf(t*RAD_PER_DEG);
-		}
-		SET_INDEXED_VERTEX(i - 1);
-		SET_INDEXED_VERTEX(i);
-		SET_UNTEXTURED_VERTEX(x + dx, y + dy, r, g, b, a); // new point
-		use_inner = !use_inner;
-		i++;
+        // Last quad
+        t = end_angle;
+        if (use_inner)
+        {
+            dx = inner_radius*cosf(t*RAD_PER_DEG);
+            dy = inner_radius*sinf(t*RAD_PER_DEG);
+        }
+        else
+        {
+            dx = outer_radius*cosf(t*RAD_PER_DEG);
+            dy = outer_radius*sinf(t*RAD_PER_DEG);
+        }
+        SET_INDEXED_VERTEX(i - 1);
+        SET_INDEXED_VERTEX(i);
+        SET_UNTEXTURED_VERTEX(x + dx, y + dy, r, g, b, a); // new point
+        use_inner = !use_inner;
+        i++;
 
-		if (use_inner)
-		{
-			dx = inner_radius*cosf(t*RAD_PER_DEG);
-			dy = inner_radius*sinf(t*RAD_PER_DEG);
-		}
-		else
-		{
-			dx = outer_radius*cosf(t*RAD_PER_DEG);
-			dy = outer_radius*sinf(t*RAD_PER_DEG);
-		}
-		SET_INDEXED_VERTEX(i - 1);
-		SET_INDEXED_VERTEX(i);
-		SET_UNTEXTURED_VERTEX(x + dx, y + dy, r, g, b, a); // new point
-	}
+        if (use_inner)
+        {
+            dx = inner_radius*cosf(t*RAD_PER_DEG);
+            dy = inner_radius*sinf(t*RAD_PER_DEG);
+        }
+        else
+        {
+            dx = outer_radius*cosf(t*RAD_PER_DEG);
+            dy = outer_radius*sinf(t*RAD_PER_DEG);
+        }
+        SET_INDEXED_VERTEX(i - 1);
+        SET_INDEXED_VERTEX(i);
+        SET_UNTEXTURED_VERTEX(x + dx, y + dy, r, g, b, a); // new point
+    }
 }
 
 static void Tri(GPU_Renderer* renderer, GPU_Target* target, float x1, float y1, float x2, float y2, float x3, float y3, SDL_Color color)
@@ -712,57 +712,57 @@ static void Rectangle(GPU_Renderer* renderer, GPU_Target* target, float x1, floa
         x2 = x;
     }
     
-	{
-		float thickness = GetLineThickness(renderer);
+    {
+        float thickness = GetLineThickness(renderer);
         
         // Thickness offsets
-		float outer = thickness / 2;
-		float inner_x = outer;
-		float inner_y = outer;
+        float outer = thickness / 2;
+        float inner_x = outer;
+        float inner_y = outer;
 
-		// Thick lines via filled triangles
+        // Thick lines via filled triangles
 
-		BEGIN_UNTEXTURED("GPU_Rectangle", GL_TRIANGLES, 12, 24);
-		
-		// Adjust inner thickness offsets to avoid overdraw on narrow/small rects
-		if(x1 + inner_x > x2 - inner_x)
+        BEGIN_UNTEXTURED("GPU_Rectangle", GL_TRIANGLES, 12, 24);
+        
+        // Adjust inner thickness offsets to avoid overdraw on narrow/small rects
+        if(x1 + inner_x > x2 - inner_x)
             inner_x = (x2 - x1)/2;
-		if(y1 + inner_y > y2 - inner_y)
+        if(y1 + inner_y > y2 - inner_y)
             inner_y = (y2 - y1)/2;
 
-		// First triangle
-		SET_UNTEXTURED_VERTEX(x1 - outer, y1 - outer, r, g, b, a); // 0
-		SET_UNTEXTURED_VERTEX(x1 - outer, y1 + inner_y, r, g, b, a); // 1
-		SET_UNTEXTURED_VERTEX(x2 + outer, y1 - outer, r, g, b, a); // 2
+        // First triangle
+        SET_UNTEXTURED_VERTEX(x1 - outer, y1 - outer, r, g, b, a); // 0
+        SET_UNTEXTURED_VERTEX(x1 - outer, y1 + inner_y, r, g, b, a); // 1
+        SET_UNTEXTURED_VERTEX(x2 + outer, y1 - outer, r, g, b, a); // 2
 
-		SET_INDEXED_VERTEX(2);
-		SET_INDEXED_VERTEX(1);
-		SET_UNTEXTURED_VERTEX(x2 + outer, y1 + inner_y, r, g, b, a); // 3
+        SET_INDEXED_VERTEX(2);
+        SET_INDEXED_VERTEX(1);
+        SET_UNTEXTURED_VERTEX(x2 + outer, y1 + inner_y, r, g, b, a); // 3
 
-		SET_INDEXED_VERTEX(3);
-		SET_UNTEXTURED_VERTEX(x2 - inner_x, y1 + inner_y, r, g, b, a); // 4
-		SET_UNTEXTURED_VERTEX(x2 - inner_x, y2 - inner_y, r, g, b, a); // 5
+        SET_INDEXED_VERTEX(3);
+        SET_UNTEXTURED_VERTEX(x2 - inner_x, y1 + inner_y, r, g, b, a); // 4
+        SET_UNTEXTURED_VERTEX(x2 - inner_x, y2 - inner_y, r, g, b, a); // 5
 
-		SET_INDEXED_VERTEX(3);
-		SET_INDEXED_VERTEX(5);
-		SET_UNTEXTURED_VERTEX(x2 + outer, y2 - inner_y, r, g, b, a); // 6
+        SET_INDEXED_VERTEX(3);
+        SET_INDEXED_VERTEX(5);
+        SET_UNTEXTURED_VERTEX(x2 + outer, y2 - inner_y, r, g, b, a); // 6
 
-		SET_INDEXED_VERTEX(6);
-		SET_UNTEXTURED_VERTEX(x1 - outer, y2 - inner_y, r, g, b, a); // 7
-		SET_UNTEXTURED_VERTEX(x2 + outer, y2 + outer, r, g, b, a); // 8
+        SET_INDEXED_VERTEX(6);
+        SET_UNTEXTURED_VERTEX(x1 - outer, y2 - inner_y, r, g, b, a); // 7
+        SET_UNTEXTURED_VERTEX(x2 + outer, y2 + outer, r, g, b, a); // 8
 
-		SET_INDEXED_VERTEX(7);
-		SET_UNTEXTURED_VERTEX(x1 - outer, y2 + outer, r, g, b, a); // 9
-		SET_INDEXED_VERTEX(8);
+        SET_INDEXED_VERTEX(7);
+        SET_UNTEXTURED_VERTEX(x1 - outer, y2 + outer, r, g, b, a); // 9
+        SET_INDEXED_VERTEX(8);
 
-		SET_INDEXED_VERTEX(7);
-		SET_UNTEXTURED_VERTEX(x1 + inner_x, y2 - inner_y, r, g, b, a); // 10
-		SET_INDEXED_VERTEX(1);
+        SET_INDEXED_VERTEX(7);
+        SET_UNTEXTURED_VERTEX(x1 + inner_x, y2 - inner_y, r, g, b, a); // 10
+        SET_INDEXED_VERTEX(1);
 
-		SET_INDEXED_VERTEX(1);
-		SET_INDEXED_VERTEX(10);
-		SET_UNTEXTURED_VERTEX(x1 + inner_x, y1 + inner_y, r, g, b, a); // 11
-	}
+        SET_INDEXED_VERTEX(1);
+        SET_INDEXED_VERTEX(10);
+        SET_UNTEXTURED_VERTEX(x1 + inner_x, y1 + inner_y, r, g, b, a); // 11
+    }
 }
 
 static void RectangleFilled(GPU_Renderer* renderer, GPU_Target* target, float x1, float y1, float x2, float y2, SDL_Color color)
@@ -802,7 +802,7 @@ static void RectangleRound(GPU_Renderer* renderer, GPU_Target* target, float x1,
     if(radius > (x2-x1)/2)
         radius = (x2-x1)/2;
     if(radius > (y2-y1)/2)
-		radius = (y2 - y1) / 2;
+        radius = (y2 - y1) / 2;
     
     x1 += radius;
     y1 += radius;
@@ -915,185 +915,185 @@ static void RectangleRoundFilled(GPU_Renderer* renderer, GPU_Target* target, flo
     if(radius > (x2-x1)/2)
         radius = (x2-x1)/2;
     if(radius > (y2-y1)/2)
-		radius = (y2 - y1) / 2;
+        radius = (y2 - y1) / 2;
 
-	{
-		float tau = 2 * PI;
+    {
+        float tau = 2 * PI;
 
-		int verts_per_corner = 7;
-		float corner_angle_increment = (tau / 4) / (verts_per_corner - 1);  // 0, 15, 30, 45, 60, 75, 90
+        int verts_per_corner = 7;
+        float corner_angle_increment = (tau / 4) / (verts_per_corner - 1);  // 0, 15, 30, 45, 60, 75, 90
 
-		// Starting angle
-		float angle = tau*0.75f;
-		int last_index = 2;
-		int i;
+        // Starting angle
+        float angle = tau*0.75f;
+        int last_index = 2;
+        int i;
 
-		BEGIN_UNTEXTURED("GPU_RectangleRoundFilled", GL_TRIANGLES, 6 + 4 * (verts_per_corner - 1) - 1, 15 + 4 * (verts_per_corner - 1) * 3 - 3);
+        BEGIN_UNTEXTURED("GPU_RectangleRoundFilled", GL_TRIANGLES, 6 + 4 * (verts_per_corner - 1) - 1, 15 + 4 * (verts_per_corner - 1) * 3 - 3);
 
 
-		// First triangle
-		SET_UNTEXTURED_VERTEX((x2 + x1) / 2, (y2 + y1) / 2, r, g, b, a);  // Center
-		SET_UNTEXTURED_VERTEX(x2 - radius + cosf(angle)*radius, y1 + radius + sinf(angle)*radius, r, g, b, a);
-		angle += corner_angle_increment;
-		SET_UNTEXTURED_VERTEX(x2 - radius + cosf(angle)*radius, y1 + radius + sinf(angle)*radius, r, g, b, a);
-		angle += corner_angle_increment;
+        // First triangle
+        SET_UNTEXTURED_VERTEX((x2 + x1) / 2, (y2 + y1) / 2, r, g, b, a);  // Center
+        SET_UNTEXTURED_VERTEX(x2 - radius + cosf(angle)*radius, y1 + radius + sinf(angle)*radius, r, g, b, a);
+        angle += corner_angle_increment;
+        SET_UNTEXTURED_VERTEX(x2 - radius + cosf(angle)*radius, y1 + radius + sinf(angle)*radius, r, g, b, a);
+        angle += corner_angle_increment;
 
-		for (i = 2; i < verts_per_corner; i++)
-		{
-			SET_INDEXED_VERTEX(0);
-			SET_INDEXED_VERTEX(last_index++);
-			SET_UNTEXTURED_VERTEX(x2 - radius + cosf(angle)*radius, y1 + radius + sinf(angle)*radius, r, g, b, a);
-			angle += corner_angle_increment;
-		}
+        for (i = 2; i < verts_per_corner; i++)
+        {
+            SET_INDEXED_VERTEX(0);
+            SET_INDEXED_VERTEX(last_index++);
+            SET_UNTEXTURED_VERTEX(x2 - radius + cosf(angle)*radius, y1 + radius + sinf(angle)*radius, r, g, b, a);
+            angle += corner_angle_increment;
+        }
 
-		SET_INDEXED_VERTEX(0);
-		SET_INDEXED_VERTEX(last_index++);
-		SET_UNTEXTURED_VERTEX(x2 - radius + cosf(angle)*radius, y2 - radius + sinf(angle)*radius, r, g, b, a);
-		for (i = 1; i < verts_per_corner; i++)
-		{
-			SET_INDEXED_VERTEX(0);
-			SET_INDEXED_VERTEX(last_index++);
-			SET_UNTEXTURED_VERTEX(x2 - radius + cosf(angle)*radius, y2 - radius + sinf(angle)*radius, r, g, b, a);
-			angle += corner_angle_increment;
-		}
+        SET_INDEXED_VERTEX(0);
+        SET_INDEXED_VERTEX(last_index++);
+        SET_UNTEXTURED_VERTEX(x2 - radius + cosf(angle)*radius, y2 - radius + sinf(angle)*radius, r, g, b, a);
+        for (i = 1; i < verts_per_corner; i++)
+        {
+            SET_INDEXED_VERTEX(0);
+            SET_INDEXED_VERTEX(last_index++);
+            SET_UNTEXTURED_VERTEX(x2 - radius + cosf(angle)*radius, y2 - radius + sinf(angle)*radius, r, g, b, a);
+            angle += corner_angle_increment;
+        }
 
-		SET_INDEXED_VERTEX(0);
-		SET_INDEXED_VERTEX(last_index++);
-		SET_UNTEXTURED_VERTEX(x1 + radius + cosf(angle)*radius, y2 - radius + sinf(angle)*radius, r, g, b, a);
-		for (i = 1; i < verts_per_corner; i++)
-		{
-			SET_INDEXED_VERTEX(0);
-			SET_INDEXED_VERTEX(last_index++);
-			SET_UNTEXTURED_VERTEX(x1 + radius + cosf(angle)*radius, y2 - radius + sinf(angle)*radius, r, g, b, a);
-			angle += corner_angle_increment;
-		}
+        SET_INDEXED_VERTEX(0);
+        SET_INDEXED_VERTEX(last_index++);
+        SET_UNTEXTURED_VERTEX(x1 + radius + cosf(angle)*radius, y2 - radius + sinf(angle)*radius, r, g, b, a);
+        for (i = 1; i < verts_per_corner; i++)
+        {
+            SET_INDEXED_VERTEX(0);
+            SET_INDEXED_VERTEX(last_index++);
+            SET_UNTEXTURED_VERTEX(x1 + radius + cosf(angle)*radius, y2 - radius + sinf(angle)*radius, r, g, b, a);
+            angle += corner_angle_increment;
+        }
 
-		SET_INDEXED_VERTEX(0);
-		SET_INDEXED_VERTEX(last_index++);
-		SET_UNTEXTURED_VERTEX(x1 + radius + cosf(angle)*radius, y1 + radius + sinf(angle)*radius, r, g, b, a);
-		for (i = 1; i < verts_per_corner; i++)
-		{
-			SET_INDEXED_VERTEX(0);
-			SET_INDEXED_VERTEX(last_index++);
-			SET_UNTEXTURED_VERTEX(x1 + radius + cosf(angle)*radius, y1 + radius + sinf(angle)*radius, r, g, b, a);
-			angle += corner_angle_increment;
-		}
+        SET_INDEXED_VERTEX(0);
+        SET_INDEXED_VERTEX(last_index++);
+        SET_UNTEXTURED_VERTEX(x1 + radius + cosf(angle)*radius, y1 + radius + sinf(angle)*radius, r, g, b, a);
+        for (i = 1; i < verts_per_corner; i++)
+        {
+            SET_INDEXED_VERTEX(0);
+            SET_INDEXED_VERTEX(last_index++);
+            SET_UNTEXTURED_VERTEX(x1 + radius + cosf(angle)*radius, y1 + radius + sinf(angle)*radius, r, g, b, a);
+            angle += corner_angle_increment;
+        }
 
-		// Last triangle
-		SET_INDEXED_VERTEX(0);
-		SET_INDEXED_VERTEX(last_index++);
-		SET_INDEXED_VERTEX(1);
-	}
+        // Last triangle
+        SET_INDEXED_VERTEX(0);
+        SET_INDEXED_VERTEX(last_index++);
+        SET_INDEXED_VERTEX(1);
+    }
 }
 
 static void Polygon(GPU_Renderer* renderer, GPU_Target* target, unsigned int num_vertices, float* vertices, SDL_Color color)
 {
     if(num_vertices < 3)
-		return;
+        return;
 
-	{
-		int numSegments = 2 * num_vertices;
-		int last_index = 0;
-		int i;
+    {
+        int numSegments = 2 * num_vertices;
+        int last_index = 0;
+        int i;
 
-		BEGIN_UNTEXTURED("GPU_Polygon", GL_LINES, num_vertices, numSegments);
+        BEGIN_UNTEXTURED("GPU_Polygon", GL_LINES, num_vertices, numSegments);
 
-		SET_UNTEXTURED_VERTEX(vertices[0], vertices[1], r, g, b, a);
-		for (i = 2; i < numSegments; i += 2)
-		{
-			SET_UNTEXTURED_VERTEX(vertices[i], vertices[i + 1], r, g, b, a);
-			last_index++;
-			SET_INDEXED_VERTEX(last_index);  // Double the last one for the next line
-		}
-		SET_INDEXED_VERTEX(0);
-	}
+        SET_UNTEXTURED_VERTEX(vertices[0], vertices[1], r, g, b, a);
+        for (i = 2; i < numSegments; i += 2)
+        {
+            SET_UNTEXTURED_VERTEX(vertices[i], vertices[i + 1], r, g, b, a);
+            last_index++;
+            SET_INDEXED_VERTEX(last_index);  // Double the last one for the next line
+        }
+        SET_INDEXED_VERTEX(0);
+    }
 }
 
 static void Polyline(GPU_Renderer* renderer, GPU_Target* target, unsigned int num_vertices, float* vertices, SDL_Color color, GPU_bool close_loop)
 {
-	if (num_vertices < 2) return;
-	
-	float t = GetLineThickness(renderer) * 0.5f;
-	float x1, x2, y1, y2, line_angle, tc, ts;
-	
-	int num_v = num_vertices * 4;
-	int num_i = num_v + 2;
-	int last_vert = num_vertices;
-	
-	if ( !close_loop )
-	{
-		num_v -= 4;
-		num_i = num_v;
-		last_vert--;
-	}
-	
-	BEGIN_UNTEXTURED("GPU_Polygon", GL_TRIANGLE_STRIP, num_v, num_i );
-	
-	int i = 0;
-	do
-	{
-		x1 = vertices[ i * 2 ];
-		y1 = vertices[ i * 2 + 1 ];
-		i++;
-		if ( i == (int)num_vertices )
-		{
-			x2 = vertices[ 0 ];
-			y2 = vertices[ 1 ];
-		}
-		else
-		{
-			x2 = vertices[ i * 2 ];
-			y2 = vertices[ i * 2 + 1 ];
-		}
-		
-		line_angle = atan2f(y2 - y1, x2 - x1);
-		tc = t * cosf(line_angle);
-		ts = t * sinf(line_angle);
-		
-		SET_UNTEXTURED_VERTEX(x1 + ts, y1 - tc, r, g, b, a);
-		SET_UNTEXTURED_VERTEX(x1 - ts, y1 + tc, r, g, b, a);
-		SET_UNTEXTURED_VERTEX(x2 + ts, y2 - tc, r, g, b, a);
-		SET_UNTEXTURED_VERTEX(x2 - ts, y2 + tc, r, g, b, a);
-		
-	} while ( i < last_vert );
-	
-	if ( close_loop ) // end cap for closed
-	{
-		SET_INDEXED_VERTEX(0);
-		SET_INDEXED_VERTEX(1)
-	}
-	
+    if (num_vertices < 2) return;
+    
+    float t = GetLineThickness(renderer) * 0.5f;
+    float x1, x2, y1, y2, line_angle, tc, ts;
+    
+    int num_v = num_vertices * 4;
+    int num_i = num_v + 2;
+    int last_vert = num_vertices;
+    
+    if ( !close_loop )
+    {
+        num_v -= 4;
+        num_i = num_v;
+        last_vert--;
+    }
+    
+    BEGIN_UNTEXTURED("GPU_Polygon", GL_TRIANGLE_STRIP, num_v, num_i );
+    
+    int i = 0;
+    do
+    {
+        x1 = vertices[ i * 2 ];
+        y1 = vertices[ i * 2 + 1 ];
+        i++;
+        if ( i == (int)num_vertices )
+        {
+            x2 = vertices[ 0 ];
+            y2 = vertices[ 1 ];
+        }
+        else
+        {
+            x2 = vertices[ i * 2 ];
+            y2 = vertices[ i * 2 + 1 ];
+        }
+        
+        line_angle = atan2f(y2 - y1, x2 - x1);
+        tc = t * cosf(line_angle);
+        ts = t * sinf(line_angle);
+        
+        SET_UNTEXTURED_VERTEX(x1 + ts, y1 - tc, r, g, b, a);
+        SET_UNTEXTURED_VERTEX(x1 - ts, y1 + tc, r, g, b, a);
+        SET_UNTEXTURED_VERTEX(x2 + ts, y2 - tc, r, g, b, a);
+        SET_UNTEXTURED_VERTEX(x2 - ts, y2 + tc, r, g, b, a);
+        
+    } while ( i < last_vert );
+    
+    if ( close_loop ) // end cap for closed
+    {
+        SET_INDEXED_VERTEX(0);
+        SET_INDEXED_VERTEX(1)
+    }
+    
 }
 
 static void PolygonFilled(GPU_Renderer* renderer, GPU_Target* target, unsigned int num_vertices, float* vertices, SDL_Color color)
 {
     if(num_vertices < 3)
-		return;
+        return;
 
-	{
-		int numSegments = 2 * num_vertices;
+    {
+        int numSegments = 2 * num_vertices;
 
-		// Using a fan of triangles assumes that the polygon is convex
-		BEGIN_UNTEXTURED("GPU_PolygonFilled", GL_TRIANGLES, num_vertices, 3 + (num_vertices - 3) * 3);
+        // Using a fan of triangles assumes that the polygon is convex
+        BEGIN_UNTEXTURED("GPU_PolygonFilled", GL_TRIANGLES, num_vertices, 3 + (num_vertices - 3) * 3);
 
-		// First triangle
-		SET_UNTEXTURED_VERTEX(vertices[0], vertices[1], r, g, b, a);
-		SET_UNTEXTURED_VERTEX(vertices[2], vertices[3], r, g, b, a);
-		SET_UNTEXTURED_VERTEX(vertices[4], vertices[5], r, g, b, a);
+        // First triangle
+        SET_UNTEXTURED_VERTEX(vertices[0], vertices[1], r, g, b, a);
+        SET_UNTEXTURED_VERTEX(vertices[2], vertices[3], r, g, b, a);
+        SET_UNTEXTURED_VERTEX(vertices[4], vertices[5], r, g, b, a);
 
-		if (num_vertices > 3)
-		{
-			int last_index = 2;
+        if (num_vertices > 3)
+        {
+            int last_index = 2;
 
-			int i;
-			for (i = 6; i < numSegments; i += 2)
-			{
-				SET_INDEXED_VERTEX(0);  // Start from the first vertex
-				SET_INDEXED_VERTEX(last_index);  // Double the last one
-				SET_UNTEXTURED_VERTEX(vertices[i], vertices[i + 1], r, g, b, a);
-				last_index++;
-			}
-		}
-	}
+            int i;
+            for (i = 6; i < numSegments; i += 2)
+            {
+                SET_INDEXED_VERTEX(0);  // Start from the first vertex
+                SET_INDEXED_VERTEX(last_index);  // Double the last one
+                SET_UNTEXTURED_VERTEX(vertices[i], vertices[i + 1], r, g, b, a);
+                last_index++;
+            }
+        }
+    }
 }
 

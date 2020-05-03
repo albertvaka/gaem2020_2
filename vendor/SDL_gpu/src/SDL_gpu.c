@@ -10,15 +10,15 @@
 #endif
 
 #ifdef _MSC_VER
-	#define __func__ __FUNCTION__
-	#pragma warning(push)
-	// Visual Studio wants to complain about while(0)
-	#pragma warning(disable: 4127)
+    #define __func__ __FUNCTION__
+    #pragma warning(push)
+    // Visual Studio wants to complain about while(0)
+    #pragma warning(disable: 4127)
 
-	// Disable warning: selection for inlining
-	#pragma warning(disable: 4514 4711)
-	// Disable warning: Spectre mitigation
-	#pragma warning(disable: 5045)
+    // Disable warning: selection for inlining
+    #pragma warning(disable: 4514 4711)
+    // Disable warning: Spectre mitigation
+    #pragma warning(disable: 5045)
 #endif
 
 #include "stb_image.h"
@@ -587,15 +587,15 @@ GPU_bool GPU_SetWindowResolution(Uint16 w, Uint16 h)
 void GPU_GetVirtualResolution(GPU_Target* target, Uint16* w, Uint16* h)
 {
     // No checking here for NULL w or h...  Should we?
-	if (target == NULL)
-	{
-		*w = 0;
-		*h = 0;
-	}
-	else {
-		*w = target->w;
-		*h = target->h;
-	}
+    if (target == NULL)
+    {
+        *w = 0;
+        *h = 0;
+    }
+    else {
+        *w = target->w;
+        *h = target->h;
+    }
 }
 
 void GPU_SetVirtualResolution(GPU_Target* target, Uint16 w, Uint16 h)
@@ -935,23 +935,23 @@ GPU_Camera GPU_SetCamera(GPU_Target* target, GPU_Camera* cam)
     MAKE_CURRENT_IF_NONE(target);
     if(_gpu_current_renderer->current_context_target == NULL)
         return GPU_GetDefaultCamera();
-	// TODO: Remove from renderer and flush here
+    // TODO: Remove from renderer and flush here
     return _gpu_current_renderer->impl->SetCamera(_gpu_current_renderer, target, cam);
 }
 
 void GPU_EnableCamera(GPU_Target* target, GPU_bool use_camera)
 {
-	if (target == NULL)
-		return;
-	// TODO: Flush here
-	target->use_camera = use_camera;
+    if (target == NULL)
+        return;
+    // TODO: Flush here
+    target->use_camera = use_camera;
 }
 
 GPU_bool GPU_IsCameraEnabled(GPU_Target* target)
 {
-	if (target == NULL)
-		return GPU_FALSE;
-	return target->use_camera;
+    if (target == NULL)
+        return GPU_FALSE;
+    return target->use_camera;
 }
 
 GPU_Image* GPU_CreateImage(Uint16 w, Uint16 h, GPU_FormatEnum format)
@@ -977,8 +977,8 @@ GPU_Image* GPU_LoadImage(const char* filename)
 
 GPU_Image* GPU_LoadImage_RW(SDL_RWops* rwops, GPU_bool free_rwops)
 {
-	GPU_Image* result;
-	SDL_Surface* surface;
+    GPU_Image* result;
+    SDL_Surface* surface;
     if(_gpu_current_renderer == NULL || _gpu_current_renderer->current_context_target == NULL)
         return NULL;
         
@@ -1175,21 +1175,6 @@ SDL_Surface* GPU_LoadSurface(const char* filename)
     return GPU_LoadSurface_RW(SDL_RWFromFile(filename, "r"), 1);
 }
 
-// From http://stackoverflow.com/questions/5309471/getting-file-extension-in-c
-static const char *get_filename_ext(const char *filename)
-{
-    const char *dot = strrchr(filename, '.');
-    if(!dot || dot == filename)
-        return "";
-    return dot + 1;
-}
-
-
-static void write_func(void *context, void *data, int size)
-{
-    SDL_RWwrite((SDL_RWops*)context, data, 1, size);
-}
-
 GPU_Image* GPU_CopyImageFromSurface(SDL_Surface* surface)
 {
     if(_gpu_current_renderer == NULL || _gpu_current_renderer->current_context_target == NULL)
@@ -1248,9 +1233,9 @@ GPU_Target* GPU_GetContextTarget(void)
 
 GPU_Target* GPU_LoadTarget(GPU_Image* image)
 {
-	GPU_Target* result = GPU_GetTarget(image);
-	
-	if(result != NULL)
+    GPU_Target* result = GPU_GetTarget(image);
+    
+    if(result != NULL)
         result->refcount++;
     
     return result;
@@ -2483,7 +2468,7 @@ int gpu_strcasecmp(const char* s1, const char* s2)
         u2 = (unsigned char) *s2++;
         if (caseless_charmap[u1] != caseless_charmap[u2])
             return caseless_charmap[u1] - caseless_charmap[u2];
-	} while (u1 != '\0');
+    } while (u1 != '\0');
 
     return 0;
 }
