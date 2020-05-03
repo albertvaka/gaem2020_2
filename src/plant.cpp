@@ -129,7 +129,7 @@ void Plant::Draw() const {
   Window::Draw(Assets::plantTexture, pos)
       .withRect(0, 64 - 16 * height, 16, 16 * height)
       .withColor(color, color, color, 255)
-      .withFlip(mirror)
+      .withScale(mirror? -1.f : 1.f, 1.f)
       .withOrigin(size / 2.0f);
 
   // Draw stats if they are changing

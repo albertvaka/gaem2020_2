@@ -113,13 +113,6 @@ namespace Window
         return true;
     }
 
-    Draw::~Draw() {
-            // Pass anchor as rotation pivot, so it rotates around origin. We could change that to a different variable.
-            //GPU_SetAnchor(t, t->texture_w / origin.x, t->texture_h / origin.y);
-            GPU_BlitTransformX(t, srcp, Window::target, dest.x, dest.y, origin.x, origin.y, rotation, scale.x, scale.y);
-            GPU_SetRGBA(t, 255, 255, 255, 255);
-    }
-
     void ProcessEvents()
     {
         SDL_Event event;

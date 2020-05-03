@@ -168,7 +168,7 @@ namespace Window
 		float rotation = 0;
 		vec scale = vec(1.f, 1.f);
 		vec origin = vec(0.f,0.f);
-
+		SDL_RendererFlip flip = SDL_FLIP_NONE;
 		constexpr Draw(GPU_Image* t, const vec& pos) : t(t), dest(pos) {
 
 		}
@@ -216,12 +216,11 @@ namespace Window
 			return withScale(v.x, v.y);
 		}
 
-		constexpr Draw& withFlip(bool h, bool v = false) {
-			//TODO
-			return *this;
-		}
-
-		~Draw();
+    	~Draw() {
+            // We pass origin as rotation pivot. We could change that to a different variable.
+            GPU_BlitTransformX(t, srcp, Window::target, dest.x, dest.y, origin.x, origin.y, rotation, scale.x, scale.y);
+            GPU_SetRGBA(t, 255, 255, 255, 255);
+    	}
 	};
 
 
