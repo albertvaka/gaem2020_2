@@ -34,6 +34,7 @@ public:
 		if (cached == nullptr) {
 			SDL_Surface* surface = MultiLineRender();
 			cached = GPU_CopyImageFromSurface(surface);
+			GPU_SetImageFilter(cached, GPU_FILTER_NEAREST);
 			SDL_FreeSurface(surface);
 			if (!cached) {
 				printf("Unable to create text texture. SDL Error: %s\n", SDL_GetError());
