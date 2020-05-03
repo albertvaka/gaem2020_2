@@ -41,6 +41,10 @@ namespace MusicPlayer
 		Mix_HookMusicFinished(introFinishedHook);
 	}
 
+	bool IsPlaying() {
+		return Mix_PlayingMusic();
+	}
+
 	void Pause() {
 		Mix_PauseMusic();
 	}

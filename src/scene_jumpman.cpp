@@ -81,9 +81,7 @@ void JumpScene::Update(float dt)
 		MusicPlayer::Play(Assets::sceneMusic[current_music]);
 	}
 	if (Input::IsJustPressedAnyPlayer(GameKeys::MUTE)) {
-		bool static muted = false;
-		muted = !muted;
-		if (muted) MusicPlayer::Pause();
+		if (MusicPlayer::IsPlaying()) MusicPlayer::Pause();
 		else MusicPlayer::Resume();
 	}
 

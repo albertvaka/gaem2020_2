@@ -20,6 +20,8 @@ namespace MusicPlayer
 	void Play(Mix_Music* music);
 	void PlayWithIntro(Mix_Music* music, Mix_Music* intro);
 
+	bool IsPlaying();
+
 	void Pause();
 	void Resume();
 
