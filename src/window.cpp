@@ -83,10 +83,13 @@ namespace Window
 
         target = GPU_Init(GAME_WIDTH, GAME_HEIGHT, GPU_DEFAULT_INIT_FLAGS);
 
+        // [Debug] Disable vsync
+        //SDL_GL_SetSwapInterval(0);
+
         // SDL-gpu anchors images at the center by default, change it to the top-left corner
         GPU_SetDefaultAnchor(0, 0);
 
-        //FIXME: Too late for this game, but we have the option to set the Y coordinates the right way
+        // FIXME: Too late for this game, but we have the option to set the Y coordinates the right way
         //GPU_SetCoordinateMode(false);
 
         GPU_EnableCamera(target, true);
