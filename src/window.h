@@ -21,8 +21,6 @@ namespace Window
 	constexpr const int GAME_HEIGHT = 420;
 	constexpr const int GAME_WIDTH = 828;
 	constexpr const char* WINDOW_TITLE = "LD46";
-
-	void ResetViewport();
 }
 
 namespace Camera
@@ -116,9 +114,6 @@ namespace Window
 {
 	void Init();
 	void ProcessEvents();
-	inline void ResetViewport() {
-		GPU_SetVirtualResolution(Window::target, Window::GAME_WIDTH, Window::GAME_HEIGHT);
-	}
 
 	inline bool HasFocus() { return focus; }
 	bool IsMouseInsideWindow();

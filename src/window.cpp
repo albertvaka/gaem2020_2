@@ -77,7 +77,7 @@ namespace Window
         int scale = Mates::MinOf(dm.w / GAME_WIDTH, dm.h / GAME_HEIGHT);
         Debug::out << "Scaling to x" << scale;
     #endif
-        window = SDL_CreateWindow(WINDOW_TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, GAME_WIDTH * scale, GAME_HEIGHT * scale, SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI | SDL_WINDOW_OPENGL);
+        window = SDL_CreateWindow(WINDOW_TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, GAME_WIDTH * scale, GAME_HEIGHT * scale, SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL); // SDL_WINDOW_ALLOW_HIGHDPI breaks letterbox scaling using viewport
         if (window == NULL) {
             Debug::out << "Window Creation Error: " << SDL_GetError();
         }
@@ -102,7 +102,7 @@ namespace Window
         Camera::camera.use_centered_origin = false;
         Camera::SetTopLeft(0, 0);
 
-        ResetViewport();
+        GPU_SetVirtualResolution(Window::target, Window::GAME_WIDTH, Window::GAME_HEIGHT);
     }
 
     bool IsMouseInsideWindow()
@@ -140,7 +140,26 @@ namespace Window
                 break;
             case SDL_WINDOWEVENT:
                 if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
-                    GPU_SetWindowResolution(event.window.data1, event.window.data2);
+                    const int width = event.window.data1;
+                    const int height = event.window.data2;
+                    //Debug::out << width << "," << height;
+                    GPU_SetWindowResolution(width, height);
+                    const float scaleW = width/float(Window::GAME_WIDTH);
+                    const float scaleH = height/float(Window::GAME_HEIGHT);
+                    const float aspect = Window::GAME_WIDTH/float(Window::GAME_HEIGHT);
+                    GPU_Rect rect;
+                    if (scaleW < scaleH) {
+                        rect.w = width;
+                        rect.h = width/aspect;
+                        rect.x = 0;
+                        rect.y = (height - rect.h)/2;
+                    } else {
+                        rect.w = height*aspect;
+                        rect.h = height;
+                        rect.x = (width - rect.w)/2;
+                        rect.y = 0;
+                    }
+                    GPU_SetViewport(Window::target,rect);
                     GPU_SetVirtualResolution(Window::target, Window::GAME_WIDTH, Window::GAME_HEIGHT);
                 }
                 break;
