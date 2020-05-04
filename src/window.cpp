@@ -57,18 +57,9 @@ namespace Camera {
     }
 }
 
-#if __WIN32__
-#pragma comment(lib, "Shcore.lib")
-#include <ShellScalingApi.h>
-#endif
-
 namespace Window
 {
     void Init() {
-
-#if __WIN32__
-        SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE);
-#endif
     #ifdef __EMSCRIPTEN__
         int scale = 1;
     #else
@@ -76,6 +67,7 @@ namespace Window
         SDL_GetDesktopDisplayMode(0, &dm);
         int scale = Mates::MinOf(dm.w / GAME_WIDTH, dm.h / GAME_HEIGHT);
         Debug::out << "Scaling to x" << scale;
+        //Debug::out << dm.w << " " << dm.h;
     #endif
         window = SDL_CreateWindow(WINDOW_TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, GAME_WIDTH * scale, GAME_HEIGHT * scale, SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL); // SDL_WINDOW_ALLOW_HIGHDPI breaks letterbox scaling using viewport
         if (window == NULL) {

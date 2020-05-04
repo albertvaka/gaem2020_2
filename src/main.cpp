@@ -55,8 +55,16 @@ int main(int argc, char* argv[])
 
 }
 
+#if __WIN32__
+#pragma comment(lib, "Shcore.lib")
+#include <ShellScalingApi.h>
+#endif
 
 void init() {
+#if __WIN32__
+	SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE);
+#endif
+
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER) != 0) {
 		Debug::out << IMG_GetError();
 	}
