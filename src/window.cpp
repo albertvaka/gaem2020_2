@@ -61,26 +61,28 @@ namespace Camera {
 namespace Window
 {
     void Init() {
-    #ifdef __EMSCRIPTEN__
-        int scale = 1;
-    #else
-        SDL_DisplayMode dm;
-        SDL_GetDesktopDisplayMode(0, &dm);
-        int scale = Mates::MinOf(dm.w / GAME_WIDTH, dm.h / GAME_HEIGHT);
-        Debug::out << "Scaling to x" << scale;
-        //Debug::out << dm.w << " " << dm.h;
-    #endif
-        window = SDL_CreateWindow(WINDOW_TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, GAME_WIDTH * scale, GAME_HEIGHT * scale, SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL); // SDL_WINDOW_ALLOW_HIGHDPI breaks letterbox scaling using viewport
-        if (window == NULL) {
-            Debug::out << "Window Creation Error: " << SDL_GetError();
-        }
-        GPU_SetInitWindow(SDL_GetWindowID(window));
+        GPU_SetDebugLevel(GPU_DEBUG_LEVEL_1);
         GPU_SetLogCallback([](GPU_LogLevelEnum log_level, const char* format, va_list args) -> int {
             char buffer[1024];
             vsprintf(buffer, format, args);
             Debug::out << std::string(buffer);
             return 0;
-        });
+            });
+
+ #ifdef __EMSCRIPTEN__
+        int scale = 1;
+#else
+        SDL_DisplayMode dm;
+        SDL_GetDesktopDisplayMode(0, &dm);
+        int scale = Mates::MinOf(dm.w / GAME_WIDTH, dm.h / GAME_HEIGHT);
+        Debug::out << "Scaling to x" << scale;
+        //Debug::out << dm.w << " " << dm.h;
+ #endif
+        window = SDL_CreateWindow(WINDOW_TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, GAME_WIDTH * scale, GAME_HEIGHT * scale, SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL); // SDL_WINDOW_ALLOW_HIGHDPI breaks letterbox scaling using viewport
+        if (window == NULL) {
+            Debug::out << "Window Creation Error: " << SDL_GetError();
+        }
+        GPU_SetInitWindow(SDL_GetWindowID(window));
 
         target = GPU_Init(GAME_WIDTH, GAME_HEIGHT, GPU_DEFAULT_INIT_FLAGS);
 
