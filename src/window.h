@@ -63,7 +63,6 @@ namespace Camera
 		SetCenter(vec(x, y));
 	}
 
-
 	inline Bounds GetBounds()
 	{
 		//return Bounds::fromCenter(GetCenter(), GetSize());
@@ -132,13 +131,6 @@ namespace Window
 
 	inline bool HasFocus() { return focus; }
 	bool IsMouseInsideWindow();
-
-	inline vec GetSize() {
-		int w, h;
-		SDL_GetWindowSize(window, &w, &h);
-		return vec(w,h);
-	}
-	inline Bounds GetBounds() { return Bounds(vec::Zero, GetSize()); }
 
 	inline void Clear(uint8_t r, uint8_t g, uint8_t b) {
 		GPU_ClearRGBA(Window::target, r, g, b, 255);

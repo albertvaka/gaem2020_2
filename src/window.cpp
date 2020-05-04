@@ -105,6 +105,8 @@ namespace Window
 
     bool IsMouseInsideWindow()
 	{
+        //int w, h;
+        //SDL_GetWindowSize(window, &w, &h);
         //sf::Vector2i vec = sf::Mouse::getPosition(*window);
         //if (vec.x < 0 || vec.x >(int)window->getSize().x) return false;
         //if (vec.y < 0 || vec.y >(int)window->getSize().y) return false;
