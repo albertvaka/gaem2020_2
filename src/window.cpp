@@ -45,12 +45,12 @@ namespace Camera {
     void ChangeZoomWithPlusAndMinus(float zoomVel, float dt)
     {
         float zoom = GetZoom();
-        if (Keyboard::IsKeyPressed(SDL_SCANCODE_KP_PLUS))
+        if (Keyboard::IsKeyPressed(SDL_SCANCODE_EQUALS) || Keyboard::IsKeyPressed(SDL_SCANCODE_KP_PLUS))
         {
             zoom += zoomVel * dt;
             SetZoom(zoom);
         }
-        if (Keyboard::IsKeyPressed(SDL_SCANCODE_KP_MINUS)) {
+        if (Keyboard::IsKeyPressed(SDL_SCANCODE_MINUS) || Keyboard::IsKeyPressed(SDL_SCANCODE_KP_MINUS)) {
             zoom -= zoomVel * dt;
             if (zoom < 0.01) zoom = 0.01;
             SetZoom(zoom);
