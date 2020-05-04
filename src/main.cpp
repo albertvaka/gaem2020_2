@@ -88,8 +88,7 @@ void init() {
 #ifdef _IMGUI
 	ImGui::CreateContext();
 	ImGui_ImplSDL2_InitForOpenGL(Window::window, nullptr);
-	const char* glsl_version = "#version 120";
-	ImGui_ImplOpenGL3_Init(glsl_version);
+	ImGui_ImplOpenGL3_Init(nullptr);
 #endif
 
 	Assets::LoadAll();
