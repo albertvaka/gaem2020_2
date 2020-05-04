@@ -7,6 +7,7 @@
 
 namespace Camera {
     GPU_Camera camera;
+    GPU_Camera gui_camera;
 }
 namespace Window
 {
@@ -95,6 +96,8 @@ namespace Window
         GPU_EnableCamera(target, true);
         Camera::camera = GPU_GetDefaultCamera();
         Camera::camera.use_centered_origin = false;
+        Camera::gui_camera = GPU_GetDefaultCamera();
+        Camera::gui_camera.use_centered_origin = false;
         Camera::SetTopLeft(0, 0);
 
         GPU_SetVirtualResolution(Window::target, Window::GAME_WIDTH, Window::GAME_HEIGHT);

@@ -9,6 +9,7 @@
 namespace Camera
 {
 	extern GPU_Camera camera;
+	extern GPU_Camera gui_camera;
 }
 
 namespace Window
@@ -103,6 +104,20 @@ namespace Camera
 	inline float GetZoom()
 	{
 		return camera.zoom_x;
+	}
+
+	inline void SetGUICamera(bool b)
+	{
+		if (b) {
+			GPU_SetCamera(Window::target, &gui_camera);
+		} else {
+			GPU_SetCamera(Window::target, &camera);
+		}
+	}
+
+	inline Bounds GetGuiCameraBounds()
+	{
+		return Bounds(0,0, Window::GAME_WIDTH, Window::GAME_HEIGHT);
 	}
 
 	//Useful for debug pourposes
