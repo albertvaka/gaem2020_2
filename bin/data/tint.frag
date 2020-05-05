@@ -1,13 +1,14 @@
-
+in mediump vec4 color;
 in vec2 texCoord;
 
 uniform sampler2D tex;
-
 uniform vec4 flashColor;
+
+out vec4 fragColor;
 
 void main()
 {
-	vec4 pixel_color = texture2D(tex, texCoord);
+	vec4 pixel_color = texture(tex, texCoord);
 	float percent = flashColor.a;
 
 	vec4 colorDifference = vec4(0,0,0,1);
@@ -19,5 +20,5 @@ void main()
 	pixel_color.g = pixel_color.g +colorDifference.g * percent;
 	pixel_color.b =pixel_color.b + colorDifference.b * percent;
 
-	gl_FragColor = pixel_color;
+	fragColor = pixel_color;
 }
