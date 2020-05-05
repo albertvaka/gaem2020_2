@@ -18,7 +18,6 @@ void Shader::loadAndAttach(GPU_ShaderEnum type, const char* path) {
 	}
 	else if (renderer->shader_language == GPU_LANGUAGE_GLSLES)
 	{
-		Debug::out << renderer->max_shader_version;
 		if (renderer->max_shader_version >= 300) {
 			source << "#version 300 es\n";
 		} else {
