@@ -3,6 +3,7 @@
 #include <array>
 
 #include "sound.h"
+#include "shader.h"
 
 struct GPU_Image;
 typedef struct _TTF_Font TTF_Font;
@@ -47,5 +48,7 @@ struct Assets
 	static Sound soundDoggo3;
 
 	static Mix_Music* sceneMusic[2];
+
+	static Shader tintShader;
 };
 
