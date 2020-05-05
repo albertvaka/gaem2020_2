@@ -82,8 +82,6 @@ See a particular renderer's *.c file for specifics. */
     }
 #endif
 
-int gpu_strcasecmp(const char* s1, const char* s2);
-
 
 // Default to buffer reset VBO upload method
 #if defined(SDL_GPU_USE_BUFFER_PIPELINE) && !defined(SDL_GPU_USE_BUFFER_RESET) && !defined(SDL_GPU_USE_BUFFER_MAPPING) && !defined(SDL_GPU_USE_BUFFER_UPDATE)
