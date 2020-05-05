@@ -4,7 +4,6 @@
 #include "debug.h"
 
 #include "SDL_gpu.h"
-#include "magic_enum.h"
 
 namespace Camera {
     GPU_Camera camera;
@@ -79,8 +78,13 @@ namespace Window
         Debug::out << "Scaling to x" << scale;
         //Debug::out << dm.w << " " << dm.h;
  #endif
-        target = GPU_Init(GAME_WIDTH * scale, GAME_HEIGHT * scale, SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
-        window = SDL_GetWindowFromID(target->context->windowID);
+        window = SDL_CreateWindow(WINDOW_TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, GAME_WIDTH * scale, GAME_HEIGHT * scale, SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI | SDL_WINDOW_OPENGL);
+        if (window == NULL) {
+            Debug::out << "Window Creation Error: " << SDL_GetError();
+        }
+        GPU_SetInitWindow(SDL_GetWindowID(window));
+
+        target = GPU_Init(GAME_WIDTH, GAME_HEIGHT, GPU_DEFAULT_INIT_FLAGS);
 
         // [Debug] Disable vsync
         //SDL_GL_SetSwapInterval(0);
