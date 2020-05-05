@@ -5,7 +5,38 @@
 #include <SDL_gpu.h>
 
 void ShaderBuilder::loadAndAttach(GPU_ShaderEnum type, const char* path) {
-	int id = GPU_LoadShader(type, path);
+	
+	const char* header = "";
+	GPU_Renderer* renderer = GPU_GetCurrentRenderer();
+	if (renderer->shader_language == GPU_LANGUAGE_GLSL)
+	{
+		if (renderer->max_shader_version >= 330)
+			header = "#version 330\n";
+		else
+			header = "#version 130\n";
+	}
+	else if (renderer->shader_language == GPU_LANGUAGE_GLSLES)
+	{
+		if (type == GPU_FRAGMENT_SHADER)
+		{
+			header = "#version 100\n\
+                     #ifdef GL_FRAGMENT_PRECISION_HIGH\n\
+                     precision highp float;\n\
+                     #else\n\
+                     precision mediump float;\n\
+                     #endif\n\
+                     precision mediump int;\n";
+		}
+		else
+			header = "#version 100\nprecision highp float;\nprecision mediump int;\n";
+	}
+
+	std::ifstream content_is(path);
+	std::string content((std::istreambuf_iterator<char>(content_is)), std::istreambuf_iterator<char>());
+
+	content = std::string(header) + content;
+
+	int id = GPU_CompileShader(type, content.c_str());
 	GPU_AttachShader(shader->program, id);
 }
 
