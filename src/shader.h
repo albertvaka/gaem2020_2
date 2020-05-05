@@ -43,7 +43,11 @@ struct Shader {
 	Shader& SetUniform(const char* name, const vec& v) { return SetUniform(GetUniformLocation(name), v); }
 	Shader& SetUniform(const char* name, float r, float g, float b, float a) { return SetUniform(GetUniformLocation(name), r, g, b, a); }
 
-	void Activate() { GPU_ActivateShaderProgram(program, &block); }
+	void Activate() {
+		if (GPU_GetCurrentShaderProgram() != program) {
+			GPU_ActivateShaderProgram(program, &block);
+		}
+	}
 	void Deactivate() { GPU_DeactivateShaderProgram(); }
 
 	int GetUniformLocation(const char* name);

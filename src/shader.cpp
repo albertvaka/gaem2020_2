@@ -5,15 +5,55 @@
 #include <SDL_gpu.h>
 
 void Shader::loadAndAttach(GPU_ShaderEnum type, const char* path) {
-	int id = GPU_LoadShader(type, path);
+
+	std::stringstream source;
+	GPU_Renderer* renderer = GPU_GetCurrentRenderer();
+	if (renderer->shader_language == GPU_LANGUAGE_GLSL)
+	{
+		if (renderer->max_shader_version >= 330) {
+			source << "#version 330\n";
+		} else {
+			source << "#version 130\n";
+		}
+	}
+	else if (renderer->shader_language == GPU_LANGUAGE_GLSLES)
+	{
+		Debug::out << renderer->max_shader_version;
+		if (renderer->max_shader_version >= 300) {
+			source << "#version 300 es\n";
+		} else {
+			source << "#version 200 es\n";
+		}
+
+		if (type == GPU_FRAGMENT_SHADER) {
+			source << "#ifdef GL_FRAGMENT_PRECISION_HIGH\n\
+precision highp float;\n\
+#else\n\
+precision mediump float;\n\
+#endif\n\
+precision mediump int;\n";
+		} else {
+			source << "precision highp float;\nprecision mediump int;\n";
+		}
+	}
+
+	source << std::ifstream(path).rdbuf();
+
+	int id = GPU_CompileShader(type, source.str().c_str());
 	GPU_AttachShader(program, id);
 }
 
 void Shader::Load(const char* vertex_path, const char* geometry_path, const char* fragment_path) {
 	program = GPU_CreateShaderProgram();
-	loadAndAttach(GPU_ShaderEnum::GPU_VERTEX_SHADER, vertex_path);
-	loadAndAttach(GPU_ShaderEnum::GPU_GEOMETRY_SHADER, geometry_path);
-	loadAndAttach(GPU_ShaderEnum::GPU_FRAGMENT_SHADER, fragment_path);
+	if (vertex_path) {
+		loadAndAttach(GPU_ShaderEnum::GPU_VERTEX_SHADER, vertex_path);
+	}
+	if (geometry_path) {
+		loadAndAttach(GPU_ShaderEnum::GPU_GEOMETRY_SHADER, geometry_path);
+	}
+	if (fragment_path) {
+		loadAndAttach(GPU_ShaderEnum::GPU_FRAGMENT_SHADER, fragment_path);
+	}
 	GPU_LinkShaderProgram(program);
 	block = GPU_LoadShaderBlock(program, "gpu_Vertex", "gpu_TexCoord", "gpu_Color", "gpu_ModelViewProjectionMatrix");
 }
