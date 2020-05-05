@@ -501,12 +501,17 @@ void JumpMan::Draw() const {
 
 	polvito.Draw();
 
+	Assets::tintShader.Activate();
+	Assets::tintShader.SetUniform("flashColor", 1.f, 0.f, 0.f, 0.7f);
+
 	auto rect = animation.CurrentFrame();
 	rect.y += 32*id;
 	Window::Draw(Assets::marioTexture, pos)
 		.withScale(lookingLeft? -1.25f : 1.25f, 1.25f)
 		.withOrigin(center.x, size.y)
 		.withRect(rect);
+
+	Assets::tintShader.Deactivate();
 }
 
 
