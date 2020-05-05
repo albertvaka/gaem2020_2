@@ -78,7 +78,7 @@ namespace Window
         Debug::out << "Scaling to x" << scale;
         //Debug::out << dm.w << " " << dm.h;
  #endif
-        window = SDL_CreateWindow(WINDOW_TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, GAME_WIDTH * scale, GAME_HEIGHT * scale, SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL); // SDL_WINDOW_ALLOW_HIGHDPI breaks letterbox scaling using viewport
+        window = SDL_CreateWindow(WINDOW_TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, GAME_WIDTH * scale, GAME_HEIGHT * scale, SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI | SDL_WINDOW_OPENGL);
         if (window == NULL) {
             Debug::out << "Window Creation Error: " << SDL_GetError();
         }
@@ -142,10 +142,15 @@ namespace Window
                 break;
             case SDL_WINDOWEVENT:
                 if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
-                    const int width = event.window.data1;
-                    const int height = event.window.data2;
-                    //Debug::out << width << "," << height;
+                    int width = event.window.data1;
+                    int height = event.window.data2;
                     GPU_SetWindowResolution(width, height);
+
+                    // Workaround: Re-read the width and height for scaling.
+                    // On high-dpi mode, the width and height reported in the event are not the real ones.
+                    // See: https://github.com/grimfang4/sdl-gpu/issues/188
+                    SDL_GL_GetDrawableSize(SDL_GetWindowFromID(event.window.windowID), &width, &height);
+
                     const float scaleW = width/float(Window::GAME_WIDTH);
                     const float scaleH = height/float(Window::GAME_HEIGHT);
                     const float aspect = Window::GAME_WIDTH/float(Window::GAME_HEIGHT);
