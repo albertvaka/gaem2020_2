@@ -120,6 +120,6 @@ void Assets::LoadAll() {
     sceneMusic[1] = loadMusic("data/plantetes_menu.ogg");
     MusicPlayer::SetVolume(60);
 
-    tintShader.Load("data/default.vert", nullptr, "data/tint.frag");
+    tintShader.Load("data/default.vert", nullptr, "data/default.frag");
 
 }
