@@ -69,10 +69,10 @@ inline vec posOnLeftSlope(vec pos) {
 JumpMan::JumpMan(int id)
 	: id(id)
 	, polvito(Assets::hospitalTexture)
+	, animation(MARIO_IDLE)
 {
 	polvito.AddSprite({ 69, 50, 2, 2 });
 
-	animation.Ensure(MARIO_IDLE);
 	size = standing_size;
 	InitPolvito();
 }

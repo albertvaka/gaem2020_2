@@ -4,7 +4,6 @@
 #include "tilemap.h"
 #include "jumpman.h"
 #include "scene_manager.h"
-#include "transition.h"
 #include "npc.h"
 #include "input.h"
 #include "rototext.h"

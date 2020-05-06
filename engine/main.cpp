@@ -3,12 +3,11 @@
 #include "scene_manager.h"
 #include "input.h"
 #include "mates.h"
-#include "assets.h"
 #include "debug.h"
 
-#include "scene_jumpman.h"
-#include "intro_scene.h"
-#include "raw_input.h"
+#include "../src/assets.h"
+#include "../src/scene_jumpman.h"
+#include "../src/intro_scene.h"
 
 #ifdef _IMGUI
 #include "imgui.h"

@@ -2,6 +2,7 @@
 
 #include "imgui.h"
 #include "rand.h"
+#include "window.h"
 
 void PartSys::Spawn(float dt) {
 	time += dt;

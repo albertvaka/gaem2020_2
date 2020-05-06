@@ -1,6 +1,8 @@
 #pragma once
 
-#include "anim_data.h"
+#include "SDL_gpu.h"
+
+#include "../src/anim_data.h"
 
 struct AnimationData
 {
@@ -13,14 +15,15 @@ extern AnimationData anim_lib[];
 
 struct Animation
 {
-	AnimationType anim_type = AnimationType::NADA;
+	AnimationType anim_type;
 	int anim_timer;
 	int current_frame;
 
 	bool loopable = true;
 	bool complete = false;
 
-	Animation()
+	Animation(AnimationType initial_anim)
+		: anim_type(initial_anim)
 	{
 		Reset();
 	}

@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "vector.h"
-#include "window.h"
+#include "SDL_gpu.h"
 
 struct PartSys {
 

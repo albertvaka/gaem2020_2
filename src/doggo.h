@@ -57,10 +57,11 @@ struct Doggo : BoxEntity, EntS<Doggo>
 		AllDestinations().insert(2);
 	}
 
-	Doggo() : BoxEntity(vec(), vec(28,28)) {
+	Doggo()
+		: BoxEntity(vec(), vec(28,28))
+		, anim(DOGGO_RIGHT)
+	{
 		++StatsTracker::doggos_in_game;
-		anim.Ensure(DOGGO_RIGHT);
-
 		
 		if (AllDestinations().size() == TiledEntities::waypoint.size()) {
 			ResetDestinations();

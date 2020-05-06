@@ -3,7 +3,6 @@
 #include "input.h"
 #include "imgui.h"
 #include "assets.h"
-#include "simplexnoise.h"
 #include "debug.h"
 #include "doggo.h"
 #include "stats_tracker.h"

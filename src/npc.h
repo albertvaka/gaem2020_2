@@ -16,7 +16,10 @@ struct Npc : BoxEntity, SingleInstance<Npc>
 	Animation animation;
 	bool selling = false;
 
-	Npc() : BoxEntity(vec(-35, 270), vec(30,50)) {
+	Npc()
+		: BoxEntity(vec(-35, 270), vec(30,50))
+		, animation(NPC_WALK) 
+	{
 		Reset();
 	}
 

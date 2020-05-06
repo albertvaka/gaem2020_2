@@ -4,6 +4,9 @@ EXEC	= bin/gaem2020
 SRC	= $(wildcard src/*.cpp)
 OBJ	= $(patsubst src/%, obj/%.o, $(SRC))
 
+ENGINE_SRC	= $(wildcard engine/*.cpp)
+ENGINE_OBJ	= $(patsubst engine/%, obj/engine/%.o, $(ENGINE_SRC))
+
 DEP_SRC = $(shell find vendor/ -type f -name '*.cpp' -o -name '*.c' ! -path 'vendor/glew/*')
 DEP_OBJ = $(patsubst vendor/%, obj/vendor/%.o, $(DEP_SRC))
 DEP_INCLUDE = $(patsubst vendor/%, -I vendor/%, $(shell find vendor -maxdepth 2 -path \*\include ! -path vendor/SDL2/include) $(shell find vendor -mindepth 1 -maxdepth 1 ! -path vendor/glew -type d '!' -exec test -e "{}/include" ';' -print ))
@@ -18,7 +21,7 @@ WEBGL_VER = 2
 SHELL = bash
 
 #NOTE: Dynamic casts are disabled by fno-rtti
-CFLAGS = -pipe $(shell sdl2-config --cflags) $(DEP_INCLUDE) -Wall -Wno-unused-parameter -Wno-reorder $(PROFILEFLAGS) $(DEBUGFLAGS) $(IMGUIFLAGS) -O$(strip $(OPTIM)) $(PLATFORM_CFLAGS)
+CFLAGS = -pipe $(shell sdl2-config --cflags) -I./engine $(DEP_INCLUDE) -Wall -Wno-unused-parameter -Wno-reorder $(PROFILEFLAGS) $(DEBUGFLAGS) $(IMGUIFLAGS) -O$(strip $(OPTIM)) $(PLATFORM_CFLAGS)
 CXXFLAGS = $(CFLAGS) -std=c++17 -fno-rtti -fno-exceptions
 LDFLAGS	 = $(CXXFLAGS) $(shell sdl2-config --libs) -lSDL2_ttf -lSDL2_mixer $(PLATFORM_LDFLAGS)
 
@@ -54,14 +57,17 @@ ifeq ($(strip $(IMGUI)),1)
 	IMGUIFLAGS=-D_IMGUI
 endif
 
-$(EXEC): $(OBJ) $(DEP_OBJ) Makefile
-	$(CXX) $(LDFLAGS) $(OBJ) $(DEP_OBJ) -o $(OUT_FILE)
+$(EXEC): $(OBJ) $(ENGINE_OBJ) $(DEP_OBJ) Makefile
+	$(CXX) $(LDFLAGS) $(OBJ) $(ENGINE_OBJ) $(DEP_OBJ) -o $(OUT_FILE)
 
-obj/main.cpp.o: src/main.cpp src/*.h Makefile
-	@mkdir -p obj
+obj/main.cpp.o: engine/main.cpp src/*.h engine/*.h Makefile
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-obj/%.cpp.o: src/%.cpp src/*.h Makefile
+obj/engine/%.cpp.o: engine/%.cpp engine/*.h src/assets.h src/tiledexport.h Makefile
+	@mkdir -p obj/engine
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+obj/%.cpp.o: src/%.cpp engine/*.h src/*.h Makefile
 	@mkdir -p obj
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
@@ -74,7 +80,7 @@ obj/vendor/%.cpp.o: vendor/%.cpp $(shell find vendor/ -type f -name '*.h') Makef
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
-	$(RM) $(OBJ) $(DEP_OBJ) $(OUT_FILE)
+	$(RM) $(OBJ) $(ENGINE_OBJ) $(DEP_OBJ) $(OUT_FILE)
 
 www:
 	emmake $(MAKE)

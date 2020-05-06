@@ -1,14 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
@@ -31,104 +23,14 @@
     <Filter Include="Bundled Dependencies\imgui_imp">
       <UniqueIdentifier>{169eeddb-58a8-452d-afef-d879d039e84a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="engine">
+      <UniqueIdentifier>{31d75502-0a92-4a01-9a96-a7b3c736b2c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{4ac15e07-3b9f-47b2-ae09-134038d673c6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\rand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\scene_jumpman.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\scene_manager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\selfregister.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\tilemap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\transition.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\vector.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\anim_data.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\animation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\bounds.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\collider.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\entity.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\input.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\jumpman.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\mates.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\partsys.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\assets.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\simplexnoise.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\singleinstance.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\debug.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\tiledexport.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\plant.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\npc.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\cistell.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\doggo.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\rototext.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\stats_tracker.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\intro_scene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\window.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\text.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\sound.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\raw_input.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="vendor\glew\glew.h">
       <Filter>Bundled Dependencies\glew</Filter>
     </ClInclude>
@@ -201,71 +103,104 @@
     <ClInclude Include="vendor\imgui_impl\imgui_impl_sdl.h">
       <Filter>Bundled Dependencies\imgui_imp</Filter>
     </ClInclude>
-    <ClInclude Include="src\shader.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="engine\animation.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\bounds.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\collider.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\debug.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\entity.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\input.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\mates.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\matrix2d.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\partsys.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\rand.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\raw_input.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\scene_manager.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\selfregister.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\shader.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\singleinstance.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\sound.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\text.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\tilemap.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\vector.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\window.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\anim_data.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\assets.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cistell.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\doggo.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\intro_scene.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\jumpman.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\npc.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\plant.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rototext.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scene_jumpman.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\stats_tracker.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tiledexport.h">
+      <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\rand.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\scene_jumpman.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\tilemap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\transition.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\anim_data.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\input.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\jumpman.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\partsys.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\vector.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\assets.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\simplexnoise.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\debug.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\tiledexport.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\plant.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\stats_tracker.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\window.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\bounds.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\sound.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\raw_input.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="vendor\glew\glew.c">
       <Filter>Bundled Dependencies\glew</Filter>
     </ClCompile>
@@ -326,8 +261,62 @@
     <ClCompile Include="vendor\imgui_impl\imgui_impl_sdl.cpp">
       <Filter>Bundled Dependencies\imgui_imp</Filter>
     </ClCompile>
-    <ClCompile Include="src\shader.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="engine\bounds.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\debug.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\input.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\main.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\partsys.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\rand.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\raw_input.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\shader.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\sound.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\tilemap.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\vector.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\window.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\anim_data.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\assets.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\jumpman.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\plant.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scene_jumpman.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\stats_tracker.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tiledexport.cpp">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -3,7 +3,7 @@
 #include <cstdlib>
 #include "input.h"
 #include "SDL_gpu.h"
-#include "assets.h"
+#include "../src/assets.h"
 
 const vec Tile::sizevec = vec(size, size);
 

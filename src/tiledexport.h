@@ -3,8 +3,8 @@
 #include <array>
 
 #include "vector.h"
-#include "window.h"
 #include "bounds.h"
+#include "SDL_gpu.h"
 
 struct TiledTiles
 {

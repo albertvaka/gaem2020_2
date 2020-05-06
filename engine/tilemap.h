@@ -4,7 +4,7 @@
 #include "vector.h"
 #include "singleinstance.h"
 #include "bounds.h"
-#include "tiledexport.h"
+#include "../src/tiledexport.h"
 
 struct Tile : TiledTiles
 {
