@@ -49,6 +49,6 @@ struct Assets
 
 	static Mix_Music* sceneMusic[2];
 
-	static Shader tintShader;
+	//static Shader tintShader;
 };
 

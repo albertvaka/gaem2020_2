@@ -501,8 +501,8 @@ void JumpMan::Draw() const {
 
 	polvito.Draw();
 
-	Assets::tintShader.Activate();
-	Assets::tintShader.SetUniform("flashColor", 1.f, 0.f, 0.f, 0.7f);
+	//Assets::tintShader.Activate();
+	//Assets::tintShader.SetUniform("flashColor", 1.f, 0.f, 0.f, 0.7f);
 
 	auto rect = animation.CurrentFrame();
 	rect.y += 32*id;
@@ -511,7 +511,7 @@ void JumpMan::Draw() const {
 		.withOrigin(center.x, size.y)
 		.withRect(rect);
 
-	Assets::tintShader.Deactivate();
+	//Assets::tintShader.Deactivate();
 }
 
 

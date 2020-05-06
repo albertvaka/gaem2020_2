@@ -44,7 +44,7 @@ Sound Assets::soundDoggo3;
 
 Mix_Music* Assets::sceneMusic[2];
 
-Shader Assets::tintShader;
+//Shader Assets::tintShader;
 
 GPU_Image* loadImage(const std::string& path) {
 
@@ -120,6 +120,6 @@ void Assets::LoadAll() {
     sceneMusic[1] = loadMusic("data/plantetes_menu.ogg");
     MusicPlayer::SetVolume(60);
 
-    tintShader.Load("data/default.vert", nullptr, "data/tint.frag");
+    //tintShader.Load("data/default.vert", nullptr, "data/tint.frag");
 
 }
