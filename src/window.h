@@ -170,10 +170,7 @@ namespace Window
 		float rotation = 0;
 		vec scale = vec(1.f, 1.f);
 		vec origin = vec(0.f,0.f);
-		SDL_RendererFlip flip = SDL_FLIP_NONE;
-		constexpr Draw(GPU_Image* t, const vec& pos) : t(t), dest(pos) {
-
-		}
+		constexpr Draw(GPU_Image* t, const vec& pos) : t(t), dest(pos) { }
 
 		constexpr Draw& withRect(float x, float y, float w, float h) {
 			return withRect({ x, y, w, h });
